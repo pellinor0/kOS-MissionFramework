@@ -82,3 +82,8 @@ function lockThrottleFull { lock Throttle to 1.}
 function unlockSteering   { unlock Steering. }
 function unlockThrottle   { unlock Throttle. }
 
+// debug hook: this is called before other things run
+function debugAutoStart {
+    //print "debugAutoStart".
+
+}

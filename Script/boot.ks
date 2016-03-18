@@ -9,10 +9,7 @@ run once globals.
 run once libsystem.
 run once libdev.
 
-//wait 1.
-//if(Status = "PRELAUNCH") { // KOS comes into life before physics has settled
-    //wait 3.                   // and even before KSP does its RevertToLaunch save!
-//} else wait 1.
+debugAutoStart(). // debug hook
 
 local tmp is Core:Part:Tag:Split(" ").
 set gShipType to tmp[0].
