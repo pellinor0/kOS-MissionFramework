@@ -2,7 +2,6 @@
 @lazyglobal off.
 print "  Loading libAtmo".
 
-
 function atmoAscentRocket {
     
     local tgtAP is gLkoAP.
@@ -10,8 +9,8 @@ function atmoAscentRocket {
     lock vel to Velocity:Surface.
     local lock velPP to 90-Vang(Up:Vector, vel).
     local lock headCorr to -Vdot(vel:Normalized, North:Vector).
-    lock st003 to Heading(90+headCorr, ppp).
-    lockSteering(st003@).
+    lock st002 to Heading(90+headCorr, ppp).
+    lockSteering(st002@).
     lockThrottleFull().
     
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
@@ -148,7 +147,6 @@ function atmoAscentPlane {
     unlock st001.
 }
 
-
 function atmoDeorbit {
     //PRINT "Deorbit Burn".
     switch to 0.
@@ -177,12 +175,23 @@ function atmoDeorbit {
     execNode().
 }
 
-
 function atmoLandingRocket {
     if (Status = "LANDED" or Status="SPLASHED") return.
     switch to 0.
     run once liborbit.
-    
+
+    if(Periapsis >= Body:Atm:Height) {
+        print "  WARNING: not suborbital!".
+        return.
+    }
+    if (Altitude > Body:Atm:Height) {
+        print "  Warp to atmosphere".
+        set WarpMode to "RAILS".
+        set Warp to 3. // 50x
+        wait until Altitude < Body:Atm:Height.
+        set Warp to 0.
+    }
+
     set WarpMode to "PHYSICS".
     set Warp to 3. // 4x
     
@@ -191,8 +200,7 @@ function atmoLandingRocket {
 //    local errH is 0.
 //    local h is 0.
 //    local lngTgt is 74.75.
-    lock st009 to Retrograde.
-    lockSteering(st009@).
+    lockSteering(stRetro@).
     
     wait until Altitude < 50000.
     set Warp to 2.
@@ -204,8 +212,7 @@ function atmoLandingRocket {
     print "  Chutes".
     //print "  v  =" +Velocity:Surface:Mag.
     Chutes on.
-    lock st004 to LookdirUp(-Velocity:Surface, Facing:Topvector). 
-    lockSteering(st004@).
+    lockSteering(stSrfRetro@).
     wait until (Altitude - Max(0, GeoPosition:TerrainHeight)) < 500.
     
     print "  Powered Landing".
@@ -214,7 +221,7 @@ function atmoLandingRocket {
     unlockSteering().
     //if gDoLog { set landingLng to GeoPosition:Lng. }
     print "  LngErr=" +(Longitude -spacePort:Lng).
-    if(gDoLog) {
+    if( (defined gDoLog) and gDoLog) {
         local newLandingPA is landingPA -(Longitude - spacePort:Lng).
         switch to 0.
         log "set landingPA to "+Round(newLandingPA, 2)+"." to "logs/log_"+gShipType+".ks".
@@ -332,8 +339,6 @@ function atmoLandingPlane {
     Gear on.
     Lights on.
     set Warp to 0.
-    lock st006 to Heading(90, 0).
-    lockSteering(st006@).
     
     if (gDoLog) {
         
@@ -360,7 +365,7 @@ function atmoLandingPlane {
     
     wait until Status <> "FLYING".
     Brakes on.
-    lockSteering(st006@).
+    lock aoa to 0.
     wait until Airspeed < 0.1.
     Lights off.
     unlockSteering().
@@ -374,8 +379,7 @@ function coastToSpace {
     
     set WarpMode to "PHYSICS".
     set Warp to 4.
-    lock st002 to LookdirUp(Prograde:Vector, Up:Vector).
-    lockSteering(st002@).
+    lockSteering(stPrograde@).
     when Altitude > Body:Atm:Height*0.99 then set Warp to 0.
     
     lock tt002 to Max(0, (tgtAP-Apoapsis)/2000).
@@ -386,7 +390,6 @@ function coastToSpace {
     }
     unlockSteering().
     unlockThrottle().
-    unlock st002.
     unlock tt002.
 }
 

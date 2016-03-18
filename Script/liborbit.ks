@@ -37,14 +37,17 @@ function nodeUncircularize {
     local sma is 0.5*(alt+otherEnd+Body:Radius).
     local v2 is Sqrt(Body:Mu *(2/(alt) - 1/sma)). // vis-viva eq.
     add Node(t,0,0,v2-v1).
-//     print "nodeUncircularize".
-//     print "  otherEnd="+Round(otherEnd).
-//     print "  v1 =" +Round(v1).
-//     print "  v2 =" +Round(v2).
-//     print "  sma =" +Round(sma).
-//     print "  r  =" +Body:Radius.
-//     print "  alt=" +alt.
-//     print "  mu =" +Body:Mu.
+    //print "nodeUncircularize".
+    //print "  otherEnd="+Round(otherEnd).
+    //print "  v1 =" +Round(v1, 2).
+    //print "  v2 =" +Round(v2, 2).
+    //print "  sma=" +Round(sma, 2).
+    //print "  r  =" +Body:Radius.
+    //print "  alt=" +Round(alt, 2).
+    //print "  mu =" +Round(Body:Mu,1).
+    //print "  eta="+Round(t-Time:Seconds, 2).
+    //print "  dv ="+Round(v2-v1, 2).
+    wait 0.01.
 }
 
 function suicideBurn {
@@ -76,8 +79,7 @@ function suicideBurn {
     local tt is 0.
     lock tt010 to tt.
     lockThrottle(tt010@).
-    lock st010 to Lookdirup(-Velocity:Surface, Up:Vector).
-    lockSteering(st010@).
+    lockSteering(stSrfRetro@).
     until Status = "LANDED" or Status = "SPLASHED" {
         wait 0.01.
         set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing +hCorr.
@@ -96,8 +98,7 @@ function suicideBurn {
         print "h   =" +Round(height,    2) at (38, 3).
     }
     unlockThrottle().
-    lock st011 to LookdirUp(Up:Vector, Facing:UpVector).
-    lockSteering(st011@).
+    lockSteering(stUp@).
     //wait 5.
     unlockSteering().
     wait 0.01.
@@ -108,8 +109,7 @@ function vacAscent {
     
     if (Vang(Up:Vector, Facing:ForeVector) > 10) {
         print "  WARNING: vacAscent: not facing up!".
-        lock st022 to LookdirUp(Up:Vector, Facing:UpVector).
-        lockSteering(st022@).
+        lockSteering(stUp@).
         wait until Vang(Up:Vector, Facing:ForeVector) > 10.
     }
     
@@ -130,8 +130,7 @@ function vacAscent {
     local lock pp to 90*(1-shape).
     
     wait until (Apoapsis > 10000) or apReached.
-    lock st013 to LookdirUp(Velocity:Orbit, Facing:UpVector).
-    lockSteering(st013@).
+    lockSteering(stPrograde@).
     
     wait until apReached.
     unlockThrottle().
@@ -143,11 +142,10 @@ function vacLandAtTgt {
     parameter tgt. // GeoCoordinates
     if(Status = "LANDED" or Status="SPLASHED") return.
         
-    local tgt is Body:GeoPositionOf(Vessel("MinmusTarget"):Position +10*North:Vector).
     local startDv is getDeltaV().
     local tgtHeight is Max(0.01, tgt:TerrainHeight).
     local acc is Ship:AvailableThrust / Mass.
-    local g is Body:Mu/(Body:Radius * Body:Radius).
+    local g is Body:Mu/(Body:Radius * (Body:Radius +0.1)). // +0.1 = workaround to overflow
     local accFactor is 1.
     if (acc > 10*g) {  // limit TWR for stability
         set accFactor to 10*g/acc.
@@ -226,8 +224,7 @@ function vacLandAtTgt {
     print "  dvCost  ="+Round(startDv-getDeltaV(), 1).
     print "  posError=" +Round(tgt:Position:Mag,1).
 
-    lock st016 to LookdirUp(Up:Vector, Facing:UpVector).
-    lockSteering(st016@).
+    lockSteering(stUp@).
 //     print "  ang="+Round(Vang(Up:Vector, Facing:ForeVector),2)
 //          +", vel="+Round(Ship:AngularVel:Mag,2).
     wait until (Vang(Up:Vector, Facing:ForeVector)<1 and Ship:AngularVel:Mag<0.1).
@@ -239,8 +236,7 @@ function suicideBurnChutes {
     local tt is 0.
     lock tt019 to tt.
     lockThrottle(tt019@).
-    lock st019 to Lookdirup(-Velocity:Surface, Up:Vector).
-    lockSteering(st019@).
+    lockSteering(stSrfRetro@).
     local lock height to Altitude - Max(0.01, GeoPosition:TerrainHeight).
     local lock v to Velocity:Surface.
     
@@ -275,8 +271,7 @@ function execNode {
     local burntime is NextNode:Deltav:Mag / acc.
     
     // print "  orient ship".
-    lock st020 to LookdirUp(NextNode:Deltav, Up:Vector).
-    lockSteering(st020@).
+    lockSteering(stNode@).
     set WarpMode to "PHYSICS".
     set Warp to 3.
     wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 3.
@@ -288,13 +283,12 @@ function execNode {
         // node drifts off during warp
         unlockSteering().
         warpRails(warpTime -20).
-        lockSteering(st020@).
+        lockSteering(stNode@).
         wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 3.
     }
     unlockSteering().
     warpRails(warpTime -2).
-    lock st021 to LookdirUp(NextNode:Deltav, Up:Vector).
-    lockSteering(st021@).
+    lockSteering(stNode@).
 
     wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 1.
     wait until NextNode:Eta < (burntime/2) +0.1.
@@ -362,9 +356,10 @@ function timeToLng {
     return t.
 }
 
-
-
-
-
-
+// some functions to plug into steering
+function stNode     { return LookdirUp(NextNode:Deltav, Up:Vector). }
+function stUp       { return LookdirUp(Up:Vector, Facing:UpVector). }
+function stPrograde { return LookdirUp(Prograde:Vector, Up:Vector). }
+function stSrfRetro { return LookdirUp(-Velocity:Surface, Up:Vector).}
+function stRetro    { return Retrograde. }
 

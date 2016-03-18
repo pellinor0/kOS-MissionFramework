@@ -11,6 +11,9 @@ function nodeDeorbit {
     //print " nodeDeorbit".
     nodeUnCircularize(tgtPE,Time:Seconds).
     wait 0.01.
+    //print "  HasNode="+HasNode.
+    //print "  eta="+Round(NextNode:Eta, 2).
+    //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
     
     local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).
     local lngErr is 1000.
@@ -23,6 +26,7 @@ function nodeDeorbit {
         local lng1 is Body:GeoPositionOf(PositionAt(Ship,t2)):Lng.
         local lng2 is tgtPos:lng+ 360*(t2-Time:Seconds)/Body:RotationPeriod.
         set lngErr to lng1-lng2.
+        if (lngErr < -180) set lngErr to lngErr+360.
         local dt is -lngErr*synPeriod/360.
         //print "  t2="+Round(t2-Time:Seconds).
         //print "  lngErr="+Round(lngErr, 2).
@@ -36,7 +40,7 @@ function nodeDeorbit {
         wait 0.01.
     }    
     
-    // tweak inclination
+    //print "  tweak inclination".
     local frame is AngleAxis((t2-Time:Seconds)*360/Body:RotationPeriod, V(0,1,0)).
     local p2 is -frame*(tgtPos:Position-Body:Position).
     local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
