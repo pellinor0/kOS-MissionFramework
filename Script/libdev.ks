@@ -24,12 +24,13 @@ function nodeDeorbit {
                                     Time:Seconds+NextNode:Eta,
                                     Time:Seconds+NextNode:Eta+NextNode:Orbit:Period/2).
         local lng1 is Body:GeoPositionOf(PositionAt(Ship,t2)):Lng.
-        local lng2 is tgtPos:lng+ 360*(t2-Time:Seconds)/Body:RotationPeriod.
+        local lng2 is tgtPos:lng.
         set lngErr to lng1-lng2.
         if (lngErr < -180) set lngErr to lngErr+360.
-        local dt is -lngErr*synPeriod/360.
+        local dt is -(lngErr/360)*synPeriod.
         //print "  t2="+Round(t2-Time:Seconds).
         //print "  lngErr="+Round(lngErr, 2).
+        //print "  lngDelta="+Round(360*(t2-Time:Seconds)/Body:RotationPeriod).
         //print "  dt=" +Round(dt).
         set NextNode:Eta to NextNode:Eta +dt.
         if NextNode:Eta<0 
@@ -85,6 +86,7 @@ function unlockThrottle   { unlock Throttle. }
 // debug hook: this is called before other things run
 function debugAutoStart {
     //print "debugAutoStart".
+    wait 0.2. // sporadic problems on quickload if we don't wait here
     switch to 0.
     //compile libatmo.
 }
