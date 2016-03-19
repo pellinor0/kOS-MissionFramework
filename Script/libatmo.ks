@@ -283,11 +283,9 @@ function atmoLandingPlane {
     local relLng is 0.
 
     lock aoa to 60.
-    if not gDoLog lock aoaCorr to -eErr.
+    if not gDoLog lock aoaCorr to Max(3.5-aoa, Min(-0.5*eErr, 90-aoa)).
     when Altitude < 40000 then {
         lock aoa to (Altitude*0.001 +20).
-        if not gDoLog lock aoaCorr to Max(3.5-aoa, Min(-0.5*eErr, 90-aoa)).
-        
         when Altitude < 3000 then lock aoa to 10+Altitude*0.0033.
     }
     
@@ -335,10 +333,11 @@ function atmoLandingPlane {
             //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
         }
         print "aoaT="+Round(aoa, 2)+"   " at (38,13).
-        print "aoaE="+Round(Vang(Facing:Forevector, Velocity:Surface)-aoa+gBuiltinAoA, 2) at (38,14).
+        print "aoaE="+Round(Vang(Facing:Forevector,
+                                 Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
         
         when Altitude<200 then {
-            set Warp to 1.
+            if (Warp > 1) set Warp to 1.
             Gear on.
             Lights on.
         }
@@ -432,8 +431,7 @@ function writeLandingLog {
     local normLng is 0.
     local finalLng is Longitude.
     lLog:Add(finalLng).
-    eLog:Add(Round( Altitude*9.81 
-       +0.5*Airspeed*Airspeed)).
+    eLog:Add(Round( Altitude*9.81 +0.5*Airspeed*Airspeed)).
 
     local logFile is "logs/"+gLogFile.
     local newLandingPA is landingPA -(finalLng - spacePort:Lng).
