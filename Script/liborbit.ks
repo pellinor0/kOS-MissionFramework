@@ -37,7 +37,12 @@ function nodeUncircularize {
     local sma is 0.5*(alt+otherEnd+Body:Radius).
     local v2 is Sqrt(Body:Mu *(2/(alt) - 1/sma)). // vis-viva eq.
     add Node(t,0,0,v2-v1).
-    //print "nodeUncircularize".
+    print "nodeUncircularize".
+    wait 0.01.
+    print "  HasNode="+HasNode.
+    print "  eta="+Round(NextNode:Eta, 2).
+    print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
+
     //print "  otherEnd="+Round(otherEnd).
     //print "  v1 =" +Round(v1, 2).
     //print "  v2 =" +Round(v2, 2).
