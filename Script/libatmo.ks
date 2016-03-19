@@ -30,9 +30,17 @@ function atmoAscentRocket {
     print "  Gravity turn".
     // flightPath (copied from mechJeb)
     local startAlt is Altitude.
-    local lock shape to ((Altitude-startAlt) / (Body:Atm:Height-startAlt)) ^0.04.
+    local lock shape to ((Altitude-startAlt) / (Body:Atm:Height-startAlt)) ^gLaunchParam.
     local lock ppp to 90*(1-shape).
-    wait until (Apoapsis > 10000) or apReached.
+
+    function update {
+        print "v   =" +Round(Velocity:Surface:Mag, 2) +"  " at (38, 0).
+        print "sha =" +Round(shape, 2)  +"  " at (38, 1).
+        print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
+        print "alt =" +Round(Altitude, 2)+"  " at (38, 3).
+    }
+
+    until ((Apoapsis > 10000) or apReached) {update().}
     
     local lock ppp to velPP.
     wait until (Altitude > 30000) or apReached.

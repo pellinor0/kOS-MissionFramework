@@ -1,3 +1,4 @@
+set gLaunchParam to 0.60.
 set gLaunchDuration to 319.86.
 set gLaunchAngle to 35.93.
 set landingPA to -137.93.

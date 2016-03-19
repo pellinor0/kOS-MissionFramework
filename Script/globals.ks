@@ -19,7 +19,7 @@ global gIsPlane is 0.
 global gBuiltinAoA is 3. // only use for planes
 global gShipRadius is 5.
 global gAeroBrakeDir is V(0,0,1). // prograde(?)
-global gLaunchParam is 0.22.
+global gLaunchParam is 0.22. // for planes
 // these are set automatically
 global gShipType is "". // from Core nameTag
 global dockable is 0.  // looks for parts named "shuttlePort"

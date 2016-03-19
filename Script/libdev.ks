@@ -85,5 +85,6 @@ function unlockThrottle   { unlock Throttle. }
 // debug hook: this is called before other things run
 function debugAutoStart {
     //print "debugAutoStart".
-
+    switch to 0.
+    //compile libatmo.
 }
