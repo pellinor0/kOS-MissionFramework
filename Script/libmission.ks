@@ -1,6 +1,5 @@
 @lazyglobal off.
 print "  Loading libmission".
-//run once libbasic.
 
 // == Mission Steps ==
 //  IMPORTANT: These advance the mission counter. Skipping them in a mission file

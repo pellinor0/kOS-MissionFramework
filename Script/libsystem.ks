@@ -1,6 +1,5 @@
 @lazyglobal off.
 //print "  Loading libsystem".
-run once libbasic.
 
 function loadPersistent {
     log "" to persistent.ks.

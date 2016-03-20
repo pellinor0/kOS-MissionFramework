@@ -88,6 +88,8 @@ function debugAutoStart {
     //print "debugAutoStart".
     wait 0.2. // sporadic problems on quickload if we don't wait here
     switch to 0.
+
+    //compile libbasic.
     //compile libatmo.
     //compile liborbit.
     //compile libmission.

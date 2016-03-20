@@ -1,7 +1,6 @@
 // more complex navigation things
 @lazyglobal off.
 print "  Loading libnav".
-run once liborbit.
 
 // == make a new node ==
 function nodeFineRdv {

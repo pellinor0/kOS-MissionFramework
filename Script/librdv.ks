@@ -1,6 +1,5 @@
 // functions for rendezvous/docking with other vessels
 @lazyglobal off.
-run once libbasic.
 print "  Loading librdv".
 
 function rdvDock {

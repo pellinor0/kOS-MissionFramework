@@ -1,6 +1,5 @@
 @lazyglobal off.
 //print "  Loading libbasic".
-run once liborbit.
 
 function warpRails {
     parameter t. 
@@ -24,8 +23,12 @@ function warpRails {
     deb("b11").
     
     if (countdown > 5000) {
-         set Warp to 6.          // 10k?
-         wait until countdown < 5000.
+        set Warp to 6.          // 10k
+        until Warp=6 or countdown < 5000 {
+            wait 0.01.
+            set Warp to 6.
+        }
+        wait until countdown < 5000.
     }
     if (countdown > 500) {
         set Warp to 5.          // 1000x

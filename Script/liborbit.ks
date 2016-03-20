@@ -1,8 +1,6 @@
 @lazyglobal off.
 // simple functions you need in space
 print "  Loading liborbit".
-run once libbasic.
-
 
 function launchTimeToRdv {
     parameter launchPhaseAngle. // where the target should be with respect to me
