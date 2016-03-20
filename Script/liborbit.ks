@@ -294,6 +294,8 @@ function execNode {
     unlockSteering().
     warpRails(warpTime -2).
     lockSteering(stNode@).
+    set WarpMode to "PHYSICS".
+    set Warp to 1.
 
     wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 1.
     wait until NextNode:Eta < (burntime/2) +0.1.
@@ -319,6 +321,7 @@ function execNode {
     unlockSteering().
     remove NextNode.
     wait 0.01.    
+    set Warp to 0.
     
     deb("o1").
 }

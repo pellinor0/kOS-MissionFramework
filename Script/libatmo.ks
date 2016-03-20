@@ -14,9 +14,10 @@ function atmoAscentRocket {
     lockThrottleFull().
     
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
-    if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0) then {
+    if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
+        print "  stage".
         stage.
-        if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0) then { 
+        if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
             stage. 
         }
     }
@@ -124,7 +125,7 @@ function atmoAscentPlane {
     until (Altitude>25000) update().
     
     set pp to ppMin. 
-    set Warp to 1.  // wait until max speed (better: watch ttAP ?)
+    set Warp to 2.  // wait until max speed (better: watch ttAP ?)
     local velTmp is Velocity:Orbit:Mag.
     until (Velocity:Orbit:Mag<velTmp) { // or (Ship:AvailableThrust < 30)
         set velTmp to Velocity:Orbit:Mag.

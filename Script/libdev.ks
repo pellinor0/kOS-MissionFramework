@@ -53,7 +53,6 @@ function aeroBrake {
     
 }
 
-run once libnav.
 global gDebug is 0.
 function deb {
     parameter str.
@@ -71,6 +70,7 @@ function deb {
 
 // Workaround for compiling functions 
 //   that lock Steering and Throttle
+//   (these functions can not be compiled!)
 function lockSteering {
     parameter x. // global variable or lock
     lock Steering to x().
@@ -89,5 +89,6 @@ function debugAutoStart {
     wait 0.2. // sporadic problems on quickload if we don't wait here
     switch to 0.
     //compile libatmo.
+    //compile liborbit.
     //compile libmission.
 }
