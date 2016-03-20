@@ -89,4 +89,5 @@ function debugAutoStart {
     wait 0.2. // sporadic problems on quickload if we don't wait here
     switch to 0.
     //compile libatmo.
+    //compile libmission.
 }

@@ -35,13 +35,10 @@ if missionStep() {
 m_landFromLKO().
 
 if missionStep() {
-    local errAngle is GeoPosition:Lng - (-74.75). // to KSC runway
-    local burnLng is -74.75 + landingPA. // to KSC runway
-    local optimalBurnLng is burnLng - errAngle.
-
-    print "  errAngle=" + errAngle.
-    print "  optimalLandingPA=" +(optimalBurnLng - (-74.75)).
-    log ("set landingPA to " + (optimalBurnLng +74.75) +".") to logFile.
+    local lngErr is GeoPosition:Lng - spacePort:Lng.
+    local newLandingPA is Round(landingPA -lngErr, 3).
+    print "  optimalLandingPA=" +newLandingPA.
+    log ("set landingPA to " +newLandingPA +".") to logFile.
 }
 
 }// end file context

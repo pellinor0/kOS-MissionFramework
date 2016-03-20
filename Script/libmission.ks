@@ -117,8 +117,9 @@ function m_landFromLKO {
           atmoLandingPlane().
         else
           atmoLandingRocket().
+
+        evalLanding().
     }
-    
 }
 
 function m_askConfirmation {

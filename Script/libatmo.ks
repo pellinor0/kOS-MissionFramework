@@ -227,8 +227,6 @@ function atmoLandingRocket {
     suicideBurn().
     
     unlockSteering().
-    //if gDoLog { set landingLng to GeoPosition:Lng. }
-    print "  LngErr=" +(Longitude -spacePort:Lng).
     if( (defined gDoLog) and gDoLog) {
         local newLandingPA is landingPA -(Longitude - spacePort:Lng).
         switch to 0.
@@ -455,7 +453,6 @@ function writeLandingLog {
     log "lList:Add(10). " 
        +"eList:Add(0)." to logFile.
        
-    //print "  lngError=" + landingPA - newLandingPA.
     unset eLog.
     unset lLog.
     unset gLogDeltaTime.
@@ -468,4 +465,11 @@ function printFuelLeft {
     print " Fuel left:".
     print "  LF="+Round(lf,2) +", Ox="+Round(ox,2) +", m="+Round((lf+ox)*0.005, 3).
     print "  Fuel imbalance: " +Round(ox -lf*1.1/0.9, 2) +" ox".
+}
+
+function evalLanding {
+    // check error after landing
+    print "  lngErr=" +Round(GeoPosition:Lng - spacePort:Lng, 3).
+    print "  latErr=" +Round(GeoPosition:Lat - spacePort:Lat, 3).
+    print "  dist  =" +Round(spacePort:Position:Mag, 3).
 }
