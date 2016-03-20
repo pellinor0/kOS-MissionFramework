@@ -79,6 +79,7 @@ function atmoAscentPlane {
     
     //lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
     //function stTmp1 { return Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr). }
+    set SteeringManager:PitchTorqueFactor to 5.
     lock st001 to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
     lockSteering(st001@).
     
@@ -142,16 +143,14 @@ function atmoAscentPlane {
     print "  tmpDv="+Round(tmpDv).
     
     wait until Apoapsis > gLkoAP*0.99. // leave room for some lift
-    //set tt to 0.
-    //unlock Throttle. 
     unlockThrottle().
     
     print "  AP reached. Coasting to space".
     coastToSpace(gLkoAP).
     wait until Altitude > Body:Atm:Height.
-    print "  dV in rocket mode:" +Round( (tmpDv-getDeltaV())*305/3200, 1).
+    print "  dV in rocket mode:" +Round( (tmpDv-getDeltaV()), 1).
     
-    //unlock Steering.
+    set SteeringManager:PitchTorqueFactor to 1.
     unlockSteering().
     unlock st001.
 }
@@ -288,6 +287,7 @@ function atmoLandingPlane {
         when Altitude < 3000 then lock aoa to 10+Altitude*0.0033.
     }
     
+    set SteeringManager:PitchTorqueFactor to 5.
     lock st005 to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
     lockSteering(st005@).
 
@@ -375,6 +375,7 @@ function atmoLandingPlane {
     wait until Airspeed < 0.1.
     Lights off.
     unlockSteering().
+    set SteeringManager:PitchTorqueFactor to 1.
     unlock aoaCorr.
     unlock aoa.
 }

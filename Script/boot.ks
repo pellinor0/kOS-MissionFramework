@@ -11,8 +11,6 @@ run once libdev.
 debugAutoStart(). // debug/testing hook
 
 run once libsystem.
-run once libbasic.
-run once liborbit.
 
 local tmp is Core:Part:Tag:Split(" ").
 set gShipType to tmp[0].
