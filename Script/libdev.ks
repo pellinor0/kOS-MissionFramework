@@ -55,12 +55,20 @@ function aeroBrake {
 
 function dynWarp {
     parameter errFactor is 1.
-    local err is SteeringManager:PitchError + SteeringManager:YawError.
-    print "err ="+Round(err,3) at (38,5).
+    //print "pErr="+Round(SteeringManager:PitchError, 2) at (38,16).
+    //print "yErr="+Round(SteeringManager:YawError,   2) at (38,17).
+    //print "angV="+Round(Ship:AngularVel:Mag,        2) at (38,18).
+    //print "pI  ="+Round(SteeringManager:PitchPID:ErrorSum, 2) at (38,19).
+    //print "yI  ="+Round(SteeringManager:YawPID:ErrorSum,   2) at (38,20).
+    //print "pC  ="+Round(SteeringManager:PitchPID:ChangeRate, 2) at (38,21).
+    //print "yC  ="+Round(SteeringManager:YawPID:ChangeRate,   2) at (38,22).
+    local err is (Abs(SteeringManager:PitchPID:ChangeRate)
+                + Abs(SteeringManager:YawPID:ChangeRate))/errFactor.
+    //print "err ="+Round(err,3) at (38,23).
     set WarpMode to "PHYSICS".
-    if (err>1) set Warp to 0.
-    else if (err>0.5) set Warp to 1.
-    else if (err>0.1) set Warp to 2.
+    if (err>0.3) set Warp to 0.
+    else if (err>0.1) set Warp to 1.
+    else if (err>0.03) set Warp to 2.
     else set Warp to 3.
 }
 

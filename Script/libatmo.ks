@@ -89,12 +89,9 @@ function atmoAscentPlane {
     stage. 
     set WarpMode to "PHYSICS".
     set Warp to 2.
-    //set Warp to 3.
 
     wait until (Status <> "PRELAUNCH" and Status <> "LANDED").
     print "  takeoffVel="+Round(Velocity:Surface:Mag,1).
-    
-    //wait until (Altitude - Max(0, GeoPosition:TerrainHeight) > 20).
     Gear off.
     
     // flightPath von MJ (startAlt=0)
@@ -112,6 +109,7 @@ function atmoAscentPlane {
         set ppMJ to 90 -(90-ppMin)*shape.
         set pp to velPP +aoaTgt.
         set pp to Max(ppMin, Min(pp, ppMJ)).
+        dynWarp().
         
         print "v   =" +Round(v:Mag, 2) +"  " at (38, 0).
         print "vT  =" +Round(vTgt, 2)  +"  " at (38, 1).
@@ -130,6 +128,7 @@ function atmoAscentPlane {
     local velTmp is Velocity:Orbit:Mag.
     until (Velocity:Orbit:Mag<velTmp) { // or (Ship:AvailableThrust < 30)
         set velTmp to Velocity:Orbit:Mag.
+        dynWarp().
     }
     
     print "  Switch to Rockets: vel=" +Round(Velocity:Surface:Mag) +", alt="+Round(Altitude).
@@ -142,7 +141,9 @@ function atmoAscentPlane {
     local tmpDV is getDeltaV().
     print "  tmpDv="+Round(tmpDv).
     
-    wait until Apoapsis > gLkoAP*0.99. // leave room for some lift
+    until Apoapsis > gLkoAP*0.99 { // leave room for some lift
+        dynWarp().
+    }
     unlockThrottle().
     
     print "  AP reached. Coasting to space".
@@ -323,13 +324,12 @@ function atmoLandingPlane {
             
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
-            print "eErr="+Round(eErr,2) +"  " at (38,2).
-            print "aoaC="+Round(aoaCorr, 3) at (38,3).
+            print "aoaC="+Round(aoaCorr, 3) at (38,2).
             
             print "latE="+Round(latErr*10472, 1)+"  " at (38,4). // meters
             //print "angE="+Round(angErr, 3)+"   " at (38,4).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
-            //print "roll="+Round(roll,     2)+"   " at (38,10).
+            print "roll="+Round(roll,     2)+"   " at (38,6).
             //print "hIst="+Round(headIst,  2)+"   " at (38,11).
             //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
         }
@@ -338,11 +338,11 @@ function atmoLandingPlane {
                                  Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
         
         when Altitude<200 then {
-            if (Warp > 1) set Warp to 1.
             Gear on.
             Lights on.
         }
-        //debugDirection (SrfPrograde).
+        dynWarp().
+        //debugDirection (st005()).
     }
     Gear on.
     Lights on.
