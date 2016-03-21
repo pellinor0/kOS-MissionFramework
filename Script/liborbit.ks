@@ -202,7 +202,7 @@ function vacLandAtTgt {
         print "vErr=" +Round(vErr:Mag,1)+"  "    at (38, 0).
     }
 
-    print " suicide burn".
+    print " landing burn".
     set WarpMode to "RAILS".
     set Warp to 3. // 50x
 
@@ -212,14 +212,7 @@ function vacLandAtTgt {
     // todo: use suicideBurnCountdown instead of height
 
     until (height < 10000) update().
-    set WarpMode to "PHYSICS".
-    set Warp to 3. // 4x
-
-    until (height < 2000) update().
-    set Warp to 1.
-
-    until (height < 20) update().
-    set Warp to 0.
+    until (height < 20)   {update(). dynWarp(). }
     unlockThrottle().
     suicideBurn().
 
@@ -231,7 +224,6 @@ function vacLandAtTgt {
 //     print "  ang="+Round(Vang(Up:Vector, Facing:ForeVector),2)
 //          +", vel="+Round(Ship:AngularVel:Mag,2).
     wait until (Vang(Up:Vector, Facing:ForeVector)<1 and Ship:AngularVel:Mag<0.1).
-    unlockSteering().
 }
 
 // -> libatmo ?

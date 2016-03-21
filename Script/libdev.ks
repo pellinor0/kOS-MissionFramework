@@ -72,7 +72,11 @@ function dynWarp {
     else set Warp to 3.
 }
 
-
+function clearScreen2 {
+    from {local x is 0.} until x = 10 step {set x to x+1.} DO {
+        print "            " at (38,x).
+    }
+}
 
 global gDebug is 0.
 function deb {
@@ -107,7 +111,6 @@ function unlockThrottle   { unlock Throttle. }
 // debug hook: this is called before other things run
 function debugAutoStart {
     //print "debugAutoStart".
-    wait 0.2. // sporadic problems on quickload if we don't wait here
     switch to 0.
 
     //compile libbasic.

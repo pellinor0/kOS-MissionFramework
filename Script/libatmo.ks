@@ -26,7 +26,7 @@ function atmoAscentRocket {
     set Warp to 3.
     
     local lock apReached to (Apoapsis > tgtAP*0.95).
-    wait until (VerticalSpeed > 60) or apReached.
+    until (VerticalSpeed > 60) or apReached {dynWarp().}
     
     print "  Gravity turn".
     // flightPath (copied from mechJeb)
@@ -39,22 +39,22 @@ function atmoAscentRocket {
         print "sha =" +Round(shape, 2)  +"  " at (38, 1).
         print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
         print "alt =" +Round(Altitude, 2)+"  " at (38, 3).
+        dynWarp().
     }
 
     until ((Apoapsis > 10000) or apReached) {update().}
     
     local lock ppp to velPP.
-    wait until (Altitude > 30000) or apReached.
+    until (Altitude > 30000) or apReached {dynWarp().}
     
     lock vel to ((Altitude-30000)*Velocity:Orbit 
                 +(40000-Altitude)*Velocity:Surface)/10000.
-    wait until (Altitude > 40000) or apReached. 
+    until (Altitude > 40000) or apReached {dynWarp().}
     lock vel to Velocity:Orbit.
     
-    wait until apReached.
+    until apReached {dynWarp().}
     unlockThrottle().
     unlockSteering().
-    set Warp to 4.
     unlock vel.
     
     if Body:Atm:Exists {
@@ -62,6 +62,7 @@ function atmoAscentRocket {
         wait 0.01.
         coastToSpace(tgtAP).
     }
+    set Warp to 0.
 }
 
 function atmoAscentPlane {
@@ -301,6 +302,7 @@ function atmoLandingPlane {
 //      lock flareCondition to (Altitude < spacePortHeight+20 or relLng < -359).
     
     Gear off.
+    clearScreen2().
     until flareCondition() {
         wait 0.01.
         
@@ -329,13 +331,13 @@ function atmoLandingPlane {
             print "latE="+Round(latErr*10472, 1)+"  " at (38,4). // meters
             //print "angE="+Round(angErr, 3)+"   " at (38,4).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
-            print "roll="+Round(roll,     2)+"   " at (38,6).
+            //print "roll="+Round(roll,     2)+"   " at (38,6).
             //print "hIst="+Round(headIst,  2)+"   " at (38,11).
             //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
         }
-        print "aoaT="+Round(aoa, 2)+"   " at (38,13).
-        print "aoaE="+Round(Vang(Facing:Forevector,
-                                 Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
+        //print "aoaT="+Round(aoa, 2)+"   " at (38,13).
+        //print "aoaE="+Round(Vang(Facing:Forevector,
+        //                         Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
         
         when Altitude<200 then {
             Gear on.
@@ -389,7 +391,7 @@ function coastToSpace {
     set WarpMode to "PHYSICS".
     set Warp to 4.
     lockSteering(stPrograde@).
-    when Altitude > Body:Atm:Height*0.99 then set Warp to 0.
+    when Altitude > Body:Atm:Height*0.995 then set Warp to 0.
     
     lock tt002 to Max(0, (tgtAP-Apoapsis)/2000).
     lockThrottle(tt002@).
