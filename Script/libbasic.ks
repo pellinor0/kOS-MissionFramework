@@ -110,19 +110,19 @@ function getDeltaV {
     return isp * ln(Ship:Mass / (Ship:Mass-fuel))*9.81.
 }
 
-global xAxis is VecDrawArgs( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 5, false ).
-global yAxis is VecDrawArgs( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 5, false ).
-global zAxis is VecDrawArgs( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 5, false ).
+global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).
+global yAxis is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 1, false ).
+global zAxis is VecDraw( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 1, false ).
 function debugDirection {
     parameter dir.
     
-    set xAxis to VecDrawArgs( V(0,0,0), 2*dir:ForeVector, RGB(1.0,0.5,0.5), "Fore", 5, TRUE ).
-    set yAxis to VecDrawArgs( V(0,0,0), 2*dir:TopVector,  RGB(0.5,1.0,0.5), "Top",  5, TRUE ).
-    set zAxis to VecDrawArgs( V(0,0,0), 2*dir:StarVector, RGB(0.5,0.5,1.0), "Star", 5, TRUE ).
+    set xAxis to VecDraw( V(0,0,0), 12*dir:ForeVector, RGB(1.0,0.5,0.5), "Fore", 1, true ).
+    set yAxis to VecDraw( V(0,0,0), 12*dir:TopVector,  RGB(0.5,1.0,0.5), "Top",  1, true ).
+    set zAxis to VecDraw( V(0,0,0), 12*dir:StarVector, RGB(0.5,0.5,1.0), "Star", 1, true ).
 }
 function debugDirectionOff {
-    set xAxis to VecDrawArgs( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 5, false ).
-    set yAxis to VecDrawArgs( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 5, false ).
-    set zAxis to VecDrawArgs( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 5, false ).
+    set xAxis to VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).
+    set yAxis to VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 1, false ).
+    set zAxis to VecDraw( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 1, false ).
 }
 
