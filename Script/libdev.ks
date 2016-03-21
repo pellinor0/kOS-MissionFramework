@@ -53,6 +53,19 @@ function aeroBrake {
     
 }
 
+function dynWarp {
+    parameter errFactor is 1.
+    local err is SteeringManager:PitchError + SteeringManager:YawError.
+    print "err ="+Round(err,3) at (38,5).
+    set WarpMode to "PHYSICS".
+    if (err>1) set Warp to 0.
+    else if (err>0.5) set Warp to 1.
+    else if (err>0.1) set Warp to 2.
+    else set Warp to 3.
+}
+
+
+
 global gDebug is 0.
 function deb {
     parameter str.

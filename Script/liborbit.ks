@@ -305,6 +305,7 @@ function execNode {
 
     until (chaseAngle > 60) or (NextNode:Deltav:Mag < 0.05) {
         wait 0.01.
+        dynWarp().
         print "tt   ="+Round(tt021, 2)       AT (38,0).
     }.
 

@@ -195,11 +195,12 @@ function atmoLandingRocket {
     if (Altitude > Body:Atm:Height) {
         print "  Warp to atmosphere".
         set WarpMode to "RAILS".
-        set Warp to 3. // 50x
-        wait until Altitude < Body:Atm:Height.
+        until (Altitude < Body:Atm:Height) {
+            if (Warp < 3) set Warp to 3.
+            wait 0.01.
+        }
         set Warp to 0.
     }
-
     set WarpMode to "PHYSICS".
     set Warp to 3. // 4x
     
@@ -244,9 +245,10 @@ function atmoLandingPlane {
     if (Altitude > Body:Atm:Height) {
         print "  Warp to atmosphere".
         set WarpMode to "RAILS".
-        set Warp to 3. // 50x
-        wait until Altitude < Body:Atm:Height.
-        set Warp to 0.
+        until (Altitude < Body:Atm:Height) {
+            if (Warp < 3) set Warp to 3.
+            wait 0.01.
+        }
     }
     set WarpMode to "PHYSICS".
     set Warp to 3. // 4x
