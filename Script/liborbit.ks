@@ -154,16 +154,18 @@ function vacLandAtTgt {
         set accFactor to 10*g/acc.
         set acc to acc*accFactor.
     }
-    print " vacLandAtTgt".
-    print "  tgtHeight="+Round(tgtHeight, 1).
-    print "  tgtPos=LatLng("+Round(tgt:Lat,3) +", "+Round(tgt:Lng,3)+")".
-    print "  g=" +Round(g,2) +", acc=" +Round(acc,2).
+    //print " vacLandAtTgt".
+    //print "  tgtHeight="+Round(tgtHeight, 1).
+    //print "  tgt=LatLng("+Round(tgt:Lat,3) +", "+Round(tgt:Lng,3)+")".
+    //print "  g=" +Round(g,2) +", acc=" +Round(acc,2).
     
     local sBurnHeight is Velocity:Orbit:SqrMagnitude/(0.5*acc-g).
+    local nodeHeight is tgtHeight+sBurnHeight/4.
+    //print "  nodeHeight="+Round(nodeHeight, 1).
     if (Obt:Periapsis > tgtHeight) {
         // make a node that brings me above the target at the
         //   suicide burn height
-        if not nextNodeExists() nodeDeorbit(tgt, tgtHeight+sBurnHeight, -Body:Radius*0.7).
+        if not HasNode nodeDeorbit(tgt, nodeHeight, -Body:Radius*0.7).
         execNode().
     }
     

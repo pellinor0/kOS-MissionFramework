@@ -16,15 +16,20 @@ function nodeDeorbit {
     //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
     
     local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).
+    //set synPeriod to 2*Orbit:Period -synPeriod.  // correction if Retrograde
+    //print "  period   ="+Round(Obt:Period).
+    //print "  synPeriod="+Round(synPeriod).
+    //print "  rotPeriod="+Round(Body:RotationPeriod).
     local lngErr is 1000.
     local t2 is 0.
-    until Abs(lngErr)<0.1 {
+    local counter is 0.
+    until Abs(lngErr)<0.1 or counter>6 {
         //print " Iteration".
         set t2 to timeToAltitude2(tgtHeight, 
                                     Time:Seconds+NextNode:Eta,
                                     Time:Seconds+NextNode:Eta+NextNode:Orbit:Period/2).
         local lng1 is Body:GeoPositionOf(PositionAt(Ship,t2)):Lng.
-        local lng2 is tgtPos:lng.
+        local lng2 is tgtPos:lng +360*(t2-Time:Seconds)/Body:RotationPeriod.
         set lngErr to lng1-lng2.
         if (lngErr < -180) set lngErr to lngErr+360.
         local dt is -(lngErr/360)*synPeriod.
@@ -38,8 +43,9 @@ function nodeDeorbit {
         else if NextNode:Eta>synPeriod 
           set NextNode:Eta to NextNode:Eta-synPeriod.
           
+        set counter to counter+1.
         wait 0.01.
-    }    
+    }
     
     //print "  tweak inclination".
     local frame is AngleAxis((t2-Time:Seconds)*360/Body:RotationPeriod, V(0,1,0)).
@@ -112,6 +118,11 @@ function unlockThrottle   { unlock Throttle. }
 function debugAutoStart {
     //print "debugAutoStart".
     switch to 0.
+    wait 1.
+//     if HasNode {
+//         print "  remove NextNode".
+//         remove NextNode.
+//     }
 
     //compile libbasic.
     //compile libatmo.
