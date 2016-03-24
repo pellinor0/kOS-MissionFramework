@@ -128,4 +128,5 @@ function debugAutoStart {
     //compile libatmo.
     //compile liborbit.
     //compile libmission.
+    //compile librdv.
 }

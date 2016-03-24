@@ -7,14 +7,17 @@ function rdvDock {
     if (Ship:Position-Target:Position):Mag >1500 {
         local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
         local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
+        print "  rdvTime=" +Round(rdvTime -Time:Seconds).
+        print "  v0=" +Round(v0).
         deb("r1").
         warpRails(rdvTime - 1500/v0 ).  // warp until target is in physics bubble
     }
+    print "  dist=" +Round(Target:Position:Mag, 1).
     // debug vv
     deb("r2").
     // debug ^^
     wait until Target:Loaded.         // just to be sure
-        
+
     // find docking ports
     local dock is 0.
     local tmp is Target:DockingPorts.
@@ -23,6 +26,7 @@ function rdvDock {
       set targetPort to tmp[0].
       set dock to 1.
       print "  Docking possible".
+      print "  port="+targetPort.
     } else print "  Docking not possible: Rdv only".
     
     wait 0.01.
@@ -40,7 +44,7 @@ function rdvDock {
     
     rdv(targetPos, targetPort:PortFacing:Forevector).
     unlock targetPos.
-    unlock Steering.
+    unlockSteering().
     
     if dock {
         dockingApproach(targetPort).
@@ -57,8 +61,9 @@ function dockingApproach {
     
     print "  dockingApproach".
     myPort:GetModule("ModuleDockingNode"):DoEvent("control from here").
-    lock Steering to LookdirUp(-targetPort:PortFacing:ForeVector, 
+    lock st004 to LookdirUp(-targetPort:PortFacing:ForeVector, 
                                targetPort:PortFacing:UpVector).
+    lockSteering(st004@).
     wait until Vang(Facing:ForeVector, -targetPort:PortFacing:ForeVector) < 2.
     wait until Vang(Facing:UpVector,   targetPort:PortFacing:UpVector)   < 2.
     local vSoll is 0.
@@ -68,10 +73,7 @@ function dockingApproach {
     //print "  Aligned".
     print "  xyErr=" +Round(Vxcl(targetPort:PortFacing:ForeVector, dx):Mag, 2).
     print "  zDist=" +Round(Vdot(targetPort:PortFacing:ForeVector, dx),     2).
-    
     RCS on.
-//     set Ship:Control:Fore to 1.
-//     set Ship:Control:Fore to 0.
     
     until  ( dX:Mag < 0.1) {
         wait 0.01.
@@ -92,7 +94,7 @@ function dockingApproach {
     set Ship:Control:Translation to V(0,0,0).
     //myPort:State:Contains("Docked")
     RCS off.
-    unlock Steering.
+    unlockSteering.
     print "  docked".
 }
 
@@ -117,15 +119,17 @@ function rdv {
     local vErr is 0.
     local tt is 0.
     local steerVec is -Velocity:Surface.
-    lock Steering to Lookdirup(steerVec, upVector).
-    lock Throttle to tt.
+    lock st006 to Lookdirup(steerVec, upVector).
+    lockSteering(st006@).
+    lock tt006 to tt.
+    lockThrottle(tt006@).
     local dX is v(100000,0,0).
     local dV is v0.
     
     function update {
         wait 0.01. 
         
-        debugDirection(Steering).
+        debugDirection(st006).
         set dV to Velocity:Orbit - Target:Velocity:Orbit.
         
         print "tPos=" +vecToString(targetPos) at (38, 7).
@@ -161,21 +165,21 @@ function rdv {
     
     until (dX:Mag < 2000) update().
     set WarpMode to "PHYSICS".
-    set Warp to 3. // 4x
+    set Warp to 1. // 2x
 
     until (dX:Mag < 500) update().
-    set Warp to 1.
+    //set Warp to 1.
 
-    until (dV:Mag < 100) update().
-    set Warp to 0.
+    until (dX:Mag < 100) update().
+    //set Warp to 0.
     
     until (dV:Mag < 0.2 or Vdot(dV, dX)<0) update().
 
     print "  dx="+vecToString(dx).
     print "  dV="+vecToString(dv).
     debugDirectionOff().
-    unlock Throttle.
-    unlock Steering.
+    unlockThrottle().
+    unlockSteering().
     
     print "  ds1="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
     if (Ship:PartsDubbed(gShipType+"RCS"):Length>1)
@@ -196,8 +200,10 @@ function cancelRelativeVel {
     local acc is Ship:AvailableThrust / Mass.
     local v0dir is (Target:Velocity:Orbit - Velocity:Orbit):Normalized.
     local dV is v0Dir.
-    lock Steering to LookdirUp(dV, upVector).
-    lock Throttle to (dV:Mag/acc)*2.5 *t^10.
+    lock st003 to LookdirUp(dV, upVector).
+    lockSteering(st003).
+    lock tt003 to (dV:Mag/acc)*2.5 *t^10.
+    lockThrottle(tt003@).
     
     // loop until stop or overshoot
     until (dV:Mag < 0.001) or (Vdot(v0dir, dV:Normalized) < 0) {
@@ -209,8 +215,8 @@ function cancelRelativeVel {
         print "t    ="+Round(t , 3)       AT (38,1).
     }
     //print "  finished: v="+dV:MAG.
-    unlock Steering.
-    unlock Throttle.
+    unlockSteering().
+    unlockThrottle().
 }
 
 function cancelRelativeVelRCS {

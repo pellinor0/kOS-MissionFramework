@@ -1,6 +1,5 @@
 // Assumptions
 // * target orbit is equatorial and circular
-run once librdv.
 if (Ship:Name <> tgtVesselName) // can't do this when docked to target Vessel
   set Target to Vessel(tgtVesselName). 
 

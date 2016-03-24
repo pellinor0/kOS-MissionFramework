@@ -1,6 +1,7 @@
 @lazyglobal off.
 run once libbasic.
 run once liborbit.
+run once librdv.
 print "  Loading libmission".
 
 // == Mission Steps ==
