@@ -94,7 +94,7 @@ function dockingApproach {
     set Ship:Control:Translation to V(0,0,0).
     //myPort:State:Contains("Docked")
     RCS off.
-    unlockSteering.
+    unlockSteering().
     print "  docked".
 }
 
@@ -131,7 +131,7 @@ function rdv {
         
         debugDirection(st006).
         set dV to Velocity:Orbit - Target:Velocity:Orbit.
-        
+        print "dV  =" +Round(dV:Mag,2)        at (38,8).
         print "tPos=" +vecToString(targetPos) at (38, 7).
         set dX to (targetPos() -Ship:Position).
 
@@ -159,18 +159,16 @@ function rdv {
         print "vErr=" +Round(vErr:Mag,1)+"  "    at (38, 6).
     }
 
+    clearScreen2().
     print " brake burn".
-    set WarpMode to "RAILS".
-    set Warp to 3. // 50x
-    
     until (dX:Mag < 2000) update().
     set WarpMode to "PHYSICS".
     set Warp to 1. // 2x
 
-    until (dX:Mag < 500) update().
-    //set Warp to 1.
+    until (dX:Mag < 400) update().
+    set Warp to 0.
 
-    until (dX:Mag < 100) update().
+    //until (dX:Mag < 100) update().
     //set Warp to 0.
     
     until (dV:Mag < 0.2 or Vdot(dV, dX)<0) update().
@@ -182,12 +180,13 @@ function rdv {
     unlockSteering().
     
     print "  ds1="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
+    killRot().
     if (Ship:PartsDubbed(gShipType+"RCS"):Length>1)
       cancelRelativeVelRcs().    
     else
       cancelRelativeVel(upVector).
     
-    print "  ds1="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
+    print "  ds2="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
     print "  dV ="+Round((Velocity:Orbit - Target:Velocity:Orbit):Mag, 3).
 }
 

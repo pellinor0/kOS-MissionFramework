@@ -69,7 +69,8 @@ function warpRails {
     }
     
     set Warp to 0.
-    if (countDown < 0)  
+    wait until not Ship:Unpacked.
+    if (countDown < 0)
       print "  WARNING: warpRails: countdown="+countdown. 
 }
 
@@ -86,10 +87,13 @@ function targetBaseName {
 }
 
 function killRot {
+    print " killRot".
     set WarpMode to "RAILS".
     set Warp to 1.
+    wait until Ship:Unpacked.
     wait 0.3.
     set Warp to 0.
+    wait until not Ship:Unpacked.
 }
 
 function vecToString {
@@ -126,3 +130,8 @@ function debugDirectionOff {
     set zAxis to VecDraw( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 1, false ).
 }
 
+function clearScreen2 {
+    from {local x is 0.} until x = 10 step {set x to x+1.} DO {
+        print "            " at (38,x).
+    }
+}

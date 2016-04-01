@@ -78,11 +78,6 @@ function dynWarp {
     else set Warp to 3.
 }
 
-function clearScreen2 {
-    from {local x is 0.} until x = 10 step {set x to x+1.} DO {
-        print "            " at (38,x).
-    }
-}
 
 global gDebug is 0.
 function deb {
@@ -124,9 +119,9 @@ function debugAutoStart {
 //         remove NextNode.
 //     }
 
-    //compile libbasic.
-    //compile libatmo.
-    //compile liborbit.
-    //compile libmission.
-    //compile librdv.
+    print "  compiling libbasic".   compile libbasic.
+    //print "  compiling libatmo".    compile libatmo.
+    //print "  compiling liborbit".   compile liborbit.
+    //print "  compiling libmission". compile libmission.
+    print "  compiling librdv".     compile librdv.
 }
