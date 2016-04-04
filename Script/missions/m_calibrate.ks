@@ -1,5 +1,5 @@
 set gDoLog to 1.
-set landingPA to -25.
+set landingPA to -30.
 set spacePort to LatLng(-0.04909, -74.697). // KSC runway 09
 set spacePortHeight to 0.
 { // separate context so we can have local variables
@@ -29,6 +29,24 @@ if missionStep() {
     log "set gLaunchDuration to "+Round(timeDiff, 2)+"." to logFile.
     log "set gLaunchAngle to "   +Round(angleDiff,2)+"." to logFile.
     printFuelLeft().
+}
+
+// ascend to 85000 as a compromise between LKO and spacestation height
+if missionStep() {
+    print "Raise AP".
+    if not nextNodeExists() {
+        nodeUnCircularize(85000, Time:Seconds+40).
+        tweakNodeInclination(V(0,1,0), 0.01).
+    }
+    execNode().
+}
+if missionStep() {
+    print "Circularize".
+    if not nextNodeExists() {
+        nodeUnCircularize(85000, Time:Seconds+Eta:Apoapsis).
+        tweakNodeInclination(V(0,1,0), 0.01).
+    }
+    execNode().
 }
 
 //m_askConfirmation("Please prepare the ship for landing").

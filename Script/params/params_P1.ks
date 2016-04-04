@@ -1,7 +1,7 @@
 //set spacePort to LATLNG(-1.5175, -71.9575). // island airfield 09
 //set spacePortHeight to 133.
 set gIsPlane to 1.
-set landingPA to -38.78.
+set landingPA to -60.838.
 set gLaunchParam to 0.3.
 set gLaunchDuration to 365.48.
 set gLaunchAngle to 43.8.
