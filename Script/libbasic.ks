@@ -13,14 +13,12 @@ function warpRails {
 //         print "    ec=" +Round(ec,2).
 //     }
     
-    deb("b1").
     set Warp to 0.
     wait 0.01.
     set WarpMode to "RAILS".
     if (countdown >  5) {set Warp to 1. wait 0.1.}
     if (countdown > 25) {set Warp to 2. wait 0.1.}
     if (countdown > 50) {set Warp to 3. wait 0.1.}
-    deb("b11").
     
     if (countdown > 5000) {
         set Warp to 6.          // 10k
@@ -40,7 +38,6 @@ function warpRails {
     }
     if (countdown > 50) {
         set Warp to 4.          // 100x
-        deb("b2").
         until Warp=4 or countdown < 50 {
             wait 0.01.
             set Warp to 4.
@@ -88,11 +85,17 @@ function targetBaseName {
 
 function killRot {
     print " killRot".
-    set WarpMode to "RAILS".
-    set Warp to 1.
-    wait until Ship:Unpacked.
-    wait 0.3.
     set Warp to 0.
+    //print "  force Warp to 1".
+    until Warp=1 {
+      set WarpMode to "RAILS".
+      set Warp to 1.
+      wait 0.01.
+    }
+    //wait until Ship:Unpacked.
+    wait 0.1.
+    set Warp to 0.
+    //print "  set Warp to 0".
     wait until not Ship:Unpacked.
 }
 
@@ -132,6 +135,6 @@ function debugDirectionOff {
 
 function clearScreen2 {
     from {local x is 0.} until x = 10 step {set x to x+1.} DO {
-        print "            " at (38,x).
+        print "                      " at (38,x).
     }
 }

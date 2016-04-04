@@ -162,7 +162,7 @@ function m_undock {
         local mp is Ship:MonoPropellant.
         RCS on.
         set Ship:Control:Fore to -1.
-        wait 1.
+        wait 2.
         set Ship:Control:Fore to 0.
         RCS off.
         print "  burnt "+Round(mp -Ship:MonoPropellant, 2) +" mp".

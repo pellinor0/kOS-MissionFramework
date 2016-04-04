@@ -315,8 +315,6 @@ function execNode {
     remove NextNode.
     wait 0.01.    
     set Warp to 0.
-    
-    deb("o1").
 }
 
 function getPhaseAngle {

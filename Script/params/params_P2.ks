@@ -4,3 +4,5 @@ set gIsPlane to 1.
 set landingPA to -44.63.
 set gLaunchDuration to 398.5.
 set gLaunchAngle to 49.63.
+set gShipRadius to 12.6.
+set SteeringManager:MaxStoppingTime to 2*SteeringManager:MaxStoppingTime.

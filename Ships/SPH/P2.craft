@@ -45,6 +45,10 @@ PART
 	link = MK1Fuselage_4294609336
 	link = wingShuttleElevon2_4294551302
 	link = wingShuttleElevon2_4294606272
+	link = RCSBlock_4293948582
+	link = RCSBlock_4293948432
+	link = linearRcs_4293947628
+	link = linearRcs_4293947460
 	attN = top2,asasmodule1-2_4294668192
 	attN = top,adapterMk3-Size2Slant_4294697354
 	attN = bottom,adapterMk3-Size2Slant_4294696368
@@ -284,7 +288,7 @@ PART
 	part = wingShuttleDelta_4294193060
 	partName = Part
 	pos = -2.821487,8.932023,2.38841
-	attPos = 0.06726611,-0.8544134,-0.1842927
+	attPos = 0.06726611,-0.8544132,-0.1842927
 	attPos0 = -1.688753,0.8858293,0.1871347
 	rot = -0.6883782,-3.280807E-08,1.204252E-08,-0.725352
 	attRot = -0.6883776,-4.323438E-08,-4.103051E-08,0.7253526
@@ -956,42 +960,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Port
@@ -1033,7 +1001,7 @@ PART
 {
 	part = adapterMk3-Size2Slant_4294697354
 	partName = Part
-	pos = -1.2,8.934923,9.232056
+	pos = -1.2,8.934946,9.232079
 	attPos = 0,0,0
 	attPos0 = 0,6.875001,-1.341106E-07
 	rot = 0,0.7071068,0.7071068,0
@@ -1051,9 +1019,9 @@ PART
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
 	link = adapterSize2-Size1Slant_4294703746
-	link = wingShuttleRudder_4294365694
-	link = wingShuttleRudder_4294663374
 	link = kOSMachineRad_4291973172
+	link = wingShuttleRudder_4294365694
+	link = wingShuttleRudder_4294179604
 	attN = top,adapterSize2-Size1Slant_4294703746
 	attN = bottom,mk3CargoBayL_4294493264
 	EVENTS
@@ -1130,7 +1098,7 @@ PART
 {
 	part = adapterMk3-Size2Slant_4294696368
 	partName = Part
-	pos = -1.2,8.934807,-4.518054
+	pos = -1.2,8.934784,-4.518072
 	attPos = 0,0,0
 	attPos0 = 0,-6.875001,1.341106E-07
 	rot = 0,-0.7071068,0.7071068,0
@@ -1225,7 +1193,7 @@ PART
 {
 	part = adapterSize2-Size1Slant_4294703026
 	partName = Part
-	pos = -1.2,9.559864,-7.643066
+	pos = -1.2,9.559864,-7.643089
 	attPos = 0,0,0
 	attPos0 = 0,3.125001,-0.6250004
 	rot = 0,0.7071068,-0.7071068,0
@@ -1413,7 +1381,7 @@ PART
 {
 	part = pointyNoseConeB_4294683638
 	partName = Part
-	pos = -1.2,10.18486,-9.518066
+	pos = -1.2,10.18486,-9.518089
 	attPos = 0,0,0
 	attPos0 = 0,1.875,-0.6250003
 	rot = 0,-0.7071068,0.7071068,0
@@ -1507,7 +1475,7 @@ PART
 {
 	part = SmallGearBay_4294058682
 	partName = Part
-	pos = -1.2,6.904233,6.710973
+	pos = -1.2,6.904233,6.710998
 	attPos = 0,0,0
 	attPos0 = 0,4.353915,2.030637
 	rot = -2.086163E-07,0,0,1
@@ -1869,8 +1837,8 @@ PART
 {
 	part = RCSBlock_4294673512
 	partName = Part
-	pos = 0.4809418,8.935607,2.35424
-	attPos = 0,0,0
+	pos = 0.4809418,8.935607,2.470087
+	attPos = -2.384186E-07,0.1158469,1.385342E-08
 	attPos0 = 1.680942,-0.002753735,-0.0007419591
 	rot = -4.214685E-08,0.7071068,0.7071069,0
 	attRot = 0,0,0,1
@@ -1968,42 +1936,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -2045,10 +1977,10 @@ PART
 {
 	part = RCSBlock_4294673410
 	partName = Part
-	pos = -2.880942,8.935607,2.35424
-	attPos = 0,0,0
+	pos = -2.880942,8.935607,2.470087
+	attPos = 2.384186E-07,0.1158469,1.385342E-08
 	attPos0 = -1.680942,-0.002753735,-0.0007419591
-	rot = -0.7071069,-3.090862E-08,1.123823E-08,-0.7071068
+	rot = -0.7071072,-3.090859E-08,1.123824E-08,-0.7071065
 	attRot = 0,0,0,1
 	attRot0 = -1.192093E-07,-1.390906E-08,2.980232E-08,-1
 	mir = 1,1,1
@@ -2144,42 +2076,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2RCS
@@ -2221,8 +2117,8 @@ PART
 {
 	part = linearRcs_4294672956
 	partName = Part
-	pos = 0.5214627,8.934865,2.360262
-	attPos = 0.09756804,0.355129,4.233468E-08
+	pos = 0.5214627,8.934865,2.466786
+	attPos = 0.09756768,0.4616531,5.503333E-08
 	attPos0 = 1.623895,-0.3518613,-4.194513E-08
 	rot = 0.7071068,0.7071069,8.940697E-08,0
 	attRot = 0,0,0,1
@@ -2320,42 +2216,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2RCS
@@ -2397,8 +2257,8 @@ PART
 {
 	part = linearRcs_4294672716
 	partName = Part
-	pos = -2.921463,8.934865,2.360262
-	attPos = -0.09756804,0.355129,4.233468E-08
+	pos = -2.921463,8.934865,2.466786
+	attPos = -0.09756768,0.4616531,5.503333E-08
 	attPos0 = -1.623895,-0.3518613,-4.194513E-08
 	rot = 0.7071068,-0.7071068,-5.960464E-08,0
 	attRot = 0,0,0,1
@@ -2496,42 +2356,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2RCS
@@ -2573,7 +2397,7 @@ PART
 {
 	part = asasmodule1-2_4294668192
 	partName = Part
-	pos = -1.2,8.588718,7.087031
+	pos = -1.2,8.58873,7.087045
 	attPos = 0,2.95639E-05,0.3461542
 	attPos0 = 0,4.730001,-3.898144E-07
 	rot = 0.7071068,0,0,0.7071068
@@ -2649,306 +2473,6 @@ PART
 				actionGroup = None
 			}
 			Toggle
-			{
-				actionGroup = None
-			}
-		}
-	}
-	MODULE
-	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
-		name = KOSNameTag
-		isEnabled = True
-		nameTag = 
-		stagingEnabled = True
-		EVENTS
-		{
-			PopupNameTagChanger
-			{
-				active = True
-				guiActive = True
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Change Name Tag
-				guiName = Change Name Tag
-				category = Change Name Tag
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-}
-PART
-{
-	part = wingShuttleRudder_4294365694
-	partName = Part
-	pos = -0.8279703,8.341421,7.774993
-	attPos = 1.251772,1.009368,-0.008710027
-	attPos0 = -1.623801,-2.466427,-0.5847802
-	rot = -4.213241E-08,0.7253745,0.6883546,1.103274E-09
-	attRot = 0.02617694,0,0,0.9996573
-	attRot0 = 0.02617693,2.901198E-08,-3.057225E-08,0.9996574
-	mir = 1,1,1
-	symMethod = Mirror
-	istg = 0
-	dstg = 0
-	sidx = -1
-	sqor = -1
-	sepI = 1
-	attm = 1
-	modCost = 0
-	modMass = 0
-	modSize = (0.0, 0.0, 0.0)
-	sym = wingShuttleRudder_4294663374
-	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
-	EVENTS
-	{
-	}
-	ACTIONS
-	{
-	}
-	PARTDATA
-	{
-	}
-	MODULE
-	{
-		name = ModuleControlSurface
-		isEnabled = True
-		ignorePitch = True
-		ignoreYaw = True
-		ignoreRoll = True
-		deploy = False
-		deployInvert = False
-		stagingEnabled = True
-		ignorePitch_UIFlight
-		{
-			controlEnabled = True
-		}
-		ignoreYaw_UIFlight
-		{
-			controlEnabled = True
-		}
-		ignoreRoll_UIFlight
-		{
-			controlEnabled = True
-		}
-		deploy_UIFlight
-		{
-			controlEnabled = True
-		}
-		deployInvert_UIFlight
-		{
-			controlEnabled = True
-		}
-		EVENTS
-		{
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-			ActionToggle
-			{
-				actionGroup = None
-			}
-			ActionExtend
-			{
-				actionGroup = None
-			}
-			ActionRetract
-			{
-				actionGroup = None
-			}
-		}
-	}
-	MODULE
-	{
-		name = KOSNameTag
-		isEnabled = True
-		nameTag = 
-		stagingEnabled = True
-		EVENTS
-		{
-			PopupNameTagChanger
-			{
-				active = True
-				guiActive = True
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Change Name Tag
-				guiName = Change Name Tag
-				category = Change Name Tag
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-}
-PART
-{
-	part = wingShuttleRudder_4294663374
-	partName = Part
-	pos = -1.572029,8.341421,7.774994
-	attPos = -1.251772,1.009369,-0.008710027
-	attPos0 = 1.623801,-2.466427,-0.5847802
-	rot = -0.6883548,-3.281039E-08,1.204348E-08,-0.7253743
-	attRot = 0.02617694,0,0,0.9996573
-	attRot0 = -3.171648E-08,0.9996573,0.02617699,-1.468444E-08
-	mir = 1,1,1
-	symMethod = Mirror
-	istg = 0
-	dstg = 0
-	sidx = -1
-	sqor = -1
-	sepI = 1
-	attm = 1
-	modCost = 0
-	modMass = 0
-	modSize = (0.0, 0.0, 0.0)
-	sym = wingShuttleRudder_4294365694
-	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
-	EVENTS
-	{
-	}
-	ACTIONS
-	{
-	}
-	PARTDATA
-	{
-	}
-	MODULE
-	{
-		name = ModuleControlSurface
-		isEnabled = True
-		ignorePitch = True
-		ignoreYaw = True
-		ignoreRoll = True
-		deploy = False
-		deployInvert = False
-		stagingEnabled = True
-		ignorePitch_UIFlight
-		{
-			controlEnabled = True
-		}
-		ignoreYaw_UIFlight
-		{
-			controlEnabled = True
-		}
-		ignoreRoll_UIFlight
-		{
-			controlEnabled = True
-		}
-		deploy_UIFlight
-		{
-			controlEnabled = True
-		}
-		deployInvert_UIFlight
-		{
-			controlEnabled = True
-		}
-		EVENTS
-		{
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-			ActionToggle
-			{
-				actionGroup = None
-			}
-			ActionExtend
-			{
-				actionGroup = None
-			}
-			ActionRetract
 			{
 				actionGroup = None
 			}
@@ -3243,7 +2767,7 @@ PART
 {
 	part = SmallTank_4294645172
 	partName = Part
-	pos = -1.2,8.934864,0.5569868
+	pos = -1.2,8.934864,0.5569839
 	attPos = 0,0,0
 	attPos0 = 0,-1.8,5.483627E-07
 	rot = 0.7071069,0,0,0.7071068
@@ -3557,42 +3081,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -3645,7 +3133,7 @@ PART
 {
 	part = RAPIER_4294626108
 	partName = Part
-	pos = 2.60003,8.934757,-0.04588413
+	pos = 2.60003,8.934757,-0.04588699
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = -0.6532815,0.2705979,0.2705975,-0.6532819
@@ -4108,7 +3596,7 @@ PART
 {
 	part = standardNoseCone_4294625956
 	partName = Part
-	pos = 2.60003,8.934756,-0.06584454
+	pos = 2.60003,8.934756,-0.0658474
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = -0.092297,0.7010573,-0.7010577,0.09229437
@@ -4396,42 +3884,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -4484,7 +3936,7 @@ PART
 {
 	part = RAPIER_4294625328
 	partName = Part
-	pos = -5.000031,8.934973,-0.04588771
+	pos = -5.000031,8.934973,-0.04589057
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = -0.2705977,-0.6532815,-0.653282,-0.2705975
@@ -4947,10 +4399,10 @@ PART
 {
 	part = standardNoseCone_4294625176
 	partName = Part
-	pos = -5.000031,8.934974,-0.06584811
+	pos = -5.000031,8.934974,-0.06585097
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = -0.7010574,-0.09229693,0.09229495,0.7010576
+	rot = -0.7010574,-0.09229676,0.09229512,0.7010576
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -5235,42 +4687,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -5323,7 +4739,7 @@ PART
 {
 	part = RAPIER_4294613256
 	partName = Part
-	pos = 1.00003,8.934757,-0.3760509
+	pos = 1.00003,8.934757,-0.3760538
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = 0.6532815,-0.2705979,-0.2705976,0.6532819
@@ -5786,7 +5202,7 @@ PART
 {
 	part = standardNoseCone_4294613104
 	partName = Part
-	pos = 1.00003,8.934756,-0.3960114
+	pos = 1.00003,8.934756,-0.3960142
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = 0.09229721,-0.7010573,0.7010577,-0.09229416
@@ -6055,42 +5471,6 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
 			ToggleStaging
 			{
 				active = True
@@ -6628,7 +6008,7 @@ PART
 	pos = -3.40003,8.934973,-0.3960099
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = 0.7010575,0.09229698,-0.09229455,-0.7010575
+	rot = 0.7010575,0.09229689,-0.09229434,-0.7010575
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -6913,42 +6293,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -7001,7 +6345,7 @@ PART
 {
 	part = RAPIER_4294610594
 	partName = Part
-	pos = 4.000031,8.934757,-0.0283227
+	pos = 4.000031,8.934757,-0.02832556
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = 0.6532815,-0.2705979,-0.2705976,0.6532819
@@ -7464,7 +6808,7 @@ PART
 {
 	part = standardNoseCone_4294610442
 	partName = Part
-	pos = 4.000031,8.934756,-0.0482831
+	pos = 4.000031,8.934756,-0.04828596
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = 0.09229721,-0.7010573,0.7010577,-0.09229416
@@ -7733,42 +7077,6 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
 			ToggleStaging
 			{
 				active = True
@@ -8306,7 +7614,7 @@ PART
 	pos = -6.40003,8.934973,-0.04827785
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = 0.7010575,0.09229698,-0.09229455,-0.7010575
+	rot = 0.7010575,0.09229689,-0.09229434,-0.7010575
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -8398,7 +7706,7 @@ PART
 {
 	part = structuralWing_4294610296
 	partName = Part
-	pos = -1.2,10.51149,-8.318073
+	pos = -1.2,10.51149,-8.318096
 	attPos = -1.192093E-07,3.797018,0.3018804
 	attPos0 = 1.192093E-07,0.002985954,-1.878514
 	rot = 0.4992904,-0.5007087,-0.4992904,0.5007087
@@ -8757,7 +8065,7 @@ PART
 {
 	part = R8winglet_4294539414
 	partName = Part
-	pos = 2.449427,10.41072,-9.323904
+	pos = 2.44944,10.41072,-9.323927
 	attPos = 0,0,0
 	attPos0 = -2.021568,-0.8015261,-0.02560283
 	rot = 8.338757E-05,0.7372773,0.6755905,-8.417918E-05
@@ -9022,7 +8330,7 @@ PART
 {
 	part = R8winglet_4294606230
 	partName = Part
-	pos = -4.849398,10.41072,-9.323906
+	pos = -4.849398,10.41072,-9.323929
 	attPos = 0,0,0
 	attPos0 = -2.021568,-0.8015261,-0.02560283
 	rot = -0.6755909,8.414702E-05,-8.34173E-05,-0.737277
@@ -9154,7 +8462,7 @@ PART
 {
 	part = kOSMachineRad_4291973172
 	partName = Part
-	pos = -1.2,10.70807,7.078513
+	pos = -1.2,10.70807,7.078526
 	attPos = 0,-0.2785311,0.1060085
 	attPos0 = 0,-1.874999,1.667175
 	rot = -0.5000001,0.5000001,0.5000001,-0.5000001
@@ -9192,7 +8500,7 @@ PART
 		basePartMass = 0.03
 		additionalCost = 0
 		MaxPartId = 100
-		RequiredPower = 0.01333333
+		RequiredPower = 0.04
 		stagingEnabled = True
 		activated = True
 		bootFile_UIEditor
@@ -9331,45 +8639,9 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
-		nameTag = P2 launchLand
+		nameTag = P2 kssTest
 		stagingEnabled = True
 		EVENTS
 		{
@@ -9408,7 +8680,7 @@ PART
 {
 	part = batteryBank_4291872420
 	partName = Part
-	pos = -1.2,8.049981,7.226376
+	pos = -1.2,8.049981,7.22639
 	attPos = 0,0.5001993,0.5387306
 	attPos0 = 0,-0.3608541,1.192093E-07
 	rot = 0.7071068,0,0,0.7071068
@@ -9597,42 +8869,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleTestSubject
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-			RunTestEvent
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Run Test
-				guiName = Run Test
-				category = Run Test
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			ToggleStaging
-			{
-				active = True
-				guiActive = False
-				guiActiveUncommand = False
-				guiIcon = Disable Staging
-				guiName = Disable Staging
-				category = Disable Staging
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-		}
-		ACTIONS
-		{
-		}
-	}
-	MODULE
-	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -9685,7 +8921,7 @@ PART
 {
 	part = radialRCSTank_4290751750
 	partName = Part
-	pos = -1.2,8.037048,6.916111
+	pos = -1.2,8.037048,6.916123
 	attPos = -1.192093E-07,0.06226732,1.759151
 	attPos0 = 1.192093E-07,-0.2331896,-1.207484
 	rot = 0,0,0,1
@@ -9766,7 +9002,7 @@ PART
 {
 	part = probeCoreOcto2_4294675834
 	partName = Part
-	pos = -1.2,8.049981,7.05446
+	pos = -1.2,8.049981,7.054474
 	attPos = 0,0,0
 	attPos0 = 0,-0.171916,-5.960464E-08
 	rot = 0.7071068,0,0,0.7071068
@@ -9947,5 +9183,829 @@ PART
 		hideFlow = False
 		isVisible = True
 		flowMode = Both
+	}
+}
+PART
+{
+	part = wingShuttleRudder_4294365694
+	partName = Part
+	pos = -0.2050167,8.36841,7.704659
+	attPos = 0.6288194,1.119019,-0.03050917
+	attPos0 = -1.623801,-2.646433,-0.536015
+	rot = -4.213241E-08,0.7253745,0.6883547,1.103276E-09
+	attRot = 0.02617694,0,0,0.9996573
+	attRot0 = 0.02617693,2.901198E-08,-3.057225E-08,0.9996574
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = wingShuttleRudder_4294179604
+	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleControlSurface
+		isEnabled = True
+		ignorePitch = True
+		ignoreYaw = True
+		ignoreRoll = True
+		deploy = False
+		deployInvert = False
+		stagingEnabled = True
+		ignorePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		ignoreYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		ignoreRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		deploy_UIFlight
+		{
+			controlEnabled = True
+		}
+		deployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ActionToggle
+			{
+				actionGroup = None
+			}
+			ActionExtend
+			{
+				actionGroup = None
+			}
+			ActionRetract
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = wingShuttleRudder_4294179604
+	partName = Part
+	pos = -2.194982,8.36841,7.70466
+	attPos = -0.6288192,1.11902,-0.03050917
+	attPos0 = 1.623801,-2.646433,-0.536015
+	rot = -0.688355,-3.281038E-08,1.20435E-08,-0.7253742
+	attRot = 0.02617694,0,0,0.9996573
+	attRot0 = -3.171648E-08,0.9996573,0.02617699,-1.468444E-08
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = wingShuttleRudder_4294365694
+	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleControlSurface
+		isEnabled = True
+		ignorePitch = True
+		ignoreYaw = True
+		ignoreRoll = True
+		deploy = False
+		deployInvert = False
+		stagingEnabled = True
+		ignorePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		ignoreYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		ignoreRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		deploy_UIFlight
+		{
+			controlEnabled = True
+		}
+		deployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ActionToggle
+			{
+				actionGroup = None
+			}
+			ActionExtend
+			{
+				actionGroup = None
+			}
+			ActionRetract
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = RCSBlock_4293948582
+	partName = Part
+	pos = 0.4803879,8.935607,2.240989
+	attPos = 0,0.1081093,1.286389E-08
+	attPos0 = 1.680388,-0.2241144,-0.0007419855
+	rot = -4.214685E-08,0.7071068,0.7071069,0
+	attRot = 0,0,0,1
+	attRot0 = -2.980232E-08,1,5.960464E-08,-2.980232E-08
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = RCSBlock_4293948432
+	srfN = srfAttach,mk3CargoBayL_4294493264
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleRCS
+		isEnabled = True
+		rcsEnabled = True
+		thrustPercentage = 100
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
+		enableX = True
+		enableY = True
+		enableZ = True
+		stagingEnabled = True
+		thrustPercentage_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 100
+			stepIncrement = 0.5
+		}
+		EVENTS
+		{
+			Disable
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Disable RCS Port
+				guiName = Disable RCS Port
+				category = Disable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			Enable
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Enable RCS Port
+				guiName = Enable RCS Port
+				category = Enable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = RCSBlock_4293948432
+	partName = Part
+	pos = -2.880388,8.935607,2.240989
+	attPos = 0,0.1081093,1.286389E-08
+	attPos0 = -1.680388,-0.2241144,-0.0007419855
+	rot = -0.7071072,-3.090859E-08,1.123824E-08,-0.7071065
+	attRot = 0,0,0,1
+	attRot0 = -1.192093E-07,-1.390906E-08,2.980232E-08,-1
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = RCSBlock_4293948582
+	srfN = srfAttach,mk3CargoBayL_4294493264
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleRCS
+		isEnabled = True
+		rcsEnabled = True
+		thrustPercentage = 100
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
+		enableX = True
+		enableY = True
+		enableZ = True
+		stagingEnabled = True
+		thrustPercentage_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 100
+			stepIncrement = 0.5
+		}
+		EVENTS
+		{
+			Disable
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Disable RCS Port
+				guiName = Disable RCS Port
+				category = Disable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			Enable
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Enable RCS Port
+				guiName = Enable RCS Port
+				category = Enable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = linearRcs_4293947628
+	partName = Part
+	pos = 0.5238004,8.934865,2.242971
+	attPos = 0.09999979,0.3926621,4.680896E-08
+	attPos0 = 1.623801,-0.5066848,-6.040153E-08
+	rot = 0.7071068,0.7071069,8.940697E-08,0
+	attRot = 0,0,0,1
+	attRot0 = 0.5,0.5000001,-0.5,0.5
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = linearRcs_4293947460
+	srfN = srfAttach,mk3CargoBayL_4294493264
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleRCS
+		isEnabled = True
+		rcsEnabled = True
+		thrustPercentage = 100
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
+		enableX = True
+		enableY = True
+		enableZ = True
+		stagingEnabled = True
+		thrustPercentage_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 100
+			stepIncrement = 0.5
+		}
+		EVENTS
+		{
+			Disable
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Disable RCS Port
+				guiName = Disable RCS Port
+				category = Disable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			Enable
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Enable RCS Port
+				guiName = Enable RCS Port
+				category = Enable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = P2RCS
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = linearRcs_4293947460
+	partName = Part
+	pos = -2.9238,8.934865,2.242971
+	attPos = -0.0999999,0.3926621,4.680896E-08
+	attPos0 = -1.623801,-0.5066848,-6.040153E-08
+	rot = 0.7071068,-0.7071068,-5.960464E-08,0
+	attRot = 0,0,0,1
+	attRot0 = -0.5,0.5000001,-0.4999999,-0.5
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = linearRcs_4293947628
+	srfN = srfAttach,mk3CargoBayL_4294493264
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleRCS
+		isEnabled = True
+		rcsEnabled = True
+		thrustPercentage = 100
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
+		enableX = True
+		enableY = True
+		enableZ = True
+		stagingEnabled = True
+		thrustPercentage_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 100
+			stepIncrement = 0.5
+		}
+		EVENTS
+		{
+			Disable
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Disable RCS Port
+				guiName = Disable RCS Port
+				category = Disable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			Enable
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Enable RCS Port
+				guiName = Enable RCS Port
+				category = Enable RCS Port
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = P2RCS
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 }
