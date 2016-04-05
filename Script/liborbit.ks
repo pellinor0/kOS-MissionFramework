@@ -283,9 +283,9 @@ function execNode {
         lockSteering(stNode@).
         wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 3.
     }
-    unlockSteering().
+    unlock Steering.
     warpRails(warpTime -2).
-    lockSteering(stNode@).
+    lock Steering to stNode().
     set WarpMode to "PHYSICS".
     set Warp to 1.
 
@@ -310,8 +310,8 @@ function execNode {
         //print "  dv=" +NextNode:Deltav.
     }
     //print "  dVErr=" +NextNode:Deltav:Mag.
-    unlockThrottle().
-    unlockSteering().
+    unlock Throttle.
+    unlock Steering.
     remove NextNode.
     wait 0.01.    
     set Warp to 0.

@@ -53,8 +53,8 @@ function atmoAscentRocket {
     lock vel to Velocity:Orbit.
     
     until apReached {dynWarp().}
-    unlockThrottle().
-    unlockSteering().
+    unlock Throttle.
+    unlock Steering.
     unlock vel.
     
     if Body:Atm:Exists {
@@ -145,7 +145,7 @@ function atmoAscentPlane {
     until Apoapsis > gLkoAP*0.99 { // leave room for some lift
         dynWarp().
     }
-    unlockThrottle().
+    unlock Throttle.
     
     print "  AP reached. Coasting to space".
     coastToSpace(gLkoAP).
@@ -153,7 +153,7 @@ function atmoAscentPlane {
     print "  dV in rocket mode:" +Round( (tmpDv-getDeltaV()), 1).
     
     set SteeringManager:PitchTorqueFactor to 1.
-    unlockSteering().
+    unlock Steering.
     unlock st001.
 }
 
@@ -229,7 +229,7 @@ function atmoLandingRocket {
     print "  Powered Landing".
     suicideBurn().
     
-    unlockSteering().
+    unlock Steering.
     if( (defined gDoLog) and gDoLog) {
         local newLandingPA is landingPA -(Longitude - spacePort:Lng).
         switch to 0.
@@ -378,7 +378,7 @@ function atmoLandingPlane {
     lock aoa to 0.
     wait until Airspeed < 0.1.
     Lights off.
-    unlockSteering().
+    unlock Steering.
     set SteeringManager:PitchTorqueFactor to 1.
     unlock aoaCorr.
     unlock aoa.
@@ -390,18 +390,16 @@ function coastToSpace {
     
     set WarpMode to "PHYSICS".
     set Warp to 4.
-    lockSteering(stPrograde@).
+    lock Steering to stPrograde().
     when Altitude > Body:Atm:Height*0.995 then set Warp to 0.
     
-    lock tt002 to Max(0, (tgtAP-Apoapsis)/2000).
-    lockThrottle(tt002@).
+    lock Throttle to Max(0, (tgtAP-Apoapsis)/2000).
     until Altitude > Body:Atm:Height {
-      //print "tt   ="+Round(tt, 3)       at (38,0).
+      //print "tt   ="+Round(Throttle, 3)       at (38,0).
       wait 0.01.
     }
-    unlockSteering().
-    unlockThrottle().
-    unlock tt002.
+    unlock Steering.
+    unlock Throttle.
 }
 
 function initLandingLog {

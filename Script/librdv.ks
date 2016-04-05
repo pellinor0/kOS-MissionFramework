@@ -45,7 +45,7 @@ function rdvDock {
     
     rdv(targetPos, targetPort:PortFacing:Forevector).
     unlock targetPos.
-    unlockSteering().
+    unlock Steering.
     
     if dock {
         dockingApproach(targetPort).
@@ -108,7 +108,7 @@ function dockingApproach {
     set Ship:Control:Translation to V(0,0,0).
     RCS off.
     wait until myPort:State:Contains("Docked").
-    unlockSteering().
+    unlock Steering.
     killRot().
     print "  docked".
 }
@@ -191,8 +191,8 @@ function rdv {
     print "  dx="+vecToString(dx).
     print "  dV="+vecToString(dv).
     debugDirectionOff().
-    unlockThrottle().
-    unlockSteering().
+    unlock Throttle.
+    unlock Steering.
     
     print "  ds1="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
     killRot().
@@ -229,8 +229,8 @@ function cancelRelativeVel {
         print "t    ="+Round(t , 3)       AT (38,1).
     }
     //print "  finished: v="+dV:MAG.
-    unlockSteering().
-    unlockThrottle().
+    unlock Steering.
+    unlock Throttle.
 }
 
 function cancelRelativeVelRCS {
