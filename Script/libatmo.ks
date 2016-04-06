@@ -9,9 +9,8 @@ function atmoAscentRocket {
     lock vel to Velocity:Surface.
     local lock velPP to 90-Vang(Up:Vector, vel).
     local lock headCorr to -Vdot(vel:Normalized, North:Vector).
-    lock st002 to Heading(90+headCorr, ppp).
-    lockSteering(st002@).
-    lockThrottleFull().
+    lock Steering to Heading(90+headCorr, ppp).
+    lock Throttle to 1.
     
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
     if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
@@ -72,17 +71,14 @@ function atmoAscentPlane {
     // * panther/whiplash +rocket (switch mode + switch to rockets)
     
     local ppmin is 13.
-    lockThrottleFull().
+    lock Throttle to 1.
     
     local pp is ppMin.
     local lock rollCorr to -Vdot(Velocity:Orbit:Normalized, North:Vector).
     local lock velPP to 90-Vang(Up:Vector, Velocity:Surface).
     
-    //lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
-    //function stTmp1 { return Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr). }
     set SteeringManager:PitchTorqueFactor to 5.
-    lock st001 to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
-    lockSteering(st001@).
+    lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
     
     local engines is Ship:PartsDubbed(gShipType+"Engine").
     //lock Steering to Heading (90,pp -gBuiltinAoA).
@@ -154,7 +150,6 @@ function atmoAscentPlane {
     
     set SteeringManager:PitchTorqueFactor to 1.
     unlock Steering.
-    unlock st001.
 }
 
 function atmoDeorbit {
@@ -211,7 +206,7 @@ function atmoLandingRocket {
 //    local errH is 0.
 //    local h is 0.
 //    local lngTgt is 74.75.
-    lockSteering(stRetro@).
+    lock Steering to stRetro().
     
     wait until Altitude < 50000.
     set Warp to 2.
@@ -223,7 +218,7 @@ function atmoLandingRocket {
     print "  Chutes".
     //print "  v  =" +Velocity:Surface:Mag.
     Chutes on.
-    lockSteering(stSrfRetro@).
+    lock Steering to stSrfRetro().
     wait until (Altitude - Max(0, GeoPosition:TerrainHeight)) < 500.
     
     print "  Powered Landing".
@@ -292,8 +287,7 @@ function atmoLandingPlane {
     }
     
     set SteeringManager:PitchTorqueFactor to 5.
-    lock st005 to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
-    lockSteering(st005@).
+    lock Steering to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
 
 //    if gDoLog
      // assume we are braking (with what acceleration?)
@@ -344,7 +338,7 @@ function atmoLandingPlane {
             Lights on.
         }
         dynWarp().
-        //debugDirection (st005()).
+        //debugDirection (Steering).
     }
     Gear on.
     Lights on.
@@ -369,8 +363,7 @@ function atmoLandingPlane {
 //     print "   h  =" +Round(Altitude).
 //     print "   h0 =" +Round(spacePortHeight).
     set roll to 0.
-    lock st007 to Heading(90, aoa).
-    lockSteering(st007@).
+    lock Steering to Heading(90, aoa).
     if gDoLog writeLandingLog().
     
     wait until Status <> "FLYING".

@@ -63,8 +63,7 @@ function dockingApproach {
     print " dockingApproach".
     print "  aligning".
     myPort:GetModule("ModuleDockingNode"):DoEvent("control from here").
-    lock st004 to LookdirUp(-targetPort:PortFacing:ForeVector, Facing:UpVector).
-    lockSteering(st004@).
+    lock Steering to LookdirUp(-targetPort:PortFacing:ForeVector, Facing:UpVector).
     wait until Vang(Facing:ForeVector, -targetPort:PortFacing:ForeVector) < 2.
     local vSoll is 0.
     local dx is myPort:NodePosition-targetPort:NodePosition.
@@ -134,17 +133,15 @@ function rdv {
     local vErr is 0.
     local tt is 0.
     local steerVec is -Velocity:Surface.
-    lock st006 to Lookdirup(steerVec, upVector).
-    lockSteering(st006@).
-    lock tt006 to tt.
-    lockThrottle(tt006@).
+    lock Steering to Lookdirup(steerVec, upVector).
+    lock Throttle to tt.
     local dX is v(100000,0,0).
     local dV is v0.
     
     function update {
         wait 0.01. 
         
-        debugDirection(st006).
+        debugDirection(Steering).
         set dV to Velocity:Orbit - Target:Velocity:Orbit.
         print "dV  =" +Round(dV:Mag,2)        at (38,8).
         //print "tPos=" +vecToString(targetPos) at (38, 7).
@@ -214,10 +211,8 @@ function cancelRelativeVel {
     local acc is Ship:AvailableThrust / Mass.
     local v0dir is (Target:Velocity:Orbit - Velocity:Orbit):Normalized.
     local dV is v0Dir.
-    lock st003 to LookdirUp(dV, upVector).
-    lockSteering(st003).
-    lock tt003 to (dV:Mag/acc)*2.5 *t^10.
-    lockThrottle(tt003@).
+    lock Steering to LookdirUp(dV, upVector).
+    lock Throttle to (dV:Mag/acc)*2.5 *t^10.
     
     // loop until stop or overshoot
     until (dV:Mag < 0.001) or (Vdot(v0dir, dV:Normalized) < 0) {

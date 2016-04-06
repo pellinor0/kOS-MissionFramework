@@ -49,7 +49,7 @@ function nodeDeorbit {
     
     //print "  tweak inclination".
     local frame is AngleAxis((t2-Time:Seconds)*360/Body:RotationPeriod, V(0,1,0)).
-    local p2 is -frame*(tgtPos:Position-Body:Position).
+    local p2 is (-frame) * (tgtPos:Position-Body:Position).
     local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
     //if Vdot(normal,)<0 set normal to -normal.
     tweakNodeInclination(normal, -1).
@@ -94,20 +94,6 @@ function deb {
 //         +", dt="+Round(rdvTime-Time:Seconds).
 }
 
-// Workaround for compiling functions 
-//   that lock Steering and Throttle
-//   (these functions can not be compiled!)
-function lockSteering {
-    parameter x. // global variable or lock
-    lock Steering to x().
-}
-function lockThrottle {
-    parameter x. // global variable or lock
-    lock Throttle to x().
-}
-function lockThrottleFull { lock Throttle to 1.}
-function unlockSteering   { unlock Steering. }
-function unlockThrottle   { unlock Throttle. }
 
 // debug hook: this is called before other things run
 function debugAutoStart {
