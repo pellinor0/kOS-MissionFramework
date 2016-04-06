@@ -1,4 +1,4 @@
-set landingPA to -67.165.
+set gLandingPA to -67.165.
 global lList is List(). global eList is List().
 lList:Add(-720). eList:Add(5664040).
 lList:Add(-67.313). eList:Add(2832020).

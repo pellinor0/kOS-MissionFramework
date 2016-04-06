@@ -15,8 +15,8 @@ function writePersistent {
 function findParts {
     local tmp is Ship:PartsDubbed(gShipType+"Port").
     if tmp:Length > 0 {
-        set dockable to 1.
-        set myPort to tmp[0].
+        set gDockable to 1.
+        set gMyPort to tmp[0].
     }
 }
 

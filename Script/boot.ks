@@ -5,11 +5,10 @@ set Terminal:Height to 100.
 set Terminal:Width to 60.
 switch to 0.
 print "Boot".
-run once globals.
 
 run once libdev.
-debugAutoStart(). // debug/testing hook
 
+run once globals.
 run once libsystem.
 
 local tmp is Core:Part:Tag:Split(" ").

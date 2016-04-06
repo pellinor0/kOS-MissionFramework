@@ -25,7 +25,7 @@ function rdvDock {
     local dock is 0.
     local tmp is Target:DockingPorts.
     local targetPort is 0.
-    if (dockable and tmp:Length>0) {
+    if (gDockable and tmp:Length>0) {
       set targetPort to tmp[0].
       set dock to 1.
       print "  Docking possible".
@@ -62,11 +62,11 @@ function dockingApproach {
     
     print " dockingApproach".
     print "  aligning".
-    myPort:GetModule("ModuleDockingNode"):DoEvent("control from here").
+    gMyPort:GetModule("ModuleDockingNode"):DoEvent("control from here").
     lock Steering to LookdirUp(-targetPort:PortFacing:ForeVector, Facing:UpVector).
     wait until Vang(Facing:ForeVector, -targetPort:PortFacing:ForeVector) < 2.
     local vSoll is 0.
-    local dx is myPort:NodePosition-targetPort:NodePosition.
+    local dx is gMyPort:NodePosition-targetPort:NodePosition.
     local vErr is 0.
     local dZ is 0.
     
@@ -78,7 +78,7 @@ function dockingApproach {
     local offset is 1.
     function update {
         wait 0.01.
-        set dX to myPort:NodePosition-targetPort:NodePosition 
+        set dX to gMyPort:NodePosition-targetPort:NodePosition 
                   -offset*targetPort:PortFacing:ForeVector.
         
         set vSoll to -dX:Normalized * Min(0.2, 3*dX:Mag).
@@ -100,13 +100,13 @@ function dockingApproach {
     RCS on.
     print "  final approach".
     
-    print "  port1: state=" +myPort:State.
+    print "  port1: state=" +gMyPort:State.
     print "  port2: state=" +targetPort:State.
     until (dX:Mag < 0.1) update().
     
     set Ship:Control:Translation to V(0,0,0).
     RCS off.
-    wait until myPort:State:Contains("Docked").
+    wait until gMyPort:State:Contains("Docked").
     unlock Steering.
     killRot().
     print "  docked".

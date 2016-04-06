@@ -1,7 +1,7 @@
 set gDoLog to 1.
-set landingPA to -30.
-set spacePort to LatLng(-0.04909, -74.697). // KSC runway 09
-set spacePortHeight to 0.
+set gLandingPA to -30.
+set gSpacePort to LatLng(-0.04909, -74.697). // KSC runway 09
+set gSpacePortHeight to 0.
 { // separate context so we can have local variables
 local logFile is "logs/log_"+gShipType +".ks".
 
@@ -53,10 +53,10 @@ if missionStep() {
 m_landFromLKO().
 
 if missionStep() {
-    local lngErr is GeoPosition:Lng - spacePort:Lng.
-    local newLandingPA is Round(landingPA -lngErr, 3).
+    local lngErr is GeoPosition:Lng - gSpacePort:Lng.
+    local newLandingPA is Round(gLandingPA -lngErr, 3).
     print "  optimalLandingPA=" +newLandingPA.
-    log ("set landingPA to " +newLandingPA +".") to logFile.
+    log ("set gLandingPA to " +newLandingPA +".") to logFile.
 }
 
 }// end file context

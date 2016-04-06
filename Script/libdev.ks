@@ -95,19 +95,17 @@ function deb {
 }
 
 
-// debug hook: this is called before other things run
-function debugAutoStart {
-    //print "debugAutoStart".
-    switch to 0.
-    wait 1.
-//     if HasNode {
-//         print "  remove NextNode".
-//         remove NextNode.
-//     }
+// ====  AutoStart =======
+// debug hook: this code is called before other things run
 
-    //print "  compiling libbasic".   compile libbasic.
-    //print "  compiling libatmo".    compile libatmo.
-    //print "  compiling liborbit".   compile liborbit.
-    //print "  compiling libmission". compile libmission.
-    //print "  compiling librdv".     compile librdv.
-}
+//print " AutoStart".
+switch to 0.
+//wait 1.
+
+//print "  compiling libbasic".   compile libbasic.
+//print "  compiling libatmo".    compile libatmo.
+//print "  compiling liborbit".   compile liborbit.
+//print "  compiling libmission". compile libmission.
+//print "  compiling librdv".     compile librdv.
+//compile libsystem.
+//compile globals.

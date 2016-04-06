@@ -65,8 +65,12 @@ function warpRails {
         wait until countdown < 0.5.
     }
     
+    //local tmp is Time:Seconds.
     set Warp to 0.
     wait until not Ship:Unpacked.
+    //set tmp to Time:Seconds-tmp.
+    //if (tmp>0) print "  unpacking time= "+Round(tmp,3).
+    
     if (countDown < 0)
       print "  WARNING: warpRails: countdown="+countdown. 
 }

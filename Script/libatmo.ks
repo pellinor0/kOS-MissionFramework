@@ -154,15 +154,13 @@ function atmoAscentPlane {
 
 function atmoDeorbit {
     //PRINT "Deorbit Burn".
-    switch to 0.
-    run once liborbit.
     
     if(Periapsis < Body:Atm:Height) {
         print "  WARNING: atmoDeorbit: not in Orbit!".
         return.
     }
-    print "  landingPA=" +Round(landingPA, 2).
-    //local burnLng is spacePort:Lng + landingPA.
+    print "  landingPA=" +Round(gLandingPA, 2).
+    //local burnLng is gSpacePort:Lng + gLandingPA.
     //local burnTime is timeToLng(burnLng).
 
 //     global waitAngle is burnLng - GeoPosition:Lng.  // workaround "undefined variable"
@@ -173,17 +171,14 @@ function atmoDeorbit {
     //print "  synPeriod=" +synPeriod.
     //print "  waittime=" +(synPeriod * (waitAngle / 360.0)).
     //print "  burnTime=" +burnTime.
-    local tgt is LatLng(spaceport:Lat, spacePort:Lng+landingPA).
+    local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
     print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
-    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height, deorbitPE).
-    //if (not nextNodeExists()) nodeUnCircularize(deorbitPE, burnTime).
+    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height, gDeorbitPE).
     execNode().
 }
 
 function atmoLandingRocket {
     if (Status = "LANDED" or Status="SPLASHED") return.
-    switch to 0.
-    run once liborbit.
 
     if(Periapsis >= Body:Atm:Height) {
         print "  WARNING: not suborbital!".
@@ -226,9 +221,11 @@ function atmoLandingRocket {
     
     unlock Steering.
     if( (defined gDoLog) and gDoLog) {
-        local newLandingPA is landingPA -(Longitude - spacePort:Lng).
+        local newLandingPA is gLandingPA -(Longitude - gSpacePort:Lng).
         switch to 0.
-        log "set landingPA to "+Round(newLandingPA, 2)+"." to "logs/log_"+gShipType+".ks".
+        log "set gLandingPA to "+Round(newLandingPA, 2)+"." 
+            to "logs/log_"+gShipType+".ks".
+            
         switch to 1.
     }
 }
@@ -291,9 +288,9 @@ function atmoLandingPlane {
 
 //    if gDoLog
      // assume we are braking (with what acceleration?)
-    lock flareCondition to (Altitude -spacePortHeight < 0.2*VerticalSpeed^2).
+    lock flareCondition to (Altitude -gSpacePortHeight < 0.2*VerticalSpeed^2).
 //    else
-//      lock flareCondition to (Altitude < spacePortHeight+20 or relLng < -359).
+//      lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
     
     Gear off.
     clearScreen2().
@@ -301,9 +298,9 @@ function atmoLandingPlane {
         wait 0.01.
         
         if (not gDoLog and lList:Length > 2) {
-            set relLng to Mod(GeoPosition:Lng -spacePort:Lng -720, 360). // norm to [-360,0]
+            set relLng to Mod(GeoPosition:Lng -gSpacePort:Lng -720, 360). // norm to [-360,0]
             set v to Velocity:Surface:Mag.
-            set e to 0.5*v*v +9.81*(Altitude -spacePortHeight).
+            set e to 0.5*v*v +9.81*(Altitude -gSpacePortHeight).
             until (lList[i] > relLng) { 
                 set i to i+1. 
                 set eDot to ( eList[i] -eList[i-1]) /gLogDeltaTime.
@@ -313,7 +310,7 @@ function atmoLandingPlane {
             set eErr to (e-eSoll)/eDot.      // Steering value for conserving/wasting energy
             
             set headIst to Vang(Vxcl(Velocity:Surface, Up:Vector), North:Vector).
-            set latErr to Latitude-spacePort:Lat.
+            set latErr to Latitude-gSpacePort:Lat.
             set angErr to latErr/(-relLng) *(180/3.1415). // small angle approx.
             set headSoll to 90 +2*angErr.
             set roll to -headSoll + headIst.
@@ -351,9 +348,9 @@ function atmoLandingPlane {
     //     print "   Alt=" +Round(Altitude).
     //     print "   vz =" +Round(VerticalSpeed).
     //     print "   h  =" +Round(Altitude).
-    //     print "   h0 =" +Round(spacePortHeight).    
+    //     print "   h0 =" +Round(gSpacePortHeight).    
         
-        //wait until (Altitude -spacePortHeight) < Abs(VerticalSpeed)*3.
+        //wait until (Altitude -gSpacePortHeight) < Abs(VerticalSpeed)*3.
         // todo: control vertical speed as a function of height
     }
 
@@ -361,7 +358,7 @@ function atmoLandingPlane {
 //     print "   Alt=" +Round(Altitude).
 //     print "   vz =" +Round(VerticalSpeed).
 //     print "   h  =" +Round(Altitude).
-//     print "   h0 =" +Round(spacePortHeight).
+//     print "   h0 =" +Round(gSpacePortHeight).
     set roll to 0.
     lock Steering to Heading(90, aoa).
     if gDoLog writeLandingLog().
@@ -429,12 +426,12 @@ function writeLandingLog {
     eLog:Add(Round( Altitude*9.81 +0.5*Airspeed*Airspeed)).
 
     local logFile is "logs/"+gLogFile.
-    local newLandingPA is landingPA -(finalLng - spacePort:Lng).
+    local newLandingPA is gLandingPA -(finalLng - gSpacePort:Lng).
     switch to 0.
     log "" to logFile.
     delete logFile.
 
-    log ("set landingPA to " +Round(newLandingPA, 3) +".") to logFile.
+    log ("set gLandingPA to " +Round(newLandingPA, 3) +".") to logFile.
     log ("global lList is List(). global eList is List().") to logFile.
     // avoid missing values
     log "lList:Add(-720). " 
@@ -466,7 +463,7 @@ function printFuelLeft {
 
 function evalLanding {
     // check error after landing
-    print "  lngErr=" +Round(GeoPosition:Lng - spacePort:Lng, 3).
-    print "  latErr=" +Round(GeoPosition:Lat - spacePort:Lat, 3).
-    print "  dist  =" +Round(spacePort:Position:Mag, 3).
+    print "  lngErr=" +Round(GeoPosition:Lng - gSpacePort:Lng, 3).
+    print "  latErr=" +Round(GeoPosition:Lat - gSpacePort:Lat, 3).
+    print "  dist  =" +Round(gSpacePort:Position:Mag, 3).
 }

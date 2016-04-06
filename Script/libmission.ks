@@ -11,7 +11,6 @@ function m_waitForLaunchWindow {
     if not missionStep() return.
     
     if(Status = "PRELAUNCH") {
-        run once liborbit.
         local lkoPeriod is 2*3.1415*sqrt((gLkoAP+Body:Radius)^3 / Body:Mu).
         local tgtPeriod is Target:Obt:Period.
         local launchPA is getPhaseAngle(gLaunchDuration, 
@@ -86,7 +85,6 @@ function m_ascentLKO {
         if (Periapsis > Body:Atm:Height) {
             print "  Skipping :already in orbit".
         } else {
-            run once liborbit.
             if not nextNodeExists() {
                 nodeCircAtAP().
                 run once libnav.
@@ -143,32 +141,35 @@ function m_askConfirmation {
 }
 
 function m_undock {
-    if missionStep() and  dockable {
+    if missionStep() and gDockable {
         print "Undock".
-        local module is myPort:GetModule("ModuleDockingNode").
-        if(not myPort:State:Contains("Docked")) {
+        local module is gMyPort:GetModule("ModuleDockingNode").
+        if(not gMyPort:State:Contains("Docked")) {
             print "  Port was not docked".
             return.
         }
         module:DoEvent("control from here").
         wait 0.01.
-        //myPort:GetModule("ModuleDockingNode"):DoEvent("Undock").
-        myPort:Undock().
+        gMyPort:Undock().
         wait 0.01.
         module:DoEvent("control from here").
         Core:DoEvent("open terminal").
         wait 0.01.
         
+        //debugDirection(Facing).
         local mp is Ship:MonoPropellant.
         RCS on.
         set Ship:Control:Fore to -1.
-        wait 2.
+        wait 3.
         set Ship:Control:Fore to 0.
         RCS off.
         print "  burnt "+Round(mp -Ship:MonoPropellant, 2) +" mp".
         print "  waiting for safe distance".
-        wait 10.
-        
+        set WarpMode to "RAILS".
+        set Warp to 2.
+        wait 2*gShipRadius.
+        set Warp to 0.
+        wait until Ship:Unpacked.
         Ship:PartsDubbed(gShipType+"Control")[0]
             :GetModule("ModuleCommand"):DoEvent("control from here").
     }
@@ -188,7 +189,6 @@ function m_hohmannToTarget {
     if missionStep() {
         print "Hohmann Transfer".
         run once libnav.
-        run once liborbit.
         if not nextNodeExists() nodeHohmann().
         execNode().
     }
@@ -227,12 +227,10 @@ function m_vacLaunch {
     
     if missionStep() {
         print "Launch (Vac)".
-        run once liborbit.
         vacAscent(tgtAP).
     }
     if missionStep() {
         print "Circularize".
-        run once liborbit.
         if not nextNodeExists() {
             nodeCircAtAP().
             tweakNodeInclination(V(0,1,0), 0.02).
@@ -250,7 +248,6 @@ function m_returnFromMoon {
         print "Return from Moon".
         run once libnav.
         if not nextNodeExists() nodeReturnFromMoon().
-        run once liborbit.
         execNode().
     }
     m_waitForTransition("ESCAPE").
@@ -278,7 +275,6 @@ function m_capture {
     
     if missionStep() {
         print "Circularize at PE".
-        run once liborbit.
         if not nextNodeExists() {
             run once libnav.
             nodeUnCircularize(alt, Time:Seconds+Eta:Periapsis).
