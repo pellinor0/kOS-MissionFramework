@@ -158,12 +158,20 @@ function getDeltaV {
     list engines in tmp.
     local isp is tmp[0]:VacuumIsp.
     local fuel is (Ship:LiquidFuel + Ship:Oxidizer)*0.005.
+    local m is Ship:Mass.
 //     print " getDeltaV".
 //     print "  isp="+Round(isp,1).
 //     print "  fuel="+Round(fuel,2).
 //     print "  lf="+Round(Ship:LiquidFuel).
 //     print "  ox="+Round(Ship:Oxidizer).
-    return isp * ln(Ship:Mass / (Ship:Mass-fuel))*9.81.
+    return isp * ln(m/(m-fuel))*9.81.
+}
+function getRcsDeltaV {
+    local fuel is Ship:MonoPropellant*0.004.
+    local isp is 240.
+    local m is Ship:Mass.
+    print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
+    return isp * ln(m/(m-fuel))*9.81.
 }
 
 global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).

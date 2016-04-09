@@ -42,6 +42,7 @@ function rdvDock {
     //print "  dist=" +Round(Target:Position:Mag, 1).
     
     wait until Target:Loaded.         // just to be sure
+    local rcsDV is getRcsDeltaV().
     
     // find docking ports
     local dock is 0.
@@ -57,21 +58,21 @@ function rdvDock {
     wait 0.01.
     if dock {
         // gShipRadius from target port
-        lock offset to targetPort:NodePosition -Target:Position
+        lock gOffset to targetPort:NodePosition -Target:Position
                        +targetPort:PortFacing:Forevector*gShipRadius.
     } else {
         // behind target
-        lock offset to (10+gShipRadius)*Target:Retrograde:Vector.
+        lock gOffset to (10+gShipRadius)*Target:Retrograde:Vector.
     }
-    lock targetPos to Target:Position+offset.
-    print "  offset="+Round(offset:Mag,2).
+    lock targetPos to Target:Position+gOffset.
+    print "  offset="+Round(gOffset:Mag,2).
     
     local rdvT is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
     local tmpDX is PositionAt(Ship,rdvT)-PositionAt(Target,rdvT).
     function doCorrection {
         print " correction".
         set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-        local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
+        local dX2 is PositionAt(Target,rdvT) +gOffset -PositionAt(Ship,rdvT).
         local dV2 is VelocityAt(Target,rdvT):Orbit
                     -VelocityAt(Ship,  rdvT):Orbit.
         set dX2 to Vxcl(dV2,dX2).
@@ -95,32 +96,32 @@ function rdvDock {
     //if(Target:Position:Mag>800) { doCorrection(). }
     //if(Target:Position:Mag>800) { doCorrection(). }
     if(Target:Position:Mag>600) { doCorrection(). }
-    checkRdv(offset).
+    checkRdv(gOffset).
     
-    local dV is Velocity:Orbit-Target:Velocity:Orbit.
-    lock Steering to LookdirUp(-dV, Facing:TopVector).
-    wait until Vang(-dV, Facing:ForeVector) < 3.
-    
-    set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-    local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
-    local dV2 is VelocityAt(Target,rdvT):Orbit
-                -VelocityAt(Ship,  rdvT):Orbit.
-    set dX2 to Vxcl(dV2,dX2).
-    print "  dx2="+Round(dX2:Mag,2).
-    print "  dt ="+Round(rdvT -Time:Seconds).
-    local t2 is Max(rdvT -4*dV:Mag, rdvT -40*dX2:Mag/dV:Mag).
-    warpRails(t2).
-    checkRdv(offset).
-    if(Target:Position:Mag>300) { 
-        doCorrection(). 
-        checkRdv(offset).
-    }
+//     local dV is Velocity:Orbit-Target:Velocity:Orbit.
+//     lock Steering to LookdirUp(-dV, Facing:TopVector).
+//     wait until Vang(-dV, Facing:ForeVector) < 3.
+//     
+//     set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+//     local dX2 is PositionAt(Target,rdvT) +gOffset -PositionAt(Ship,rdvT).
+//     local dV2 is VelocityAt(Target,rdvT):Orbit
+//                 -VelocityAt(Ship,  rdvT):Orbit.
+//     set dX2 to Vxcl(dV2,dX2).
+//     print "  dx2="+Round(dX2:Mag,2).
+//     print "  dt ="+Round(rdvT -Time:Seconds).
+//     local t2 is Max(rdvT -4*dV:Mag, rdvT -40*dX2:Mag/dV:Mag).
+//     warpRails(t2).
+//     checkRdv(gOffset).
+//     if(Target:Position:Mag>300) {
+//         doCorrection().
+//         checkRdv(gOffset).
+//     }
     
     
     
     rdv(targetPos, targetPort:PortFacing:Forevector).
     unlock targetPos.
-    unlock offset.
+    unlock gOffset.
     unlock Steering.
     
     if dock {
@@ -128,6 +129,8 @@ function rdvDock {
         wait 1.
         Core:DoEvent("open terminal").
     }
+    local rcsDV2 is getRcsDeltaV().
+    print "  rcsDv used="+Round(rcsDv-rcsDv2,2).
 }
 
 function dockingApproach {
@@ -188,12 +191,10 @@ function dockingApproach {
 
 function rdv {
     // Assumptions: 
-    // * we are in space
-    // * targetPos is close enough to ignore orbital mechanics
+    // * targetPos is a part of Target vessel
     parameter targetPos.     // (Vector) lock to target position
     parameter upVector.
     
-    //PRINT "rdv".
     local v0 is (Velocity:Orbit - Target:Velocity:Orbit).
     local acc is Ship:AvailableThrust / Mass.
     local accFactor is 1.
@@ -207,26 +208,55 @@ function rdv {
     local vErr is 0.
     local tt is 0.
     local steerVec is -Velocity:Surface.
-    lock Steering to Lookdirup(steerVec, upVector).
-    lock Throttle to tt.
     local dX is v(100000,0,0).
     local dV is v0.
+    local offset is V(0,0,0).
+    local count is 0.
+    local far is true.    // use orbital mechanics
+    local hasRCS is true. // do lateral corrections with RCS
+    local rdvT is 0.
+    
+    lock Throttle to tt.
+    lock Steering to Lookdirup(steerVec, upVector).
+    wait until Vang(Steering:ForeVector, Facing:ForeVector)<3.
+    wait until Vang(Steering:TopVector, Facing:TopVector)<3.
+    if hasRCS RCS on.
+    clearScreen2().
     
     function update {
         wait 0.01. 
-        
-        debugDirection(Steering).
-        set dV to Velocity:Orbit - Target:Velocity:Orbit.
-        print "dV  =" +Round(dV:Mag,2)        at (38,8).
-        //print "tPos=" +vecToString(targetPos) at (38, 7).
         set dX to (targetPos() -Ship:Position).
-
         set brakeAcc to dV:SqrMagnitude/(2* Vdot(dV:Normalized, dX)).
-        set vErr to Vxcl(dX, dV).
+        set dV to Velocity:Orbit - Target:Velocity:Orbit.
+        if far {
+            if Mod(count,20)=0 { // expensive stuff
+                set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+                set offset to targetPos()-Target:Position.
+                if (dX:Mag<50) set far to false.
+            }
+            local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
+            local dV2 is VelocityAt(Target,rdvT):Orbit
+                        -VelocityAt(Ship,  rdvT):Orbit.
+            set dX2 to Vxcl(dV2,dX2).
+            set vErr to Vxcl(dV, -dX2/(rdvT -Time:Seconds)).
+            
+            
+        } else {
+            debugDirection(Steering).
+            set vErr to Vxcl(dX, dV).
+            // try to negate vErr/5 per second
+            set corrAcc to vErr:Mag/5. 
+        }
         
-        // try to negate vErr/10 per second
-        set corrAcc to vErr:Mag/5. 
-        set steerVec to -dV:Normalized*brakeAcc -vErr:Normalized*corrAcc.
+        // correct with RCS if available
+        if hasRCS {
+            if (vErr:Mag<0.05) set Ship:Control:Translation to V(0,0,0).
+              else set Ship:Control:Translation to -Facing*(-vErr:Normalized).
+            set steerVec to -dV:Normalized*brakeAcc.
+        } else {
+            set corrAcc to vErr:Mag/5.
+            set steerVec to -dV:Normalized*brakeAcc -vErr:Normalized*corrAcc.
+        }
         
         local ttt is Max(0, Vdot(steerVec, Facing:Forevector)*accFactor).
         if (brakeAcc>acc/2)               // braking
@@ -242,10 +272,12 @@ function rdv {
         print "tAcc=" +Round(tt*acc/accFactor,2)+"  " at (38, 3).
         print "dX  =" +Round(dX:Mag,      1) at (38, 4).
         print "ang =" +Round(Vang(steerVec, -dV) ,1) +"  " at (38,5).
-        print "vErr=" +Round(vErr:Mag,1)+"  "    at (38, 6).
+        print "vErr=" +Round(vErr:Mag,3)+"   " at (38, 6).
+        print "dV  =" +Round(dV:Mag,2)        at (38,8).
+        set count to count+1.
     }
 
-    clearScreen2().
+    
     print " brake burn".
     until (dX:Mag < 400) update().
     set Warp to 0.
@@ -260,6 +292,7 @@ function rdv {
     debugDirectionOff().
     unlock Throttle.
     unlock Steering.
+    RCS off.
     
     print "  ds1="+Round(Vdot(Ship:Position - targetPos(), dV:Normalized), 3).
     killRot().
