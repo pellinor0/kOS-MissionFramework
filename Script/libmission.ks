@@ -160,14 +160,14 @@ function m_undock {
         local mp is Ship:MonoPropellant.
         RCS on.
         set Ship:Control:Fore to -1.
-        wait 3.
+        wait 4.
         set Ship:Control:Fore to 0.
         RCS off.
         print "  burnt "+Round(mp -Ship:MonoPropellant, 2) +" mp".
         print "  waiting for safe distance".
         set WarpMode to "RAILS".
         set Warp to 2.
-        wait 2*gShipRadius.
+        wait 2.5*gShipRadius.
         set Warp to 0.
         wait until Ship:Unpacked.
         Ship:PartsDubbed(gShipType+"Control")[0]
@@ -200,6 +200,7 @@ function m_fineRdv {
         run once libnav.
         if not nextNodeExists() nodeFineRdv().
         execNode().
+        checkRdv().
     }
 }
 

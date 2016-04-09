@@ -102,10 +102,14 @@ function deb {
 switch to 0.
 //wait 1.
 
-//print "  compiling libbasic".   compile libbasic.
+print "  compiling libbasic".   compile libbasic.
 //print "  compiling libatmo".    compile libatmo.
 //print "  compiling liborbit".   compile liborbit.
+//print "  compiling libnav".     compile libnav.
 //print "  compiling libmission". compile libmission.
-//print "  compiling librdv".     compile librdv.
+print "  compiling librdv".     compile librdv.
 //compile libsystem.
 //compile globals.
+
+
+

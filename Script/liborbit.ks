@@ -35,22 +35,11 @@ function nodeUncircularize {
     local sma is 0.5*(alt+otherEnd+Body:Radius).
     local v2 is Sqrt(Body:Mu *(2/(alt) - 1/sma)). // vis-viva eq.
     add Node(t,0,0,v2-v1).
-    print " nodeUncircularize".
     wait 0.01.
-    print "  HasNode="+HasNode.
-    print "  eta="+Round(NextNode:Eta, 2).
-    print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
-
-    //print "  otherEnd="+Round(otherEnd).
-    //print "  v1 =" +Round(v1, 2).
-    //print "  v2 =" +Round(v2, 2).
-    //print "  sma=" +Round(sma, 2).
-    //print "  r  =" +Body:Radius.
-    //print "  alt=" +Round(alt, 2).
-    //print "  mu =" +Round(Body:Mu,1).
-    //print "  eta="+Round(t-Time:Seconds, 2).
-    //print "  dv ="+Round(v2-v1, 2).
-    wait 0.01.
+    //print " nodeUncircularize".
+    //print "  HasNode="+HasNode.
+    //print "  eta="+Round(NextNode:Eta, 2).
+    //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
 }
 
 function suicideBurn {
@@ -246,6 +235,7 @@ function suicideBurnChutes {
 }
 
 function execNode {
+    parameter doDynWarp is true.
     print "  execNode".
     wait 0.01.
     set Warp to 0.
@@ -293,7 +283,7 @@ function execNode {
 
     until (chaseAngle > 60) or (NextNode:Deltav:Mag < 0.05) {
         wait 0.01.
-        dynWarp().
+        if doDynWarp dynWarp().
         print "tt   ="+Round(Throttle, 2)       AT (38,0).
     }.
 
@@ -306,9 +296,64 @@ function execNode {
     //print "  dVErr=" +NextNode:Deltav:Mag.
     unlock Throttle.
     unlock Steering.
-    remove NextNode.
-    wait 0.01.    
+    if (doDynWarp=false) execNodeRcs.
+    if HasNode {remove NextNode. wait 0.01.}
     set Warp to 0.
+}
+
+function execNodeRcs {
+    print "  execNodeRcs".
+    local dV is NextNode:DeltaV.
+    local dV0 is dV.
+    set Warp to 0.
+    warpRails(Time:Seconds +NextNode:Eta -2).
+    RCS on.
+
+    function update {
+        wait 0.01.
+        set dV to NextNode:Deltav.
+        //print "dV  ="+Round(dV:Mag,3)  at (38,0).
+        if(dV:Mag > 0.05)
+          set Ship:Control:Translation to -Facing*dV:Normalized.
+        else
+          set Ship:Control:Translation to -Facing*dV*20.
+    }
+
+    until (Vang(dV0,dV) > 60) or (dV:Mag < 0.005) update().
+    //print "   errAng=" +Round(Vang(dV0,dV),1).
+    //print "   dV=" +Round(dV:Mag, 3).
+
+    set Ship:Control:Translation to 0.
+    RCS off.
+    remove NextNode.
+    wait 0.01.
+}
+
+function rcsPrecisionBurn {
+    parameter dV.
+    
+    local isp is 240.
+    local cosLoss is (dV:X +dV:Y +dV:Z)/dV:Mag.
+    local dMP is dV:Mag *Ship:Mass *cosLoss/ (isp*9.81 *0.004). //0.004= MP density
+    local tMP is Ship:MonoPropellant -dMP.
+    set Warp to 0.
+    RCS on.
+    
+    
+    until (Ship:Monopropellant<=tMP) {
+        wait 0.01.
+        set Ship:Control:Translation to -Facing*dV:Normalized.
+    }
+    set Ship:Control:Translation to 0.
+    RCS off.
+    
+    local errMP is Ship:MonoPropellant-tMP.
+    
+    //print "  rcsPrecisionBurn".
+    //print "   error="+Round(errMP,3)+ " MP".
+    //print "   dMP="+Round(dMP,3).
+    //print "   dV=" +Round(dV:Mag, 3).
+      //+Round((Ship:MonoPropellant-tMP)*isp*9.81/Ship:Mass, 3).
 }
 
 function getPhaseAngle {

@@ -575,10 +575,17 @@ function timeToAnDn {
 // == misc ==
 function getOrbitFacing {
     // orbital frame: rad+, normal+, prograde
-    parameter vess. // vessel
-    parameter t.
-    local v is VelocityAt(vess,t):Orbit.
-    local x is PositionAt(vess,t)-Body:Position.
+    parameter vess is Ship. // vessel
+    parameter t is -1.      // -1 = use current
+    
+    local x is 0. local v is 0.
+    if (t=-1) {
+        set v to vess:Velocity:Orbit.
+        set x to vess:Position-Body:Position.
+    } else {
+        set v to VelocityAt(vess,t):Orbit.
+        set x to PositionAt(vess,t)-Body:Position.
+    }
     return LookdirUp(v, Vcrs(v,x)).
 }
 

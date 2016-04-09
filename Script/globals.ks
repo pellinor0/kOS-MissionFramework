@@ -6,7 +6,7 @@ global gMissionStartManual is 0.
 // == global Parameters ==
 // (Defaults can be overridden in the ship's params.ks)
 global gTgtVesselName is "KSS".
-global gLkoAP is 80000.
+global gLkoAP is 75000.
 
 global gSpacePort is LatLng(-0.04909, -74.697). // KSC runway 09
 global gSpacePortHeight is 69.

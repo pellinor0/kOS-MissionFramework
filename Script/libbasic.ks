@@ -2,10 +2,14 @@
 //print "  Loading libbasic".
 
 function warpRails {
-    parameter t. 
-    print "  warpRails: dt=" +Round(t- Time:Seconds, 1).
+    parameter tPar.
+    print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
     
-    local lock countDown to t - Time:Seconds.
+    function countDown {return tPar - Time:Seconds.}
+    if (countDown()<0) {
+        print "   warpRails return".
+        return.
+    }
 //     local ec is Ship:ElectricCharge.
 //     if (countDown > 2*ec) {
 //         print "  WARNING: low EC".
@@ -16,53 +20,57 @@ function warpRails {
     set Warp to 0.
     wait 0.01.
     set WarpMode to "RAILS".
-    if (countdown >  5) {set Warp to 1. wait 0.1.}
-    if (countdown > 25) {set Warp to 2. wait 0.1.}
-    if (countdown > 50) {set Warp to 3. wait 0.1.}
+    if (countdown() >  5) {set Warp to 1. wait 0.1.}
+    if (countdown() > 25) {set Warp to 2. wait 0.1.}
+    if (countdown() > 50) {set Warp to 3. wait 0.1.}
     
-    if (countdown > 5000) {
+    if (countdown() > 5000) {
         set Warp to 6.          // 10k
-        until Warp=6 or countdown < 5000 {
+        until Warp=6 or countdown() < 5000 {
             wait 0.01.
             set Warp to 6.
         }
-        wait until countdown < 5000.
+        wait until countdown() < 5000.
     }
-    if (countdown > 500) {
+    if (countdown() > 500) {
         set Warp to 5.          // 1000x
-        until Warp=5 or countdown < 500 {
+        until Warp=5 or countdown() < 500 {
             wait 0.01.
             set Warp to 5.
         }
-        wait until countdown < 500.
+        wait until countdown() < 500.
     }
-    if (countdown > 50) {
+    if (countdown() > 50) {
         set Warp to 4.          // 100x
-        until Warp=4 or countdown < 50 {
+        until Warp=4 or countdown() < 50 {
             wait 0.01.
             set Warp to 4.
         }
-        wait until countdown < 50.
+        wait until countdown() < 50.
     }
-    if (countdown > 25) {
+    if (countdown() > 25) {
         set Warp to 3.          // 50x
-        until Warp=3 or countdown < 25 {
+        until Warp=3 or countdown() < 25 {
             wait 0.01.
             set Warp to 3.
         }
-        wait until countdown < 25.
+        wait until countdown() < 25.
     }
-    if (countdown > 5) {
+    if (countdown() > 5) {
         set Warp to 2.          // 10x
-        until Warp=2 or countdown < 5 {
+        until Warp=2 or countdown() < 5 {
             wait 0.01.
             set Warp to 2.
         }
-        wait until countdown < 5.
+        wait until countdown() < 5.
     }
-    if (countdown > 0.5) {
+    if (countdown() > 0.5) {
         set Warp to 1.          //  5x
-        wait until countdown < 0.5.
+        until Warp=1 or countdown() < 0.5 {
+            wait 0.01.
+            set Warp to 1.
+        }
+        wait until countdown() < 0.5.
     }
     
     //local tmp is Time:Seconds.
@@ -71,8 +79,10 @@ function warpRails {
     //set tmp to Time:Seconds-tmp.
     //if (tmp>0) print "  unpacking time= "+Round(tmp,3).
     
-    if (countDown < 0)
-      print "  WARNING: warpRails: countdown="+countdown. 
+    if (countDown() < 0)
+      print "  WARNING: warpRails: countdown="+countdown().
+    
+    print "   warpRails end".
 }
 
 function normalizeAngle {
@@ -88,19 +98,54 @@ function targetBaseName {
 }
 
 function killRot {
+    parameter accuracy is 0.01.
     print " killRot".
+    
+    local av is Ship:AngularVel.
+    local dx is 64.// damping (workaround for missing torque info)
+    local dy is 64.
+    local dz is 64.
+    
+    until av:Mag<accuracy {
+        wait 0.01.
+        set av to -Facing*Ship:AngularVel.
+        if(Ship:Control:Roll *av:Z < 0) set dZ to dZ/2.
+        if(Ship:Control:Pitch*av:X < 0) set dX to dX/2.
+        if(Ship:Control:Yaw  *av:Y > 0) set dY to dY/2.
+        
+        set Ship:Control:Roll  to  av:Z*dZ.
+        set Ship:Control:Pitch to  av:X*dX.
+        set Ship:Control:Yaw   to -av:Y*dY.
+//         print "av  ="+Round(av:Mag,3) at (38,0).
+//         print "rol ="+Round(Ship:Control:Roll,  3) at (38,1).
+//         print "pit ="+Round(Ship:Control:Pitch, 3) at (38,2).
+//         print "yaw ="+Round(Ship:Control:Yaw,   3) at (38,3).
+//         print "dx  ="+Round(dx,2)+" " at (38,4).
+//         print "dy  ="+Round(dy,2)+" " at (38,5).
+//         print "dz  ="+Round(dz,2)+" " at (38,6).
+//         print "avx  ="+Round(av:X,2)+" " at (38,7).
+//         print "avy  ="+Round(av:Y,2)+" " at (38,8).
+//         print "avz  ="+Round(av:Z,2)+" " at (38,9).
+    }
+    set Ship:Control:Roll  to 0.
+    set Ship:Control:Pitch to 0.
+    set Ship:Control:Yaw   to 0.
+    //print "  vRest="+Round(Ship:AngularVel:Mag, 4).
+}
+
+function killRotByWarp {
+    print " killRotByWarp".
     set Warp to 0.
-    //print "  force Warp to 1".
+    set WarpMode to "RAILS".
     until Warp=1 {
       set WarpMode to "RAILS".
       set Warp to 1.
       wait 0.01.
     }
-    //wait until Ship:Unpacked.
     wait 0.1.
     set Warp to 0.
-    //print "  set Warp to 0".
-    wait until not Ship:Unpacked.
+    //print "  wait until Ship:Unpacked".
+    wait until Ship:Unpacked.
 }
 
 function vecToString {

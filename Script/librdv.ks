@@ -2,25 +2,47 @@
 @lazyglobal off.
 print "  Loading librdv".
 
+function checkRdv {
+    parameter offsetP is V(0,0,0).
+    wait 0.01.
+    local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+    local dX1 is Target:Position+offsetP.
+    local dX2 is PositionAt(Target,rdvTime)+offsetP -PositionAt(Ship,rdvTime).
+    local dV1 is Target:Velocity:Orbit -VelocityAt(Ship,Time:Seconds):Orbit.
+    local dV2 is VelocityAt(Target,rdvTime):Orbit
+                -VelocityAt(Ship,  rdvTime):Orbit.
+    //local dXErr  is dX2-dX1.
+    local linErr is Vxcl(dV1, dX1).
+    
+    //local drift is getDriftPrediction().
+    local orbitAng is (rdvTime-Time:Seconds)*360/Obt:Period.
+    print "  checkRdv: ETA=" +Round(rdvTime-Time:Seconds, 1).
+    print "            dX2=" +Round(dX2:Mag,2)
+                   +", lin=" +Round(Vxcl(dV2,dX2):Mag,2).
+    print "            dXL=" +Round(linErr:Mag, 2).
+    print "            dXA=" +Round(Vang(dX2,linErr), 2).
+    print "            OrA=" +Round(orbitAng, 1).
+}
+
 function rdvDock {
     print " rdvDock".
-    if (Ship:Position-Target:Position):Mag >1500 {
+    if (Ship:Position-Target:Position):Mag >2200 {
         local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
         local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
-        print "  rdvTime=" +Round(rdvTime -Time:Seconds).
-        print "  minDist=" +Round((PositionAt(Ship,rdvTime)
-                                  -PositionAt(Target,rdvTime)):Mag ,2).
+        //print "  rdvTime=" +Round(rdvTime -Time:Seconds).
+        //print "  minDist=" +Round((PositionAt(Ship,rdvTime)
+        //                          -PositionAt(Target,rdvTime)):Mag ,2).
         if (rdvTime <= Time:Seconds) 
           print "WARNING: already past the closest approach!".
           
-        print "  v0=" +Round(v0).
-        print "  v =" +Round((Velocity:Orbit-Target:Velocity:Orbit):Mag,2).
-        warpRails(rdvTime - 1500/v0 ).  // warp until target is in physics bubble
+        //print "  v0=" +Round(v0).
+        //print "  v =" +Round((Velocity:Orbit-Target:Velocity:Orbit):Mag,2).
+        warpRails(rdvTime - 2200/v0 ).  // warp until target is in physics bubble
     }
-    print "  dist=" +Round(Target:Position:Mag, 1).
+    //print "  dist=" +Round(Target:Position:Mag, 1).
     
     wait until Target:Loaded.         // just to be sure
-
+    
     // find docking ports
     local dock is 0.
     local tmp is Target:DockingPorts.
@@ -29,22 +51,76 @@ function rdvDock {
       set targetPort to tmp[0].
       set dock to 1.
       print "  Docking possible".
-      print "  port="+targetPort.
+      //print "  port="+targetPort.
     } else print "  Docking not possible: Rdv only".
     
     wait 0.01.
-    local offset is V(0,0,0).
     if dock {
-        lock frame to LookdirUp(-targetPort:PortFacing:Forevector,
-                                 targetPort:PortFacing:UpVector).
-        lock targetPos to targetPort:NodePosition
-                          +targetPort:PortFacing:Forevector*gShipRadius.
+        // gShipRadius from target port
+        lock offset to targetPort:NodePosition -Target:Position
+                       +targetPort:PortFacing:Forevector*gShipRadius.
     } else {
-        lock targetPos to Target:Position+ 20*Target:Retrograde:Vector. // 20m behind Target
+        // behind target
+        lock offset to (10+gShipRadius)*Target:Retrograde:Vector.
     }
+    lock targetPos to Target:Position+offset.
+    print "  offset="+Round(offset:Mag,2).
+    
+    local rdvT is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+    local tmpDX is PositionAt(Ship,rdvT)-PositionAt(Target,rdvT).
+    function doCorrection {
+        print " correction".
+        set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+        local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
+        local dV2 is VelocityAt(Target,rdvT):Orbit
+                    -VelocityAt(Ship,  rdvT):Orbit.
+        set dX2 to Vxcl(dV2,dX2).
+        print "  dx2="+Round(dX2:Mag,2).
+        print "  dt ="+Round(rdvT -Time:Seconds).
+        local dV is dX2/(rdvT -Time:Seconds).
+        print "  dV ="+Round(dV:Mag,2).
+        
+        if (dV:Mag>2) {
+            local nodeDV is -getOrbitFacing()*dV.
+            //print "  nDv="+vecToString(nodeDv).
+            add Node(Time:Seconds+1,nodeDV:X,nodeDV:Y,nodeDV:Z).
+            wait 0.01.
+            execNode(false).
+        } else {
+            rcsPrecisionBurn(dV).
+            //execNodeRcs().
+        }
+    }
+    wait 0.01.
+    //if(Target:Position:Mag>800) { doCorrection(). }
+    //if(Target:Position:Mag>800) { doCorrection(). }
+    if(Target:Position:Mag>600) { doCorrection(). }
+    checkRdv(offset).
+    
+    local dV is Velocity:Orbit-Target:Velocity:Orbit.
+    lock Steering to LookdirUp(-dV, Facing:TopVector).
+    wait until Vang(-dV, Facing:ForeVector) < 3.
+    
+    set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+    local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
+    local dV2 is VelocityAt(Target,rdvT):Orbit
+                -VelocityAt(Ship,  rdvT):Orbit.
+    set dX2 to Vxcl(dV2,dX2).
+    print "  dx2="+Round(dX2:Mag,2).
+    print "  dt ="+Round(rdvT -Time:Seconds).
+    local t2 is Max(rdvT -4*dV:Mag, rdvT -40*dX2:Mag/dV:Mag).
+    warpRails(t2).
+    checkRdv(offset).
+    if(Target:Position:Mag>300) { 
+        doCorrection(). 
+        checkRdv(offset).
+    }
+    
+    
     
     rdv(targetPos, targetPort:PortFacing:Forevector).
     unlock targetPos.
+    unlock offset.
     unlock Steering.
     
     if dock {
@@ -70,10 +146,9 @@ function dockingApproach {
     local vErr is 0.
     local dZ is 0.
     
-    print "  xyErr=" +Round(Vxcl(targetPort:PortFacing:ForeVector, dx):Mag, 2).
-    print "  zDist=" +Round(Vdot(targetPort:PortFacing:ForeVector, dx),     2).
+    //print "  xyErr=" +Round(Vxcl(targetPort:PortFacing:ForeVector, dx):Mag, 2).
+    //print "  zDist=" +Round(Vdot(targetPort:PortFacing:ForeVector, dx),     2).
     RCS on.
-    
     clearScreen2().
     local offset is 1.
     function update {
@@ -83,7 +158,7 @@ function dockingApproach {
         
         set vSoll to -dX:Normalized * Min(0.2, 3*dX:Mag).
         set vErr to Velocity:Orbit-Target:Velocity:Orbit -vSoll.
-        if(vErr:Mag > 0.03)
+        if(vErr:Mag > 0.02)
           set Ship:Control:Translation to -Facing*(-vErr:Normalized).
         else
           set Ship:Control:Translation to V(0,0,0).
@@ -95,21 +170,20 @@ function dockingApproach {
     
     print "  positioning".
     until (dX:Mag < 0.3) update().
-    cancelRelativeVelRCS().
     set offset to 0.
     RCS on.
     print "  final approach".
     
-    print "  port1: state=" +gMyPort:State.
-    print "  port2: state=" +targetPort:State.
+    //print "  port1: state=" +gMyPort:State.
+    //print "  port2: state=" +targetPort:State.
     until (dX:Mag < 0.1) update().
     
     set Ship:Control:Translation to V(0,0,0).
     RCS off.
     wait until gMyPort:State:Contains("Docked").
-    unlock Steering.
-    killRot().
     print "  docked".
+    unlock Steering.
+    killRotByWarp().
 }
 
 function rdv {
@@ -173,20 +247,16 @@ function rdv {
 
     clearScreen2().
     print " brake burn".
-    until (dX:Mag < 2000) update().
-    set WarpMode to "PHYSICS".
-    set Warp to 1. // 2x
-
     until (dX:Mag < 400) update().
     set Warp to 0.
 
-    //until (dX:Mag < 100) update().
+    until (dX:Mag < 200) update(). checkRdv().
     //set Warp to 0.
     
     until (dV:Mag < 0.2 or Vdot(dV, dX)<0) update().
 
-    print "  dx="+vecToString(dx).
-    print "  dV="+vecToString(dv).
+    //print "  dx="+vecToString(dx).
+    //print "  dV="+vecToString(dv).
     debugDirectionOff().
     unlock Throttle.
     unlock Steering.
