@@ -37,8 +37,6 @@ function nodeUncircularize {
     add Node(t,0,0,v2-v1).
     wait 0.01.
     //print " nodeUncircularize".
-    //print "  HasNode="+HasNode.
-    //print "  eta="+Round(NextNode:Eta, 2).
     //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
 }
 
@@ -244,12 +242,13 @@ function execNode {
         print "  ERROR: execNode: acc=0!".
         return.
     }
-    //print "  Nextnode Eta: " +Round(NextNode:Eta, 2).
-    if NextNode:DeltaV:Mag > 9999 {
-        print "  WARNING: execNode: suspicious node!".
-        print "  dV=" +NextNode:DeltaV:Mag.
+    local debugDV is V(NextNode:Prograde,NextNode:RadialOut,NextNode:Normal):Mag.
+    if Abs(debugDV -NextNode:DeltaV:Mag) >0.15 {
+        print "  WARNING: inconsistent ManeuverNode!".
+        print "  deltaV="    +Round(NextNode:DeltaV:Mag, 3).
+        print "  components="+Round(debugDVg, 3).
     }
-    
+
     local burntime is NextNode:Deltav:Mag / acc.
     
     // print "  orient ship".
@@ -289,11 +288,7 @@ function execNode {
 
     if(NextNode:Deltav:Mag > 0.05) { 
         print "  WARNING: execNode: error = "+ Round(NextNode:Deltav:Mag, 3).
-        //print "  chaseAngle=" +Round(chaseAngle).
-        //print "  origDir=" +origDir.
-        //print "  dv=" +NextNode:Deltav.
     }
-    //print "  dVErr=" +NextNode:Deltav:Mag.
     unlock Throttle.
     unlock Steering.
     if (doDynWarp=false) execNodeRcs.
@@ -338,8 +333,6 @@ function rcsPrecisionBurn {
     local tMP is Ship:MonoPropellant -dMP.
     set Warp to 0.
     RCS on.
-    
-    
     until (Ship:Monopropellant<=tMP) {
         wait 0.01.
         set Ship:Control:Translation to -Facing*dV:Normalized.
@@ -347,13 +340,10 @@ function rcsPrecisionBurn {
     set Ship:Control:Translation to 0.
     RCS off.
     
-    local errMP is Ship:MonoPropellant-tMP.
-    
     //print "  rcsPrecisionBurn".
-    //print "   error="+Round(errMP,3)+ " MP".
+    //print "   errMP="+Round(Ship:MonoPropellant-tMP,3)+ " MP".
     //print "   dMP="+Round(dMP,3).
     //print "   dV=" +Round(dV:Mag, 3).
-      //+Round((Ship:MonoPropellant-tMP)*isp*9.81/Ship:Mass, 3).
 }
 
 function getPhaseAngle {
@@ -399,5 +389,4 @@ function stNode     { return LookdirUp(NextNode:Deltav, Up:Vector). }
 function stUp       { return LookdirUp(Up:Vector, Facing:UpVector). }
 function stPrograde { return LookdirUp(Prograde:Vector, Up:Vector). }
 function stSrfRetro { return LookdirUp(-Velocity:Surface, Up:Vector).}
-function stRetro    { return Retrograde. }
 

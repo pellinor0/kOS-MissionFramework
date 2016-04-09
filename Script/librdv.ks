@@ -29,17 +29,11 @@ function rdvDock {
     if (Ship:Position-Target:Position):Mag >2200 {
         local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
         local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
-        //print "  rdvTime=" +Round(rdvTime -Time:Seconds).
-        //print "  minDist=" +Round((PositionAt(Ship,rdvTime)
-        //                          -PositionAt(Target,rdvTime)):Mag ,2).
         if (rdvTime <= Time:Seconds) 
           print "WARNING: already past the closest approach!".
           
-        //print "  v0=" +Round(v0).
-        //print "  v =" +Round((Velocity:Orbit-Target:Velocity:Orbit):Mag,2).
         warpRails(rdvTime - 2200/v0 ).  // warp until target is in physics bubble
     }
-    //print "  dist=" +Round(Target:Position:Mag, 1).
     
     wait until Target:Loaded.         // just to be sure
     local rcsDV is getRcsDeltaV().
@@ -83,41 +77,16 @@ function rdvDock {
         
         if (dV:Mag>2) {
             local nodeDV is -getOrbitFacing()*dV.
-            //print "  nDv="+vecToString(nodeDv).
             add Node(Time:Seconds+1,nodeDV:X,nodeDV:Y,nodeDV:Z).
             wait 0.01.
             execNode(false).
         } else {
             rcsPrecisionBurn(dV).
-            //execNodeRcs().
         }
     }
     wait 0.01.
-    //if(Target:Position:Mag>800) { doCorrection(). }
-    //if(Target:Position:Mag>800) { doCorrection(). }
     if(Target:Position:Mag>600) { doCorrection(). }
     checkRdv(gOffset).
-    
-//     local dV is Velocity:Orbit-Target:Velocity:Orbit.
-//     lock Steering to LookdirUp(-dV, Facing:TopVector).
-//     wait until Vang(-dV, Facing:ForeVector) < 3.
-//     
-//     set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-//     local dX2 is PositionAt(Target,rdvT) +gOffset -PositionAt(Ship,rdvT).
-//     local dV2 is VelocityAt(Target,rdvT):Orbit
-//                 -VelocityAt(Ship,  rdvT):Orbit.
-//     set dX2 to Vxcl(dV2,dX2).
-//     print "  dx2="+Round(dX2:Mag,2).
-//     print "  dt ="+Round(rdvT -Time:Seconds).
-//     local t2 is Max(rdvT -4*dV:Mag, rdvT -40*dX2:Mag/dV:Mag).
-//     warpRails(t2).
-//     checkRdv(gOffset).
-//     if(Target:Position:Mag>300) {
-//         doCorrection().
-//         checkRdv(gOffset).
-//     }
-    
-    
     
     rdv(targetPos, targetPort:PortFacing:Forevector).
     unlock targetPos.
@@ -203,13 +172,13 @@ function rdv {
         set acc to acc*accFactor.
     }
 
-    local brakeAcc is 0.
+    local brakeAcc is 0.0001.
     local corrAcc is 0.
     local vErr is 0.
     local tt is 0.
-    local steerVec is -Velocity:Surface.
     local dX is v(100000,0,0).
-    local dV is v0.
+    local dV is Velocity:Orbit - Target:Velocity:Orbit.
+    local steerVec is -dV:Normalized*brakeAcc.
     local offset is V(0,0,0).
     local count is 0.
     local far is true.    // use orbital mechanics
@@ -218,16 +187,19 @@ function rdv {
     
     lock Throttle to tt.
     lock Steering to Lookdirup(steerVec, upVector).
-    wait until Vang(Steering:ForeVector, Facing:ForeVector)<3.
-    wait until Vang(Steering:TopVector, Facing:TopVector)<3.
-    if hasRCS RCS on.
+    if hasRCS {
+        wait until Vang(Steering:ForeVector, Facing:ForeVector)<3.
+        wait until Vang(Steering:TopVector, Facing:TopVector)<3
+                and Ship:AngularVel:Mag<0.05.
+        RCS on.
+    }
     clearScreen2().
     
     function update {
         wait 0.01. 
         set dX to (targetPos() -Ship:Position).
-        set brakeAcc to dV:SqrMagnitude/(2* Vdot(dV:Normalized, dX)).
         set dV to Velocity:Orbit - Target:Velocity:Orbit.
+        set brakeAcc to dV:SqrMagnitude/(2* Vdot(dV:Normalized, dX)).
         if far {
             if Mod(count,20)=0 { // expensive stuff
                 set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
@@ -242,11 +214,11 @@ function rdv {
             
             
         } else {
-            debugDirection(Steering).
             set vErr to Vxcl(dX, dV).
             // try to negate vErr/5 per second
             set corrAcc to vErr:Mag/5. 
         }
+        debugDirection(Steering).
         
         // correct with RCS if available
         if hasRCS {

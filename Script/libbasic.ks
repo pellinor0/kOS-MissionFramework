@@ -6,16 +6,7 @@ function warpRails {
     print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
     
     function countDown {return tPar - Time:Seconds.}
-    if (countDown()<0) {
-        print "   warpRails return".
-        return.
-    }
-//     local ec is Ship:ElectricCharge.
-//     if (countDown > 2*ec) {
-//         print "  WARNING: low EC".
-//         print "    countdown=" +Round(countdown,2).
-//         print "    ec=" +Round(ec,2).
-//     }
+    if (countDown()<0) { return. }
     
     set Warp to 0.
     wait 0.01.
@@ -24,54 +15,25 @@ function warpRails {
     if (countdown() > 25) {set Warp to 2. wait 0.1.}
     if (countdown() > 50) {set Warp to 3. wait 0.1.}
     
-    if (countdown() > 5000) {
-        set Warp to 6.          // 10k
-        until Warp=6 or countdown() < 5000 {
-            wait 0.01.
-            set Warp to 6.
+    function warpLevel {
+        parameter level.
+        parameter deadline.
+        if (countdown() > deadline) {
+            set Warp to level.          // 10k
+            until Warp=level or countdown() < deadline {
+                wait 0.01.
+                set Warp to level.
+            }
+            wait until countdown() < deadline.
         }
-        wait until countdown() < 5000.
     }
-    if (countdown() > 500) {
-        set Warp to 5.          // 1000x
-        until Warp=5 or countdown() < 500 {
-            wait 0.01.
-            set Warp to 5.
-        }
-        wait until countdown() < 500.
-    }
-    if (countdown() > 50) {
-        set Warp to 4.          // 100x
-        until Warp=4 or countdown() < 50 {
-            wait 0.01.
-            set Warp to 4.
-        }
-        wait until countdown() < 50.
-    }
-    if (countdown() > 25) {
-        set Warp to 3.          // 50x
-        until Warp=3 or countdown() < 25 {
-            wait 0.01.
-            set Warp to 3.
-        }
-        wait until countdown() < 25.
-    }
-    if (countdown() > 5) {
-        set Warp to 2.          // 10x
-        until Warp=2 or countdown() < 5 {
-            wait 0.01.
-            set Warp to 2.
-        }
-        wait until countdown() < 5.
-    }
-    if (countdown() > 0.5) {
-        set Warp to 1.          //  5x
-        until Warp=1 or countdown() < 0.5 {
-            wait 0.01.
-            set Warp to 1.
-        }
-        wait until countdown() < 0.5.
-    }
+    
+    warpLevel(6, 5000).
+    warpLevel(5,  500).
+    warpLevel(4,   50).
+    warpLevel(3,   25).
+    warpLevel(2,    5).
+    warpLevel(1,  0.5).
     
     //local tmp is Time:Seconds.
     set Warp to 0.
@@ -79,10 +41,8 @@ function warpRails {
     //set tmp to Time:Seconds-tmp.
     //if (tmp>0) print "  unpacking time= "+Round(tmp,3).
     
-    if (countDown() < 0)
-      print "  WARNING: warpRails: countdown="+countdown().
-    
-    print "   warpRails end".
+    if (countDown() < 0) print "  WARNING: warpRails: countdown="+countdown().
+    //print "   warpRails end".
 }
 
 function normalizeAngle {
@@ -112,20 +72,9 @@ function killRot {
         if(Ship:Control:Roll *av:Z < 0) set dZ to dZ/2.
         if(Ship:Control:Pitch*av:X < 0) set dX to dX/2.
         if(Ship:Control:Yaw  *av:Y > 0) set dY to dY/2.
-        
         set Ship:Control:Roll  to  av:Z*dZ.
         set Ship:Control:Pitch to  av:X*dX.
         set Ship:Control:Yaw   to -av:Y*dY.
-//         print "av  ="+Round(av:Mag,3) at (38,0).
-//         print "rol ="+Round(Ship:Control:Roll,  3) at (38,1).
-//         print "pit ="+Round(Ship:Control:Pitch, 3) at (38,2).
-//         print "yaw ="+Round(Ship:Control:Yaw,   3) at (38,3).
-//         print "dx  ="+Round(dx,2)+" " at (38,4).
-//         print "dy  ="+Round(dy,2)+" " at (38,5).
-//         print "dz  ="+Round(dz,2)+" " at (38,6).
-//         print "avx  ="+Round(av:X,2)+" " at (38,7).
-//         print "avy  ="+Round(av:Y,2)+" " at (38,8).
-//         print "avz  ="+Round(av:Z,2)+" " at (38,9).
     }
     set Ship:Control:Roll  to 0.
     set Ship:Control:Pitch to 0.
@@ -159,18 +108,13 @@ function getDeltaV {
     local isp is tmp[0]:VacuumIsp.
     local fuel is (Ship:LiquidFuel + Ship:Oxidizer)*0.005.
     local m is Ship:Mass.
-//     print " getDeltaV".
-//     print "  isp="+Round(isp,1).
-//     print "  fuel="+Round(fuel,2).
-//     print "  lf="+Round(Ship:LiquidFuel).
-//     print "  ox="+Round(Ship:Oxidizer).
     return isp * ln(m/(m-fuel))*9.81.
 }
 function getRcsDeltaV {
     local fuel is Ship:MonoPropellant*0.004.
     local isp is 240.
     local m is Ship:Mass.
-    print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
+    //print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
     return isp * ln(m/(m-fuel))*9.81.
 }
 

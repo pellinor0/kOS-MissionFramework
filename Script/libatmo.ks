@@ -81,8 +81,6 @@ function atmoAscentPlane {
     lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
     
     local engines is Ship:PartsDubbed(gShipType+"Engine").
-    //lock Steering to Heading (90,pp -gBuiltinAoA).
-    // quelle // lock Steering to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
     stage. 
     set WarpMode to "PHYSICS".
     set Warp to 2.
@@ -115,7 +113,6 @@ function atmoAscentPlane {
         print "ppMJ=" +Round(ppMJ, 2)  +"  " at (38, 4).
         print "ttAP=" +Round(Eta:Apoapsis,1) +"  " at (38, 5).
     }
-    
     
     print "  Initial Climb".
     until (Altitude>25000) update().
@@ -153,24 +150,11 @@ function atmoAscentPlane {
 }
 
 function atmoDeorbit {
-    //PRINT "Deorbit Burn".
-    
     if(Periapsis < Body:Atm:Height) {
         print "  WARNING: atmoDeorbit: not in Orbit!".
         return.
     }
     print "  landingPA=" +Round(gLandingPA, 2).
-    //local burnLng is gSpacePort:Lng + gLandingPA.
-    //local burnTime is timeToLng(burnLng).
-
-//     global waitAngle is burnLng - GeoPosition:Lng.  // workaround "undefined variable"
-//     until (waitAngle > 0) {set waitAngle to waitAngle+360. }
-//     local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).    
-//     local burnTime is Time:Seconds + (synPeriod * (waitAngle / 360.0)).
-    //print "  waitAngle=" + waitAngle.
-    //print "  synPeriod=" +synPeriod.
-    //print "  waittime=" +(synPeriod * (waitAngle / 360.0)).
-    //print "  burnTime=" +burnTime.
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
     print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
     if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height, gDeorbitPE).
@@ -197,11 +181,7 @@ function atmoLandingRocket {
     set Warp to 3. // 4x
     
 //    if gDoLog {initLandingLog().}
-//    local index is 0.
-//    local errH is 0.
-//    local h is 0.
-//    local lngTgt is 74.75.
-    lock Steering to stRetro().
+    lock Steering to Retrograde.
     
     wait until Altitude < 50000.
     set Warp to 2.
@@ -211,7 +191,6 @@ function atmoLandingRocket {
     wait until (Velocity:Surface:Mag < 260 
             and Velocity:Surface:Mag <> 0). // seems to happen if pod explodes
     print "  Chutes".
-    //print "  v  =" +Velocity:Surface:Mag.
     Chutes on.
     lock Steering to stSrfRetro().
     wait until (Altitude - Max(0, GeoPosition:TerrainHeight)) < 500.
