@@ -154,10 +154,14 @@ function atmoDeorbit {
         print "  WARNING: atmoDeorbit: not in Orbit!".
         return.
     }
+    if (not (defined gDoLog)) or (gDoLog=0) {
+        local gLogFile is "landingLog_"+gShipType+".ks".
+        runFile("logs/", gLogFile).
+    }
     print "  landingPA=" +Round(gLandingPA, 2).
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
     print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
-    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height, gDeorbitPE).
+    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height*0.75, gDeorbitPE).
     execNode().
 }
 

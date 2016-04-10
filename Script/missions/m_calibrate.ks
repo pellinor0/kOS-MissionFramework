@@ -1,5 +1,5 @@
 set gDoLog to 1.
-set gLandingPA to -30.
+set gLandingPA to -20.
 set gSpacePort to LatLng(-0.04909, -74.697). // KSC runway 09
 set gSpacePortHeight to 0.
 { // separate context so we can have local variables
