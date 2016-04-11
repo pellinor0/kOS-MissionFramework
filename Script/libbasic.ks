@@ -57,6 +57,11 @@ function targetBaseName {
     return tmp[0].
 }
 
+function hasRCS {
+    local tmp is Ship:PartsDubbed(gShipType+"RCS").
+    return (tmp:Length>0).
+}
+
 function killRot {
     parameter accuracy is 0.01.
     print " killRot".

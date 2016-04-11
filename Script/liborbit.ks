@@ -291,7 +291,7 @@ function execNode {
     }
     unlock Throttle.
     unlock Steering.
-    if (doDynWarp=false) execNodeRcs.
+    if (doDynWarp=false and hasRCS()) execNodeRcs.
     if HasNode {remove NextNode. wait 0.01.}
     set Warp to 0.
 }

@@ -56,6 +56,7 @@ if missionStep() {
     local lngErr is GeoPosition:Lng - gSpacePort:Lng.
     local newLandingPA is Round(gLandingPA -lngErr, 3).
     print "  optimalLandingPA=" +newLandingPA.
+    switch to 0.
     log ("set gLandingPA to " +newLandingPA +".") to logFile.
 }
 

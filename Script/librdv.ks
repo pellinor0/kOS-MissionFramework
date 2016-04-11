@@ -54,15 +54,19 @@ function rdvDock {
         // gShipRadius from target port
         lock gOffset to targetPort:NodePosition -Target:Position
                        +targetPort:PortFacing:Forevector*gShipRadius.
+        lock targetUp to targetPort:PortFacing:Forevector.
     } else {
         // behind target
-        lock gOffset to (10+gShipRadius)*Target:Retrograde:Vector.
+        lock targetUp to (Body:Position -Target:Position):Normalized.
+        lock gOffset to (10+gShipRadius)*targetUp.
     }
     lock targetPos to Target:Position+gOffset.
     print "  offset="+Round(gOffset:Mag,2).
     
     local rdvT is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
     local tmpDX is PositionAt(Ship,rdvT)-PositionAt(Target,rdvT).
+    local useRCS is (hasRcs() and getRcsDeltaV()>5).
+    
     function doCorrection {
         print " correction".
         set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
@@ -75,7 +79,7 @@ function rdvDock {
         local dV is dX2/(rdvT -Time:Seconds).
         print "  dV ="+Round(dV:Mag,2).
         
-        if (dV:Mag>2) {
+        if (dV:Mag>2 or not useRCS) {
             local nodeDV is -getOrbitFacing()*dV.
             add Node(Time:Seconds+1,nodeDV:X,nodeDV:Y,nodeDV:Z).
             wait 0.01.
@@ -88,7 +92,7 @@ function rdvDock {
     if(Target:Position:Mag>600) { doCorrection(). }
     checkRdv(gOffset).
     
-    rdv(targetPos, targetPort:PortFacing:Forevector).
+    rdv(targetPos, targetUp).
     unlock targetPos.
     unlock gOffset.
     unlock Steering.
@@ -182,12 +186,12 @@ function rdv {
     local offset is V(0,0,0).
     local count is 0.
     local far is true.    // use orbital mechanics
-    local hasRCS is true. // do lateral corrections with RCS
+    local useRCS is (hasRcs() and getRcsDeltaV()>5). // do lateral corrections with RCS
     local rdvT is 0.
     
     lock Throttle to tt.
     lock Steering to Lookdirup(steerVec, upVector).
-    if hasRCS {
+    if useRCS {
         wait until Vang(Steering:ForeVector, Facing:ForeVector)<3.
         wait until Vang(Steering:TopVector, Facing:TopVector)<3
                 and Ship:AngularVel:Mag<0.05.
@@ -211,8 +215,6 @@ function rdv {
                         -VelocityAt(Ship,  rdvT):Orbit.
             set dX2 to Vxcl(dV2,dX2).
             set vErr to Vxcl(dV, -dX2/(rdvT -Time:Seconds)).
-            
-            
         } else {
             set vErr to Vxcl(dX, dV).
             // try to negate vErr/5 per second
@@ -221,7 +223,7 @@ function rdv {
         debugDirection(Steering).
         
         // correct with RCS if available
-        if hasRCS {
+        if useRCS {
             if (vErr:Mag<0.05) set Ship:Control:Translation to V(0,0,0).
               else set Ship:Control:Translation to -Facing*(-vErr:Normalized).
             set steerVec to -dV:Normalized*brakeAcc.

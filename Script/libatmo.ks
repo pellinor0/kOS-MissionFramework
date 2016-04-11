@@ -154,7 +154,7 @@ function atmoDeorbit {
         print "  WARNING: atmoDeorbit: not in Orbit!".
         return.
     }
-    if (not (defined gDoLog)) or (gDoLog=0) {
+    if gIsPlane and ((not (defined gDoLog)) or (gDoLog=0)) {
         local gLogFile is "landingLog_"+gShipType+".ks".
         runFile("logs/", gLogFile).
     }
@@ -184,7 +184,6 @@ function atmoLandingRocket {
     set WarpMode to "PHYSICS".
     set Warp to 3. // 4x
     
-//    if gDoLog {initLandingLog().}
     lock Steering to Retrograde.
     
     wait until Altitude < 50000.
@@ -201,16 +200,7 @@ function atmoLandingRocket {
     
     print "  Powered Landing".
     suicideBurn().
-    
     unlock Steering.
-    if( (defined gDoLog) and gDoLog) {
-        local newLandingPA is gLandingPA -(Longitude - gSpacePort:Lng).
-        switch to 0.
-        log "set gLandingPA to "+Round(newLandingPA, 2)+"." 
-            to "logs/log_"+gShipType+".ks".
-            
-        switch to 1.
-    }
 }
 
 function atmoLandingPlane {
