@@ -469,7 +469,7 @@ function refineRdvBruteForce {
         if(better = 0) set best to measure.
     }
 
-    if (measure>startMeasure) setNodeDv(oldDv).
+    if (measure>measureStart) setNodeDv(oldDv).
     print "  End:   dist=" + Round(pRel) +", vRel=" +Round(vRel,2).
     print "  dvCost=" +Round(NextNode:DeltaV:Mag -dvStart:Mag, 2)
          +", dvChange=" +Round((NextNode:DeltaV -dvStart):Mag, 2)
@@ -501,21 +501,35 @@ function timeToAltitude2 {
     parameter tgtAlt.
     parameter t0.
     parameter t1.
-    // Assumption: Altitude is monotonous
-    // Binary search
+    // Binary search (assuming monotony)
     local dir is -1.
+    set tgtAlt to tgtAlt+Body:Radius.
     if (tgtAlt - (PositionAt(Ship,t0)-Body:Position):Mag)>0 set dir to 1.
     local dt is (t1-t0)/2.
     local t is t0.
-    set tgtAlt to tgtAlt+Body:Radius.
     until (dt < 1) {
 //         print "  dir="+dir.
-//         print "  tmpHeight="+tmpheight.
 //         print "  tgtAlt="+tgtAlt.
-//         print "  x=" +(dir * (tgtAlt - tmpHeight)).
         if ( (dir * (tgtAlt - (PositionAt(Ship,t+dt) -Body:Position):Mag)) > 0)
           set t to t+dt.
         
+        set dt to dt/2.
+    }
+    return t.
+}
+
+function timeToDist {
+    parameter dist.
+    parameter t0.
+    parameter t1.
+    // Binary search (assuming monotony)
+    local dir is -1.
+    function d {parameter t. return dist-(PositionAt(Ship,t)-PositionAt(Target,t)):Mag.}
+    if (d(t0)>0) set dir to 1.
+    local dt is (t1-t0)/2.
+    local t is t0.
+    until (dt < 1) {
+        if (dir*d(t+dt) > 0) set t to t+dt.
         set dt to dt/2.
     }
     return t.

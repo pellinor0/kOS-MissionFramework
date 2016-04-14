@@ -57,10 +57,6 @@ function targetBaseName {
     return tmp[0].
 }
 
-function hasRCS {
-    local tmp is Ship:PartsDubbed(gShipType+"RCS").
-    return (tmp:Length>0).
-}
 
 function killRot {
     parameter accuracy is 0.01.
@@ -122,17 +118,23 @@ function getRcsDeltaV {
     //print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
     return isp * ln(m/(m-fuel))*9.81.
 }
+function hasRCS { 
+    return Ship:PartsDubbed(gShipType+"RCS"):Length>0.
+}
 function hasRcsDeltaV {
     parameter req is 5.
-    return (hasRcs and getRcsDeltaV>req).
+    return (hasRcs() and getRcsDeltaV()>req).
 }
-function isDockable {
+function hasPort {
     local tmp is Ship:PartsDubbed(gShipType+"Port").
     if tmp:Length > 0 {
         set gMyPort to tmp[0].
-        return (hasRcsDeltaV(2)).
+        return true.
     }
     return false.
+}
+function isDockable {
+    return hasPort() and (hasRcsDeltaV(2)).
 }
 
 global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).

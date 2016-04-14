@@ -141,7 +141,8 @@ function m_askConfirmation {
 }
 
 function m_undock {
-    if missionStep() and gDockable {
+    if missionStep() {
+        if (not hasPort()) return.
         print "Undock".
         local module is gMyPort:GetModule("ModuleDockingNode").
         if(not gMyPort:State:Contains("Docked")) {
