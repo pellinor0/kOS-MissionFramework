@@ -24,7 +24,6 @@ switch to 1.
 run params.ks.
 loadPersistent().
 writePersistent().
-findParts().
 
 if (pMissionCounter > 0) {
     Ship:PartsDubbed(gShipType+"Control")[0]

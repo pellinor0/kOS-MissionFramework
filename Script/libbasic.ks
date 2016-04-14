@@ -122,6 +122,18 @@ function getRcsDeltaV {
     //print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
     return isp * ln(m/(m-fuel))*9.81.
 }
+function hasRcsDeltaV {
+    parameter req is 5.
+    return (hasRcs and getRcsDeltaV>req).
+}
+function isDockable {
+    local tmp is Ship:PartsDubbed(gShipType+"Port").
+    if tmp:Length > 0 {
+        set gMyPort to tmp[0].
+        return (hasRcsDeltaV(2)).
+    }
+    return false.
+}
 
 global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).
 global yAxis is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 1, false ).

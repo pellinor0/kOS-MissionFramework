@@ -237,6 +237,11 @@ function execNode {
     print "  execNode".
     wait 0.01.
     set Warp to 0.
+    if (NextNode:DeltaV:Mag<0.15) {
+        print "  dV="+NextNode:DeltaV:Mag.
+        remove NextNode. wait 0.01.
+        return.
+    }
     local acc is Ship:AvailableThrust / Mass.
     if (acc=0) {
         print "  ERROR: execNode: acc=0!".
@@ -246,7 +251,7 @@ function execNode {
     if Abs(debugDV -NextNode:DeltaV:Mag) >0.15 {
         print "  WARNING: inconsistent ManeuverNode!".
         print "  deltaV="    +Round(NextNode:DeltaV:Mag, 3).
-        print "  components="+Round(debugDVg, 3).
+        print "  components="+Round(debugDV, 3).
     }
 
     local burntime is NextNode:Deltav:Mag / acc.
@@ -291,7 +296,7 @@ function execNode {
     }
     unlock Throttle.
     unlock Steering.
-    if (doDynWarp=false and hasRCS()) execNodeRcs.
+    if (doDynWarp=false and hasRcsDeltaV(5)) execNodeRcs.
     if HasNode {remove NextNode. wait 0.01.}
     set Warp to 0.
 }

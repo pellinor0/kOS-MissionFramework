@@ -21,7 +21,6 @@ global gAeroBrakeDir is V(0,0,1). // prograde(?)
 global gLaunchParam is 0.22. // for planes
 // these are set automatically
 global gShipType is "". // from Core nameTag
-global gDockable is 0.
 global gMyPort is 0.
 // these are measured by the calibrate mission
 global gLaunchDuration is 0.

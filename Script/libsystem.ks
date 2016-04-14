@@ -12,14 +12,6 @@ function writePersistent {
     log "set pMissionCounter to " +pMissionCounter +"." to persistent.ks.
 }
 
-function findParts {
-    local tmp is Ship:PartsDubbed(gShipType+"Port").
-    if tmp:Length > 0 {
-        set gDockable to 1.
-        set gMyPort to tmp[0].
-    }
-}
-
 function runFile {
     parameter path.
     parameter fileName.

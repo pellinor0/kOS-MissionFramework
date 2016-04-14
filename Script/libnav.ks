@@ -375,6 +375,8 @@ function refineRdvBruteForce {
     local lock vRel to (VelocityAt(Ship, t):Orbit - VelocityAt(Target, t):Orbit):Mag.
     local vr0 is vRel.
     local lock measure to pRel/100 +Max(0,vRel-vr0) + NextNode:DeltaV:Mag.
+    local measureStart is measure.
+    local oldDV is V(NextNode:RadialOut, NextNode:Normal, NextNode:Prograde).
     
     local d is 2.
     local dMin is 0.125.
@@ -466,7 +468,8 @@ function refineRdvBruteForce {
         set d to d * 0.9.
         if(better = 0) set best to measure.
     }
-    
+
+    if (measure>startMeasure) setNodeDv(oldDv).
     print "  End:   dist=" + Round(pRel) +", vRel=" +Round(vRel,2).
     print "  dvCost=" +Round(NextNode:DeltaV:Mag -dvStart:Mag, 2)
          +", dvChange=" +Round((NextNode:DeltaV -dvStart):Mag, 2)
