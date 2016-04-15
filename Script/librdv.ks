@@ -186,7 +186,7 @@ function dockingApproach {
     
     print " dockingApproach".
     print "  aligning".
-    gMyPort:GetModule("ModuleDockingNode"):DoEvent("control from here").
+    gMyPort:ControlFrom.
     lock Steering to LookdirUp(-targetPort:PortFacing:ForeVector, Facing:UpVector).
     wait until Vang(Facing:ForeVector, -targetPort:PortFacing:ForeVector) < 2.
     local vSoll is 0.

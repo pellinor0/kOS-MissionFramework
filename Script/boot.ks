@@ -26,8 +26,7 @@ loadPersistent().
 writePersistent().
 
 if (pMissionCounter > 0) {
-    Ship:PartsDubbed(gShipType+"Control")[0]
-        :GetModule("ModuleCommand"):DoEvent("control from here").
+    Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
     switch to 0.
     run once libmission.
     resumeMission().

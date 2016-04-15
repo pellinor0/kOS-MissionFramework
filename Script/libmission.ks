@@ -144,16 +144,15 @@ function m_undock {
     if missionStep() {
         if (not hasPort()) return.
         print "Undock".
-        local module is gMyPort:GetModule("ModuleDockingNode").
         if(not gMyPort:State:Contains("Docked")) {
             print "  Port was not docked".
             return.
         }
-        module:DoEvent("control from here").
+        gMyPort:ControlFrom.
         wait 0.01.
         gMyPort:Undock().
         wait 0.01.
-        module:DoEvent("control from here").
+        gMyPort:ControlFrom.
         Core:DoEvent("open terminal").
         wait 0.01.
         
@@ -171,8 +170,7 @@ function m_undock {
         wait 2.5*gShipRadius.
         set Warp to 0.
         wait until Ship:Unpacked.
-        Ship:PartsDubbed(gShipType+"Control")[0]
-            :GetModule("ModuleCommand"):DoEvent("control from here").
+        Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
     }
 }
 
