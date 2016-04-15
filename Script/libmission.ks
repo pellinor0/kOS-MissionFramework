@@ -33,13 +33,6 @@ function m_waitForLaunchWindow {
     } else print "Skipping Launch Timing (not PRELAUNCH)".
 }
 
-function m_waitForDeorbitWindow {
-    if not missionStep() return.
-    // correct for 
-    
-    
-}
-
 function m_waitForTransition {
     parameter type.
     
