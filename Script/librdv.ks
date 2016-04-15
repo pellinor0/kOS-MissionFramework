@@ -32,7 +32,7 @@ function rdvDock {
     // find docking ports
     local dock is 0.
     local tmp is Target:DockingPorts.
-    local targetPort is 0.
+    global targetPort is 0.
     if (tmp:Length>0 and isDockable()) {
       set targetPort to tmp[0].
       set dock to 1.
@@ -43,15 +43,14 @@ function rdvDock {
     wait 0.01.
     if dock {
         // gShipRadius from target port
-        lock gOffset to targetPort:NodePosition -Target:Position
+        lock targetPos to targetPort:NodePosition 
                        +targetPort:PortFacing:Forevector*gShipRadius.
         lock targetUp to targetPort:PortFacing:Forevector.
     } else {
         // radial from target
         lock targetUp to (Body:Position -Target:Position):Normalized.
-        lock gOffset to (10+gShipRadius)*targetUp.
+        lock targetPos to (10+gShipRadius)*targetUp +Target:Position.
     }
-    lock targetPos to Target:Position+gOffset.
     //print "  offset="+Round(gOffset:Mag,2).
     
     local rcsDV is getRcsDeltaV().
@@ -91,11 +90,11 @@ function rdv {
     local dX is v(100000,0,0).
     local dV is Velocity:Orbit - Target:Velocity:Orbit.
     local steerVec is -dV:Normalized*brakeAcc.
-    local offset is V(0,0,0).
     local count is 0.
     local far is true.               // use orbital mechanics
     local useRCS is hasRcsDeltaV(5).
     local rdvT is 0.
+    local lock offset to targetPos()-Target:Position.
     
     function update {
         wait 0.01. 
@@ -105,8 +104,7 @@ function rdv {
         if far {
             if Mod(count,20)=0 { // expensive stuff
                 set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-                set offset to targetPos()-Target:Position.
-                if (dX:Mag<50) set far to false.
+                if (dX:Mag<50) {set far to false. print "  near".}
             }
             local dX2 is PositionAt(Target,rdvT) +offset -PositionAt(Ship,rdvT).
             local dV2 is VelocityAt(Target,rdvT):Orbit
@@ -133,9 +131,9 @@ function rdv {
         
         local ttt is Max(0, Vdot(steerVec:Normalized, Facing:Forevector)).
         if (brakeAcc>acc/2)      // braking
-          set tt to steerVec:Mag/acc *ttt *accFactor.
+          set tt to steerVec:Mag/acc *ttt^10 *accFactor.
         else if (corrAcc > 0.03) // correction
-          set tt to steerVec:Mag/acc *ttt^20 *accFactor.
+          set tt to steerVec:Mag/acc *ttt^300 *accFactor.
         else
           set tt to 0.
 
@@ -155,9 +153,14 @@ function rdv {
 //     }
     clearScreen2().
     lock Throttle to tt.
-
-    until (dX:Mag < 400) update().
+    set WarpMode to "Rails".
+    until (dX:Mag < 600) {
+        update().
+        if (vErr:Mag > 0.1) set Warp to 0.
+        else if (tt=0) set Warp to 2.
+    }
     set Warp to 0.
+    set far to false. print " force near". // Workaround against jumping of 'offset'
     
     until (dX:Mag < 200) update().
     checkRdv().
