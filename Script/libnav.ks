@@ -469,7 +469,7 @@ function refineRdvBruteForce {
         if(better = 0) set best to measure.
     }
 
-    if (measure>measureStart) setNodeDv(oldDv).
+    if (measure>measureStart) setNextNodeDv(oldDv).
     print "  End:   dist=" + Round(pRel) +", vRel=" +Round(vRel,2).
     print "  dvCost=" +Round(NextNode:DeltaV:Mag -dvStart:Mag, 2)
          +", dvChange=" +Round((NextNode:DeltaV -dvStart):Mag, 2)

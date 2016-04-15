@@ -252,6 +252,7 @@ function execNode {
         print "  WARNING: inconsistent ManeuverNode!".
         print "  deltaV="    +Round(NextNode:DeltaV:Mag, 3).
         print "  components="+Round(debugDV, 3).
+        if (debugDV<0.1) {remove NextNode. wait 0.01. return.}
     }
 
     local burntime is NextNode:Deltav:Mag / acc.
