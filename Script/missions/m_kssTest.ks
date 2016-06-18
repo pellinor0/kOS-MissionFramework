@@ -1,5 +1,6 @@
 // Assumptions
 // * target orbit is equatorial and circular
+print "m_kssTest".
 if (Ship:Name <> gTgtVesselName) // can't do this when docked to target Vessel
   set Target to Vessel(gTgtVesselName).
 

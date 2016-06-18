@@ -3,7 +3,7 @@ print "  Loading libdev".
 
 
 function aeroBrake {
-    
+
 }
 
 function dynWarp {
@@ -29,34 +29,28 @@ function dynWarp {
 global gDebug is 0.
 function deb {
     parameter str.
-    
-//     if gDebug=0 set gDebug to Time:Seconds.
-//     local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-//     local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
-//     print "  deb "+str
-//         +": dX="
-//         +Round((PositionAt(Ship,rdvTime)-PositionAt(Target,rdvTime)):Mag) 
-//         +", dV="+Round(v0,1) 
-//         +", t=" +Round(rdvTime-gDebug) 
-//         +", dt="+Round(rdvTime-Time:Seconds).
+
+    //  if gDebug=0 set gDebug to Time:Seconds.
+    // local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+    // local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
+    // print "  deb "+str
+    //     +": dX="
+    //     +Round((PositionAt(Ship,rdvTime)-PositionAt(Target,rdvTime)):Mag)
+    //     +", dV="+Round(v0,1)
+    //     +", t=" +Round(rdvTime-gDebug)
+    //     +", dt="+Round(rdvTime-Time:Seconds).
 }
 
-
 // ====  AutoStart =======
-// debug hook: this code is called before other things run
+// debug hook: this code is called before the other libraries are loaded
 
-//print " AutoStart".
 switch to 0.
-//wait 1.
-
 //print "  compiling libbasic".   compile libbasic.
 //print "  compiling libatmo".    compile libatmo.
 //print "  compiling liborbit".   compile liborbit.
 //print "  compiling libnav".     compile libnav.
 //print "  compiling libmission". compile libmission.
-//print "  compiling librdv".     compile librdv.
+print "  compiling librdv".     compile librdv.
 //compile libsystem.
 //compile globals.
-
-
-
+//compile boot.

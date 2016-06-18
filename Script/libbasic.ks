@@ -4,17 +4,17 @@
 function warpRails {
     parameter tPar.
     print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
-    
+
     function countDown {return tPar - Time:Seconds.}
     if (countDown()<0) { return. }
-    
+
     set Warp to 0.
     wait 0.01.
     set WarpMode to "RAILS".
     if (countdown() >  5) {set Warp to 1. wait 0.1.}
     if (countdown() > 25) {set Warp to 2. wait 0.1.}
     if (countdown() > 50) {set Warp to 3. wait 0.1.}
-    
+
     function warpLevel {
         parameter level.
         parameter deadline.
@@ -27,27 +27,27 @@ function warpRails {
             wait until countdown() < deadline.
         }
     }
-    
+
     warpLevel(6, 5000).
     warpLevel(5,  500).
     warpLevel(4,   50).
     warpLevel(3,   25).
     warpLevel(2,    5).
     warpLevel(1,  0.5).
-    
+
     //local tmp is Time:Seconds.
     set Warp to 0.
     wait until not Ship:Unpacked.
     //set tmp to Time:Seconds-tmp.
     //if (tmp>0) print "  unpacking time= "+Round(tmp,3).
-    
+
     if (countDown() < 0) print "  WARNING: warpRails: countdown="+countdown().
     //print "   warpRails end".
 }
 
 function normalizeAngle {
     parameter angle.
-    
+
     until angle > 0 { set angle to angle+360. }
     return Mod( angle+180 , 360) -180.
 }
@@ -61,12 +61,12 @@ function targetBaseName {
 function killRot {
     parameter accuracy is 0.01.
     print " killRot".
-    
+
     local av is Ship:AngularVel.
     local dx is 64.// damping (workaround for missing torque info)
     local dy is 64.
     local dz is 64.
-    
+
     until av:Mag<accuracy {
         wait 0.01.
         set av to -Facing*Ship:AngularVel.
@@ -118,7 +118,7 @@ function getRcsDeltaV {
     //print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
     return isp * ln(m/(m-fuel))*9.81.
 }
-function hasRCS { 
+function hasRCS {
     return Ship:PartsDubbed(gShipType+"RCS"):Length>0.
 }
 function hasRcsDeltaV {
@@ -142,7 +142,7 @@ global yAxis is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 1, fals
 global zAxis is VecDraw( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 1, false ).
 function debugDirection {
     parameter dir.
-    
+
     set xAxis to VecDraw( V(0,0,0), 12*dir:ForeVector, RGB(1.0,0.5,0.5), "Fore", 1, true ).
     set yAxis to VecDraw( V(0,0,0), 12*dir:TopVector,  RGB(0.5,1.0,0.5), "Top",  1, true ).
     set zAxis to VecDraw( V(0,0,0), 12*dir:StarVector, RGB(0.5,0.5,1.0), "Star", 1, true ).
@@ -155,6 +155,6 @@ function debugDirectionOff {
 
 function clearScreen2 {
     from {local x is 0.} until x = 10 step {set x to x+1.} DO {
-        print "                      " at (38,x).
+        print "                 " at (38,x).
     }
 }

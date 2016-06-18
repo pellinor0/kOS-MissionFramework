@@ -1,8 +1,8 @@
 ship = P2
-version = 1.0.5
+version = 1.1.2
 description = 
 type = SPH
-size = 13.18868,6.431303,25.11297
+size = 13.18868,6.772367,25.11297
 PART
 {
 	part = mk3CargoBayL_4294493264
@@ -24,34 +24,34 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = wingShuttleDelta_4294366310
-	link = wingShuttleDelta_4294193060
-	link = GearMedium_4294057540
-	link = GearMedium_4294054786
-	link = adapterMk3-Size2Slant_4294697354
-	link = adapterMk3-Size2Slant_4294696368
-	link = SmallGearBay_4294058682
-	link = RCSBlock_4294673512
-	link = RCSBlock_4294673410
-	link = linearRcs_4294672956
-	link = linearRcs_4294672716
-	link = asasmodule1-2_4294668192
-	link = LargeTank_4294654830
-	link = MK1Fuselage_4294626204
-	link = MK1Fuselage_4294625426
-	link = MK1Fuselage_4294613354
-	link = MK1Fuselage_4294612086
-	link = MK1Fuselage_4294610692
-	link = MK1Fuselage_4294609336
-	link = wingShuttleElevon2_4294551302
-	link = wingShuttleElevon2_4294606272
-	link = RCSBlock_4293948582
-	link = RCSBlock_4293948432
-	link = linearRcs_4293947628
-	link = linearRcs_4293947460
-	attN = top2,asasmodule1-2_4294668192
-	attN = top,adapterMk3-Size2Slant_4294697354
-	attN = bottom,adapterMk3-Size2Slant_4294696368
+	link = wingShuttleDelta_4289958330
+	link = wingShuttleDelta_4289958290
+	link = GearMedium_4289958250
+	link = GearMedium_4289958000
+	link = adapterMk3-Size2Slant_4289957708
+	link = adapterMk3-Size2Slant_4289957668
+	link = SmallGearBay_4289957508
+	link = RCSBlock_4289957294
+	link = RCSBlock_4289957250
+	link = linearRcs_4289957206
+	link = linearRcs_4289957162
+	link = asasmodule1-2_4289957118
+	link = LargeTank_4289957086
+	link = MK1Fuselage_4289956982
+	link = MK1Fuselage_4289956712
+	link = MK1Fuselage_4289956442
+	link = MK1Fuselage_4289956172
+	link = MK1Fuselage_4289955902
+	link = MK1Fuselage_4289955632
+	link = wingShuttleElevon2_4289955288
+	link = wingShuttleElevon2_4289955206
+	link = RCSBlock_4289954836
+	link = RCSBlock_4289954792
+	link = linearRcs_4289954748
+	link = linearRcs_4289954704
+	attN = top2,asasmodule1-2_4289957118
+	attN = top,adapterMk3-Size2Slant_4289957708
+	attN = bottom,adapterMk3-Size2Slant_4289957668
 	EVENTS
 	{
 	}
@@ -70,6 +70,7 @@ PART
 		animTime = 1
 		animSpeed = 80
 		deployPercent = 64
+		animationIsDisabled = False
 		stagingEnabled = True
 		deployPercent_UIFlight
 		{
@@ -140,6 +141,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 3.75
+		defaultScale = 3.75
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -179,7 +221,7 @@ PART
 }
 PART
 {
-	part = wingShuttleDelta_4294366310
+	part = wingShuttleDelta_4289958330
 	partName = Part
 	pos = 0.4214869,8.932023,2.38841
 	attPos = -0.06726611,-0.8544133,-0.1842927
@@ -198,7 +240,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = wingShuttleDelta_4294193060
+	sym = wingShuttleDelta_4289958290
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -216,6 +258,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2760
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -274,7 +357,7 @@ PART
 	RESOURCE
 	{
 		name = LiquidFuel
-		amount = 300.0001
+		amount = 300.000056609832
 		maxAmount = 300.000056609832
 		flowState = True
 		isTweakable = True
@@ -285,7 +368,7 @@ PART
 }
 PART
 {
-	part = wingShuttleDelta_4294193060
+	part = wingShuttleDelta_4289958290
 	partName = Part
 	pos = -2.821487,8.932023,2.38841
 	attPos = 0.06726611,-0.8544132,-0.1842927
@@ -304,7 +387,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = wingShuttleDelta_4294366310
+	sym = wingShuttleDelta_4289958330
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -322,6 +405,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2760
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -380,7 +504,7 @@ PART
 	RESOURCE
 	{
 		name = LiquidFuel
-		amount = 300.0001
+		amount = 300.000056609832
 		maxAmount = 300.000056609832
 		flowState = True
 		isTweakable = True
@@ -391,7 +515,7 @@ PART
 }
 PART
 {
-	part = GearMedium_4294057540
+	part = GearMedium_4289958250
 	partName = Part
 	pos = 2.359041,8.265443,1.189936
 	attPos = 3.559041,1.055741,-1.257868
@@ -410,7 +534,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = GearMedium_4294054786
+	sym = GearMedium_4289958000
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -423,75 +547,31 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleLandingGear
+		name = ModuleWheelBase
 		isEnabled = True
-		BrakeTorque = 12
-		brakesEngaged = False
-		brakesEnabled = True
-		storedGearState = UNDEFINED
-		storedAnimationSpeed = 0
-		storedAnimationTime = 0
-		StartDeployed = True
+		wheelType = FREE
+		isGrounded = False
+		autoFriction = True
+		frictionMultiplier = 1
 		stagingEnabled = True
-		BrakeTorque_UIFlight
+		frictionMultiplier_UIFlight
 		{
 			controlEnabled = True
-			minValue = 0
-			maxValue = 30
-			stepIncrement = 1
-		}
-		StartDeployed_UIFlight
-		{
-			controlEnabled = True
+			minValue = 0.01
+			maxValue = 5
+			stepIncrement = 0.01
 		}
 		EVENTS
 		{
-			EnableBrakes
-			{
-				active = False
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Enable brakes
-				guiName = Enable brakes
-				category = Enable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			DisableBrakes
-			{
-				active = True
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Disable brakes
-				guiName = Disable brakes
-				category = Disable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			LowerLandingGear
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Lower Gear
-				guiName = Lower Gear
-				category = Lower Gear
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			RaiseLandingGear
+			EvtAutoFrictionToggle
 			{
 				active = True
 				guiActive = True
+				guiActiveEditor = True
 				guiActiveUncommand = False
-				guiIcon = Raise Gear
-				guiName = Raise Gear
-				category = Raise Gear
+				guiIcon = 
+				guiName = Friction Control: Auto
+				category = 
 				guiActiveUnfocused = False
 				unfocusedRange = 2
 				externalToEVAOnly = True
@@ -511,14 +591,156 @@ PART
 		}
 		ACTIONS
 		{
-			OnAction
+			ActAutoFrictionToggle
 			{
-				actionGroup = Gear
+				actionGroup = None
 			}
-			BrakesAction
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSuspension
+		isEnabled = True
+		springTweakable = 1
+		damperTweakable = 1
+		suspensionPos = (-1, -1, -1)
+		autoBoost = 0
+		stagingEnabled = True
+		springTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		damperTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		isEnabled = True
+		brakeTweakable = 100
+		brakeInput = 0
+		stagingEnabled = True
+		brakeTweakable_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 200
+			stepIncrement = 5
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			BrakeAction
 			{
 				actionGroup = Brakes
 			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		isEnabled = True
+		stateString = Deployed
+		stagingEnabled = True
+		position = 1
+		EVENTS
+		{
+			EventToggle
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Toggle
+				guiName = Start Extended
+				category = Toggle
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ActionToggle
+			{
+				actionGroup = Gear
+			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelBogey
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -528,6 +750,232 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleStatusLight
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTestSubject
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			RunTestEvent
+			{
+				active = False
+				guiActive = True
+				guiActiveUncommand = False
+				guiIcon = Run Test
+				guiName = Run Test
+				category = Run Test
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleLight
+		isEnabled = True
+		isOn = False
+		uiWriteLock = False
+		lightR = 1
+		lightG = 1
+		lightB = 1
+		stagingEnabled = True
+		lightR_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		lightG_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		lightB_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		EVENTS
+		{
+			LightsOff
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Lights Off
+				guiName = Lights Off
+				category = Lights Off
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			LightsOn
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Lights On
+				guiName = Lights On
+				category = Lights On
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleLightAction
+			{
+				actionGroup = Light
+			}
+			LightOnAction
+			{
+				actionGroup = None
+			}
+			LightOffAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelDamage
+		isEnabled = True
+		isDamaged = False
+		stagingEnabled = True
+		EVENTS
+		{
+			EventRepairExternal
+			{
+				active = False
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Repair Wheel
+				guiName = Repair Wheel
+				category = Repair Wheel
+				guiActiveUnfocused = True
+				unfocusedRange = 4
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1200
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -586,7 +1034,7 @@ PART
 }
 PART
 {
-	part = GearMedium_4294054786
+	part = GearMedium_4289958000
 	partName = Part
 	pos = -4.759041,8.265443,1.189936
 	attPos = -3.559041,1.055741,-1.257868
@@ -605,7 +1053,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = GearMedium_4294057540
+	sym = GearMedium_4289958250
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -618,75 +1066,31 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleLandingGear
+		name = ModuleWheelBase
 		isEnabled = True
-		BrakeTorque = 12
-		brakesEngaged = False
-		brakesEnabled = True
-		storedGearState = UNDEFINED
-		storedAnimationSpeed = 0
-		storedAnimationTime = 0
-		StartDeployed = True
+		wheelType = FREE
+		isGrounded = False
+		autoFriction = True
+		frictionMultiplier = 1
 		stagingEnabled = True
-		BrakeTorque_UIFlight
+		frictionMultiplier_UIFlight
 		{
 			controlEnabled = True
-			minValue = 0
-			maxValue = 30
-			stepIncrement = 1
-		}
-		StartDeployed_UIFlight
-		{
-			controlEnabled = True
+			minValue = 0.01
+			maxValue = 5
+			stepIncrement = 0.01
 		}
 		EVENTS
 		{
-			EnableBrakes
-			{
-				active = False
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Enable brakes
-				guiName = Enable brakes
-				category = Enable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			DisableBrakes
-			{
-				active = True
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Disable brakes
-				guiName = Disable brakes
-				category = Disable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			LowerLandingGear
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Lower Gear
-				guiName = Lower Gear
-				category = Lower Gear
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			RaiseLandingGear
+			EvtAutoFrictionToggle
 			{
 				active = True
 				guiActive = True
+				guiActiveEditor = True
 				guiActiveUncommand = False
-				guiIcon = Raise Gear
-				guiName = Raise Gear
-				category = Raise Gear
+				guiIcon = 
+				guiName = Friction Control: Auto
+				category = 
 				guiActiveUnfocused = False
 				unfocusedRange = 2
 				externalToEVAOnly = True
@@ -706,14 +1110,156 @@ PART
 		}
 		ACTIONS
 		{
-			OnAction
+			ActAutoFrictionToggle
 			{
-				actionGroup = Gear
+				actionGroup = None
 			}
-			BrakesAction
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSuspension
+		isEnabled = True
+		springTweakable = 1
+		damperTweakable = 1
+		suspensionPos = (-1, -1, -1)
+		autoBoost = 0
+		stagingEnabled = True
+		springTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		damperTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		isEnabled = True
+		brakeTweakable = 100
+		brakeInput = 0
+		stagingEnabled = True
+		brakeTweakable_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 200
+			stepIncrement = 5
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			BrakeAction
 			{
 				actionGroup = Brakes
 			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		isEnabled = True
+		stateString = Deployed
+		stagingEnabled = True
+		position = 1
+		EVENTS
+		{
+			EventToggle
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Toggle
+				guiName = Start Extended
+				category = Toggle
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ActionToggle
+			{
+				actionGroup = Gear
+			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelBogey
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -723,6 +1269,232 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleStatusLight
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTestSubject
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			RunTestEvent
+			{
+				active = False
+				guiActive = True
+				guiActiveUncommand = False
+				guiIcon = Run Test
+				guiName = Run Test
+				category = Run Test
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleLight
+		isEnabled = True
+		isOn = False
+		uiWriteLock = False
+		lightR = 1
+		lightG = 1
+		lightB = 1
+		stagingEnabled = True
+		lightR_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		lightG_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		lightB_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 1
+			stepIncrement = 0.05
+		}
+		EVENTS
+		{
+			LightsOff
+			{
+				active = False
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Lights Off
+				guiName = Lights Off
+				category = Lights Off
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			LightsOn
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Lights On
+				guiName = Lights On
+				category = Lights On
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			ToggleLightAction
+			{
+				actionGroup = Light
+			}
+			LightOnAction
+			{
+				actionGroup = None
+			}
+			LightOffAction
+			{
+				actionGroup = None
+			}
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelDamage
+		isEnabled = True
+		isDamaged = False
+		stagingEnabled = True
+		EVENTS
+		{
+			EventRepairExternal
+			{
+				active = False
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Repair Wheel
+				guiName = Repair Wheel
+				category = Repair Wheel
+				guiActiveUnfocused = True
+				unfocusedRange = 4
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1200
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -999,9 +1771,9 @@ PART
 }
 PART
 {
-	part = adapterMk3-Size2Slant_4294697354
+	part = adapterMk3-Size2Slant_4289957708
 	partName = Part
-	pos = -1.2,8.934946,9.232079
+	pos = -1.2,8.935026,9.232159
 	attPos = 0,0,0
 	attPos0 = 0,6.875001,-1.341106E-07
 	rot = 0,0.7071068,0.7071068,0
@@ -1018,11 +1790,11 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = adapterSize2-Size1Slant_4294703746
-	link = kOSMachineRad_4291973172
+	link = adapterSize2-Size1Slant_4289957588
+	link = kOSMachineRad_4289955124
 	link = wingShuttleRudder_4294365694
 	link = wingShuttleRudder_4294179604
-	attN = top,adapterSize2-Size1Slant_4294703746
+	attN = top,adapterSize2-Size1Slant_4289957588
 	attN = bottom,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -1032,6 +1804,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 3.75
+		defaultScale = 3.75
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1352.5
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -1085,7 +1898,7 @@ PART
 	RESOURCE
 	{
 		name = Oxidizer
-		amount = 1375
+		amount = 1100.00001639128
 		maxAmount = 1375
 		flowState = True
 		isTweakable = True
@@ -1096,9 +1909,9 @@ PART
 }
 PART
 {
-	part = adapterMk3-Size2Slant_4294696368
+	part = adapterMk3-Size2Slant_4289957668
 	partName = Part
-	pos = -1.2,8.934784,-4.518072
+	pos = -1.2,8.934704,-4.518134
 	attPos = 0,0,0
 	attPos0 = 0,-6.875001,1.341106E-07
 	rot = 0,-0.7071068,0.7071068,0
@@ -1115,9 +1928,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = adapterSize2-Size1Slant_4294703026
-	link = structuralWing_4294610296
-	attN = top,adapterSize2-Size1Slant_4294703026
+	link = adapterSize2-Size1Slant_4289957628
+	link = structuralWing_4289955362
+	attN = top,adapterSize2-Size1Slant_4289957628
 	attN = bottom,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -1127,6 +1940,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 3.75
+		defaultScale = 3.75
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1352.5
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -1180,7 +2034,7 @@ PART
 	RESOURCE
 	{
 		name = Oxidizer
-		amount = 1375
+		amount = 1100.00001639128
 		maxAmount = 1375
 		flowState = True
 		isTweakable = True
@@ -1191,9 +2045,9 @@ PART
 }
 PART
 {
-	part = adapterSize2-Size1Slant_4294703026
+	part = adapterSize2-Size1Slant_4289957628
 	partName = Part
-	pos = -1.2,9.559864,-7.643089
+	pos = -1.2,9.559864,-7.643167
 	attPos = 0,0,0
 	attPos0 = 0,3.125001,-0.6250004
 	rot = 0,0.7071068,-0.7071068,0
@@ -1210,9 +2064,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = pointyNoseConeB_4294683638
-	attN = top,pointyNoseConeB_4294683638
-	attN = bottom,adapterMk3-Size2Slant_4294696368
+	link = pointyNoseConeB_4289957548
+	attN = top,pointyNoseConeB_4289957548
+	attN = bottom,adapterMk3-Size2Slant_4289957668
 	EVENTS
 	{
 	}
@@ -1221,6 +2075,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 2.5
+		defaultScale = 2.5
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 432.8
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -1285,7 +2180,7 @@ PART
 }
 PART
 {
-	part = adapterSize2-Size1Slant_4294703746
+	part = adapterSize2-Size1Slant_4289957588
 	partName = Part
 	pos = -1.2,8.309866,12.35699
 	attPos = 0,0,0
@@ -1304,9 +2199,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4291735116
-	attN = top,shockConeIntake_4291735116
-	attN = bottom,adapterMk3-Size2Slant_4294697354
+	link = shockConeIntake_4289955050
+	attN = top,shockConeIntake_4289955050
+	attN = bottom,adapterMk3-Size2Slant_4289957708
 	EVENTS
 	{
 	}
@@ -1315,6 +2210,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 2.5
+		defaultScale = 2.5
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 432.8
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -1379,9 +2315,9 @@ PART
 }
 PART
 {
-	part = pointyNoseConeB_4294683638
+	part = pointyNoseConeB_4289957548
 	partName = Part
-	pos = -1.2,10.18486,-9.518089
+	pos = -1.2,10.18486,-9.518169
 	attPos = 0,0,0
 	attPos0 = 0,1.875,-0.6250003
 	rot = 0,-0.7071068,0.7071068,0
@@ -1398,7 +2334,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	attN = bottom01,adapterSize2-Size1Slant_4294703026
+	attN = bottom01,adapterSize2-Size1Slant_4289957628
 	EVENTS
 	{
 	}
@@ -1434,6 +2370,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 320
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -1473,9 +2450,9 @@ PART
 }
 PART
 {
-	part = SmallGearBay_4294058682
+	part = SmallGearBay_4289957508
 	partName = Part
-	pos = -1.2,6.904233,6.710998
+	pos = -1.2,7.004233,6.711043
 	attPos = 0,0,0
 	attPos0 = 0,4.353915,2.030637
 	rot = -2.086163E-07,0,0,1
@@ -1504,75 +2481,31 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleLandingGear
+		name = ModuleWheelBase
 		isEnabled = True
-		BrakeTorque = 12
-		brakesEngaged = False
-		brakesEnabled = True
-		storedGearState = UNDEFINED
-		storedAnimationSpeed = 0
-		storedAnimationTime = 0
-		StartDeployed = True
+		wheelType = FREE
+		isGrounded = False
+		autoFriction = True
+		frictionMultiplier = 1
 		stagingEnabled = True
-		BrakeTorque_UIFlight
+		frictionMultiplier_UIFlight
 		{
 			controlEnabled = True
-			minValue = 0
-			maxValue = 30
-			stepIncrement = 1
-		}
-		StartDeployed_UIFlight
-		{
-			controlEnabled = True
+			minValue = 0.01
+			maxValue = 5
+			stepIncrement = 0.01
 		}
 		EVENTS
 		{
-			EnableBrakes
-			{
-				active = False
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Enable brakes
-				guiName = Enable brakes
-				category = Enable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			DisableBrakes
-			{
-				active = True
-				guiActive = False
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Disable brakes
-				guiName = Disable brakes
-				category = Disable brakes
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			LowerLandingGear
-			{
-				active = False
-				guiActive = True
-				guiActiveUncommand = False
-				guiIcon = Lower Gear
-				guiName = Lower Gear
-				category = Lower Gear
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			RaiseLandingGear
+			EvtAutoFrictionToggle
 			{
 				active = True
 				guiActive = True
+				guiActiveEditor = True
 				guiActiveUncommand = False
-				guiIcon = Raise Gear
-				guiName = Raise Gear
-				category = Raise Gear
+				guiIcon = 
+				guiName = Friction Control: Auto
+				category = 
 				guiActiveUnfocused = False
 				unfocusedRange = 2
 				externalToEVAOnly = True
@@ -1592,11 +2525,120 @@ PART
 		}
 		ACTIONS
 		{
-			OnAction
+			ActAutoFrictionToggle
 			{
-				actionGroup = Gear
+				actionGroup = None
 			}
-			BrakesAction
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSuspension
+		isEnabled = True
+		springTweakable = 1
+		damperTweakable = 1
+		suspensionPos = (-1, -1, -1)
+		autoBoost = 0
+		stagingEnabled = True
+		springTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		damperTweakable_UIEditor
+		{
+			controlEnabled = True
+			minValue = 0.05
+			maxValue = 2
+			stepIncrement = 0.05
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSteering
+		isEnabled = True
+		steeringEnabled = False
+		steeringInvert = False
+		stagingEnabled = True
+		steeringEnabled_UIFlight
+		{
+			controlEnabled = True
+		}
+		steeringInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		isEnabled = True
+		brakeTweakable = 100
+		brakeInput = 0
+		stagingEnabled = True
+		brakeTweakable_UIFlight
+		{
+			controlEnabled = True
+			minValue = 0
+			maxValue = 200
+			stepIncrement = 5
+		}
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+			BrakeAction
 			{
 				actionGroup = Brakes
 			}
@@ -1604,48 +2646,46 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleSteering
+		name = ModuleStatusLight
 		isEnabled = True
-		steeringLocked = True
-		invertSteering = False
 		stagingEnabled = True
 		EVENTS
 		{
-			UnLockSteering
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		isEnabled = True
+		stateString = Deployed
+		stagingEnabled = True
+		position = 1
+		EVENTS
+		{
+			EventToggle
 			{
 				active = True
 				guiActive = True
 				guiActiveEditor = True
 				guiActiveUncommand = False
-				guiIcon = Unlock Steering
-				guiName = Unlock Steering
-				category = Unlock Steering
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			LockSteering
-			{
-				active = False
-				guiActive = True
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Lock Steering
-				guiName = Lock Steering
-				category = Lock Steering
-				guiActiveUnfocused = False
-				unfocusedRange = 2
-				externalToEVAOnly = True
-			}
-			InvertSteering
-			{
-				active = True
-				guiActive = True
-				guiActiveEditor = True
-				guiActiveUncommand = False
-				guiIcon = Invert Steering
-				guiName = Invert Steering
-				category = Invert Steering
+				guiIcon = Toggle
+				guiName = Start Extended
+				category = Toggle
 				guiActiveUnfocused = False
 				unfocusedRange = 2
 				externalToEVAOnly = True
@@ -1665,21 +2705,9 @@ PART
 		}
 		ACTIONS
 		{
-			InvertSteeringAction
+			ActionToggle
 			{
-				actionGroup = None
-			}
-			LockSteeringAction
-			{
-				actionGroup = None
-			}
-			UnlockSteeringAction
-			{
-				actionGroup = None
-			}
-			ToggleSteeringAction
-			{
-				actionGroup = None
+				actionGroup = Gear
 			}
 		}
 	}
@@ -1709,9 +2737,70 @@ PART
 	}
 	MODULE
 	{
+		name = FXModuleLookAtConstraint
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTestSubject
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			RunTestEvent
+			{
+				active = False
+				guiActive = True
+				guiActiveUncommand = False
+				guiIcon = Run Test
+				guiName = Run Test
+				category = Run Test
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = ModuleLight
 		isEnabled = True
 		isOn = False
+		uiWriteLock = False
 		lightR = 1
 		lightG = 1
 		lightB = 1
@@ -1796,6 +2885,84 @@ PART
 	}
 	MODULE
 	{
+		name = ModuleWheelDamage
+		isEnabled = True
+		isDamaged = False
+		stagingEnabled = True
+		EVENTS
+		{
+			EventRepairExternal
+			{
+				active = False
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Repair Wheel
+				guiName = Repair Wheel
+				category = Repair Wheel
+				guiActiveUnfocused = True
+				unfocusedRange = 4
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 600
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -1835,7 +3002,7 @@ PART
 }
 PART
 {
-	part = RCSBlock_4294673512
+	part = RCSBlock_4289957294
 	partName = Part
 	pos = 0.4809418,8.935607,2.470087
 	attPos = -2.384186E-07,0.1158469,1.385342E-08
@@ -1854,7 +3021,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = RCSBlock_4294673410
+	sym = RCSBlock_4289957250
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -1871,12 +3038,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -1885,8 +3055,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -1919,7 +3134,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -1932,6 +3147,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 620
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -1975,7 +3231,7 @@ PART
 }
 PART
 {
-	part = RCSBlock_4294673410
+	part = RCSBlock_4289957250
 	partName = Part
 	pos = -2.880942,8.935607,2.470087
 	attPos = 2.384186E-07,0.1158469,1.385342E-08
@@ -1994,7 +3250,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = RCSBlock_4294673512
+	sym = RCSBlock_4289957294
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -2011,12 +3267,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -2025,8 +3284,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -2059,7 +3363,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -2072,6 +3376,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 620
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2115,7 +3460,7 @@ PART
 }
 PART
 {
-	part = linearRcs_4294672956
+	part = linearRcs_4289957206
 	partName = Part
 	pos = 0.5214627,8.934865,2.466786
 	attPos = 0.09756768,0.4616531,5.503333E-08
@@ -2134,7 +3479,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = linearRcs_4294672716
+	sym = linearRcs_4289957162
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -2151,12 +3496,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -2165,8 +3513,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -2199,7 +3592,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -2212,6 +3605,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 280
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2255,7 +3689,7 @@ PART
 }
 PART
 {
-	part = linearRcs_4294672716
+	part = linearRcs_4289957162
 	partName = Part
 	pos = -2.921463,8.934865,2.466786
 	attPos = -0.09756768,0.4616531,5.503333E-08
@@ -2274,7 +3708,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = linearRcs_4294672956
+	sym = linearRcs_4289957206
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -2291,12 +3725,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -2305,8 +3742,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -2339,7 +3821,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -2352,6 +3834,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 280
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2395,9 +3918,9 @@ PART
 }
 PART
 {
-	part = asasmodule1-2_4294668192
+	part = asasmodule1-2_4289957118
 	partName = Part
-	pos = -1.2,8.58873,7.087045
+	pos = -1.2,8.588737,7.08709
 	attPos = 0,2.95639E-05,0.3461542
 	attPos0 = 0,4.730001,-3.898144E-07
 	rot = 0.7071068,0,0,0.7071068
@@ -2414,10 +3937,10 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = batteryBank_4291872420
-	link = radialRCSTank_4290751750
+	link = batteryBank_4289955082
+	link = radialRCSTank_4289955002
 	attN = top,mk3CargoBayL_4294493264
-	attN = bottom,batteryBank_4291872420
+	attN = bottom,batteryBank_4289955082
 	EVENTS
 	{
 	}
@@ -2431,9 +3954,15 @@ PART
 	{
 		name = ModuleReactionWheel
 		isEnabled = True
+		actuatorModeCycle = 0
 		stateString = Active
 		stagingEnabled = True
 		WheelState = Active
+		actuatorModeCycle_UIFlight
+		{
+			controlEnabled = True
+			stateNames = Normal, SAS Only, Pilot Only
+		}
 		EVENTS
 		{
 			OnToggle
@@ -2480,6 +4009,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 2.5
+		defaultScale = 2.5
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2100
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -2519,7 +4089,7 @@ PART
 }
 PART
 {
-	part = LargeTank_4294654830
+	part = LargeTank_4289957086
 	partName = Part
 	pos = -1.2,8.934865,2.356994
 	attPos = 0,0.6837663,-3.04326
@@ -2538,11 +4108,11 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = SmallTank_4294645612
-	link = SmallTank_4294645172
+	link = SmallTank_4289957050
+	link = SmallTank_4289957016
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,SmallTank_4294645612
-	attN = bottom,SmallTank_4294645172
+	attN = top,SmallTank_4289957050
+	attN = bottom,SmallTank_4289957016
 	EVENTS
 	{
 	}
@@ -2590,6 +4160,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 2.5
+		defaultScale = 2.5
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2970
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2644,7 +4255,7 @@ PART
 }
 PART
 {
-	part = SmallTank_4294645612
+	part = SmallTank_4289957050
 	partName = Part
 	pos = -1.2,8.934866,4.156994
 	attPos = 0,0,0
@@ -2663,7 +4274,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	attN = bottom,LargeTank_4294654830
+	attN = bottom,LargeTank_4289957086
 	EVENTS
 	{
 	}
@@ -2711,6 +4322,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 994
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2765,9 +4417,9 @@ PART
 }
 PART
 {
-	part = SmallTank_4294645172
+	part = SmallTank_4289957016
 	partName = Part
-	pos = -1.2,8.934864,0.5569839
+	pos = -1.2,8.934864,0.5569742
 	attPos = 0,0,0
 	attPos0 = 0,-1.8,5.483627E-07
 	rot = 0.7071069,0,0,0.7071068
@@ -2784,7 +4436,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	attN = top,LargeTank_4294654830
+	attN = top,LargeTank_4289957086
 	EVENTS
 	{
 	}
@@ -2832,6 +4484,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 994
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -2886,7 +4579,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294626204
+	part = MK1Fuselage_4289956982
 	partName = Part
 	pos = 2.6,8.934865,1.818643
 	attPos = 1.551124,3.678132,1.392142E-06
@@ -2905,12 +4598,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294626162
-	link = RAPIER_4294626108
-	sym = MK1Fuselage_4294625426
+	link = shockConeIntake_4289956944
+	link = RAPIER_4289956896
+	sym = MK1Fuselage_4289956712
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294626162
-	attN = bottom,RAPIER_4294626108
+	attN = top,shockConeIntake_4289956944
+	attN = bottom,RAPIER_4289956896
 	EVENTS
 	{
 	}
@@ -2919,6 +4612,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -2972,7 +4706,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294626162
+	part = shockConeIntake_4289956944
 	partName = Part
 	pos = 2.60003,8.934756,3.381004
 	attPos = 0,0,0
@@ -2991,8 +4725,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294625382
-	attN = bottom,MK1Fuselage_4294626204
+	sym = shockConeIntake_4289956674
+	attN = bottom,MK1Fuselage_4289956982
 	EVENTS
 	{
 	}
@@ -3081,6 +4815,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -3131,9 +4906,9 @@ PART
 }
 PART
 {
-	part = RAPIER_4294626108
+	part = RAPIER_4289956896
 	partName = Part
-	pos = 2.60003,8.934757,-0.04588699
+	pos = 2.60003,8.934757,-0.04589677
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = -0.6532815,0.2705979,0.2705975,-0.6532819
@@ -3143,17 +4918,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 0
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294625956
-	sym = RAPIER_4294625328
-	attN = top,MK1Fuselage_4294626204
-	attN = bottom,standardNoseCone_4294625956
+	link = standardNoseCone_4289956752
+	sym = RAPIER_4289956626
+	attN = top,MK1Fuselage_4289956982
+	attN = bottom,standardNoseCone_4289956752
 	EVENTS
 	{
 	}
@@ -3425,6 +5200,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -3438,8 +5217,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -3464,6 +5268,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -3555,6 +5371,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -3594,9 +5451,9 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294625956
+	part = standardNoseCone_4289956752
 	partName = Part
-	pos = 2.60003,8.934756,-0.0658474
+	pos = 2.60003,8.934756,-0.06585717
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = -0.092297,0.7010573,-0.7010577,0.09229437
@@ -3613,8 +5470,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294625176
-	attN = bottom01,RAPIER_4294626108
+	sym = standardNoseCone_4289956482
+	attN = bottom01,RAPIER_4289956896
 	EVENTS
 	{
 	}
@@ -3631,6 +5488,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -3689,7 +5587,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294625426
+	part = MK1Fuselage_4289956712
 	partName = Part
 	pos = -5,8.934865,1.818643
 	attPos = -1.551124,3.678132,5.668202E-07
@@ -3708,12 +5606,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294625382
-	link = RAPIER_4294625328
-	sym = MK1Fuselage_4294626204
+	link = shockConeIntake_4289956674
+	link = RAPIER_4289956626
+	sym = MK1Fuselage_4289956982
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294625382
-	attN = bottom,RAPIER_4294625328
+	attN = top,shockConeIntake_4289956674
+	attN = bottom,RAPIER_4289956626
 	EVENTS
 	{
 	}
@@ -3722,6 +5620,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -3775,7 +5714,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294625382
+	part = shockConeIntake_4289956674
 	partName = Part
 	pos = -5.000031,8.934974,3.381004
 	attPos = 0,0,0
@@ -3794,8 +5733,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294626162
-	attN = bottom,MK1Fuselage_4294625426
+	sym = shockConeIntake_4289956944
+	attN = bottom,MK1Fuselage_4289956712
 	EVENTS
 	{
 	}
@@ -3884,6 +5823,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -3934,9 +5914,9 @@ PART
 }
 PART
 {
-	part = RAPIER_4294625328
+	part = RAPIER_4289956626
 	partName = Part
-	pos = -5.000031,8.934973,-0.04589057
+	pos = -5.000031,8.934973,-0.04590034
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = -0.2705977,-0.6532815,-0.653282,-0.2705975
@@ -3946,17 +5926,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 0
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294625176
-	sym = RAPIER_4294626108
-	attN = top,MK1Fuselage_4294625426
-	attN = bottom,standardNoseCone_4294625176
+	link = standardNoseCone_4289956482
+	sym = RAPIER_4289956896
+	attN = top,MK1Fuselage_4289956712
+	attN = bottom,standardNoseCone_4289956482
 	EVENTS
 	{
 	}
@@ -4228,6 +6208,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -4241,8 +6225,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -4267,6 +6276,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -4358,6 +6379,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -4397,12 +6459,12 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294625176
+	part = standardNoseCone_4289956482
 	partName = Part
-	pos = -5.000031,8.934974,-0.06585097
+	pos = -5.000031,8.934974,-0.06586075
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = -0.7010574,-0.09229676,0.09229512,0.7010576
+	rot = -0.7010574,-0.09229621,0.09229566,0.7010576
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -4416,8 +6478,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294625956
-	attN = bottom01,RAPIER_4294625328
+	sym = standardNoseCone_4289956752
+	attN = bottom01,RAPIER_4289956626
 	EVENTS
 	{
 	}
@@ -4434,6 +6496,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -4492,7 +6595,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294613354
+	part = MK1Fuselage_4289956442
 	partName = Part
 	pos = 1,8.934865,1.488475
 	attPos = -0.05085492,3.302996,1.347423E-06
@@ -4511,12 +6614,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294613310
-	link = RAPIER_4294613256
-	sym = MK1Fuselage_4294612086
+	link = shockConeIntake_4289956404
+	link = RAPIER_4289956356
+	sym = MK1Fuselage_4289956172
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294613310
-	attN = bottom,RAPIER_4294613256
+	attN = top,shockConeIntake_4289956404
+	attN = bottom,RAPIER_4289956356
 	EVENTS
 	{
 	}
@@ -4525,6 +6628,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -4578,7 +6722,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294613310
+	part = shockConeIntake_4289956404
 	partName = Part
 	pos = 1.00003,8.934756,3.050836
 	attPos = 0,0,0
@@ -4597,8 +6741,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294612042
-	attN = bottom,MK1Fuselage_4294613354
+	sym = shockConeIntake_4289956134
+	attN = bottom,MK1Fuselage_4289956442
 	EVENTS
 	{
 	}
@@ -4687,6 +6831,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -4737,9 +6922,9 @@ PART
 }
 PART
 {
-	part = RAPIER_4294613256
+	part = RAPIER_4289956356
 	partName = Part
-	pos = 1.00003,8.934757,-0.3760538
+	pos = 1.00003,8.934757,-0.3760636
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = 0.6532815,-0.2705979,-0.2705976,0.6532819
@@ -4749,17 +6934,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 1
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294613104
-	sym = RAPIER_4294611988
-	attN = top,MK1Fuselage_4294613354
-	attN = bottom,standardNoseCone_4294613104
+	link = standardNoseCone_4289956212
+	sym = RAPIER_4289956086
+	attN = top,MK1Fuselage_4289956442
+	attN = bottom,standardNoseCone_4289956212
 	EVENTS
 	{
 	}
@@ -5031,6 +7216,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -5044,8 +7233,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -5070,6 +7284,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -5161,6 +7387,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -5200,9 +7467,9 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294613104
+	part = standardNoseCone_4289956212
 	partName = Part
-	pos = 1.00003,8.934756,-0.3960142
+	pos = 1.00003,8.934756,-0.396024
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = 0.09229721,-0.7010573,0.7010577,-0.09229416
@@ -5219,8 +7486,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294611836
-	attN = bottom01,RAPIER_4294613256
+	sym = standardNoseCone_4289955942
+	attN = bottom01,RAPIER_4289956356
 	EVENTS
 	{
 	}
@@ -5237,6 +7504,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -5295,7 +7603,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294612086
+	part = MK1Fuselage_4289956172
 	partName = Part
 	pos = -3.4,8.934865,1.488475
 	attPos = 0.05085492,3.302996,3.937478E-07
@@ -5314,12 +7622,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294612042
-	link = RAPIER_4294611988
-	sym = MK1Fuselage_4294613354
+	link = shockConeIntake_4289956134
+	link = RAPIER_4289956086
+	sym = MK1Fuselage_4289956442
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294612042
-	attN = bottom,RAPIER_4294611988
+	attN = top,shockConeIntake_4289956134
+	attN = bottom,RAPIER_4289956086
 	EVENTS
 	{
 	}
@@ -5328,6 +7636,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -5381,7 +7730,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294612042
+	part = shockConeIntake_4289956134
 	partName = Part
 	pos = -3.40003,8.934977,3.050836
 	attPos = 0,0,0
@@ -5400,8 +7749,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294613310
-	attN = bottom,MK1Fuselage_4294612086
+	sym = shockConeIntake_4289956404
+	attN = bottom,MK1Fuselage_4289956172
 	EVENTS
 	{
 	}
@@ -5490,6 +7839,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -5540,7 +7930,7 @@ PART
 }
 PART
 {
-	part = RAPIER_4294611988
+	part = RAPIER_4289956086
 	partName = Part
 	pos = -3.40003,8.934973,-0.3760495
 	attPos = 0,0,0
@@ -5552,17 +7942,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 1
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294611836
-	sym = RAPIER_4294613256
-	attN = top,MK1Fuselage_4294612086
-	attN = bottom,standardNoseCone_4294611836
+	link = standardNoseCone_4289955942
+	sym = RAPIER_4289956356
+	attN = top,MK1Fuselage_4289956172
+	attN = bottom,standardNoseCone_4289955942
 	EVENTS
 	{
 	}
@@ -5834,6 +8224,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -5847,8 +8241,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -5873,6 +8292,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -5964,6 +8395,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -6003,12 +8475,12 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294611836
+	part = standardNoseCone_4289955942
 	partName = Part
 	pos = -3.40003,8.934973,-0.3960099
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = 0.7010575,0.09229689,-0.09229434,-0.7010575
+	rot = 0.7010574,0.09229685,-0.09229431,-0.7010574
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -6022,8 +8494,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294613104
-	attN = bottom01,RAPIER_4294611988
+	sym = standardNoseCone_4289956212
+	attN = bottom01,RAPIER_4289956086
 	EVENTS
 	{
 	}
@@ -6040,6 +8512,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -6098,7 +8611,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294610692
+	part = MK1Fuselage_4289955902
 	partName = Part
 	pos = 4,8.934865,1.836203
 	attPos = 2.948242,4.06435,1.438183E-06
@@ -6117,12 +8630,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294610648
-	link = RAPIER_4294610594
-	sym = MK1Fuselage_4294609336
+	link = shockConeIntake_4289955864
+	link = RAPIER_4289955816
+	sym = MK1Fuselage_4289955632
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294610648
-	attN = bottom,RAPIER_4294610594
+	attN = top,shockConeIntake_4289955864
+	attN = bottom,RAPIER_4289955816
 	EVENTS
 	{
 	}
@@ -6131,6 +8644,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -6184,7 +8738,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294610648
+	part = shockConeIntake_4289955864
 	partName = Part
 	pos = 4.000031,8.934756,3.398565
 	attPos = 0,0,0
@@ -6203,8 +8757,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294609292
-	attN = bottom,MK1Fuselage_4294610692
+	sym = shockConeIntake_4289955594
+	attN = bottom,MK1Fuselage_4289955902
 	EVENTS
 	{
 	}
@@ -6293,6 +8847,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -6343,9 +8938,9 @@ PART
 }
 PART
 {
-	part = RAPIER_4294610594
+	part = RAPIER_4289955816
 	partName = Part
-	pos = 4.000031,8.934757,-0.02832556
+	pos = 4.000031,8.934757,-0.02833533
 	attPos = 0,0,0
 	attPos0 = 8.77981E-08,-1.86443,7.047195E-07
 	rot = 0.6532815,-0.2705979,-0.2705976,0.6532819
@@ -6355,17 +8950,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 2
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294610442
-	sym = RAPIER_4294609238
-	attN = top,MK1Fuselage_4294610692
-	attN = bottom,standardNoseCone_4294610442
+	link = standardNoseCone_4289955672
+	sym = RAPIER_4289955546
+	attN = top,MK1Fuselage_4289955902
+	attN = bottom,standardNoseCone_4289955672
 	EVENTS
 	{
 	}
@@ -6637,6 +9232,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -6650,8 +9249,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -6676,6 +9300,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -6767,6 +9403,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -6806,9 +9483,9 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294610442
+	part = standardNoseCone_4289955672
 	partName = Part
-	pos = 4.000031,8.934756,-0.04828596
+	pos = 4.000031,8.934756,-0.04829574
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
 	rot = 0.09229721,-0.7010573,0.7010577,-0.09229416
@@ -6825,8 +9502,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294609086
-	attN = bottom01,RAPIER_4294610594
+	sym = standardNoseCone_4289955402
+	attN = bottom01,RAPIER_4289955816
 	EVENTS
 	{
 	}
@@ -6843,6 +9520,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -6901,7 +9619,7 @@ PART
 }
 PART
 {
-	part = MK1Fuselage_4294609336
+	part = MK1Fuselage_4289955632
 	partName = Part
 	pos = -6.4,8.934865,1.836203
 	attPos = -2.948242,4.06435,4.845082E-07
@@ -6920,12 +9638,12 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = shockConeIntake_4294609292
-	link = RAPIER_4294609238
-	sym = MK1Fuselage_4294610692
+	link = shockConeIntake_4289955594
+	link = RAPIER_4289955546
+	sym = MK1Fuselage_4289955902
 	srfN = srfAttach,mk3CargoBayL_4294493264
-	attN = top,shockConeIntake_4294609292
-	attN = bottom,RAPIER_4294609238
+	attN = top,shockConeIntake_4289955594
+	attN = bottom,RAPIER_4289955546
 	EVENTS
 	{
 	}
@@ -6934,6 +9652,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 230
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -6987,7 +9746,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4294609292
+	part = shockConeIntake_4289955594
 	partName = Part
 	pos = -6.40003,8.934977,3.398564
 	attPos = 0,0,0
@@ -7006,8 +9765,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = shockConeIntake_4294610648
-	attN = bottom,MK1Fuselage_4294609336
+	sym = shockConeIntake_4289955864
+	attN = bottom,MK1Fuselage_4289955632
 	EVENTS
 	{
 	}
@@ -7096,6 +9855,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -7146,7 +9946,7 @@ PART
 }
 PART
 {
-	part = RAPIER_4294609238
+	part = RAPIER_4289955546
 	partName = Part
 	pos = -6.40003,8.934973,-0.02831745
 	attPos = 0,0,0
@@ -7158,17 +9958,17 @@ PART
 	symMethod = Radial
 	istg = 0
 	dstg = 0
-	sidx = -1
-	sqor = -1
+	sidx = 2
+	sqor = 0
 	sepI = 1
 	attm = 0
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = standardNoseCone_4294609086
-	sym = RAPIER_4294610594
-	attN = top,MK1Fuselage_4294609336
-	attN = bottom,standardNoseCone_4294609086
+	link = standardNoseCone_4289955402
+	sym = RAPIER_4289955816
+	attN = top,MK1Fuselage_4289955632
+	attN = bottom,standardNoseCone_4289955402
 	EVENTS
 	{
 	}
@@ -7440,6 +10240,10 @@ PART
 		isEnabled = True
 		gimbalLock = True
 		gimbalLimiter = 100
+		currentShowToggles = False
+		enableYaw = True
+		enablePitch = True
+		enableRoll = True
 		gimbalActive = False
 		stagingEnabled = True
 		gimbalLock_UIFlight
@@ -7453,8 +10257,33 @@ PART
 			maxValue = 100
 			stepIncrement = 1
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -7479,6 +10308,18 @@ PART
 				actionGroup = None
 			}
 			FreeAction
+			{
+				actionGroup = None
+			}
+			TogglePitchAction
+			{
+				actionGroup = None
+			}
+			ToggleYawAction
+			{
+				actionGroup = None
+			}
+			ToggleRollAction
 			{
 				actionGroup = None
 			}
@@ -7570,6 +10411,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6000
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2Engine
@@ -7609,12 +10491,12 @@ PART
 }
 PART
 {
-	part = standardNoseCone_4294609086
+	part = standardNoseCone_4289955402
 	partName = Part
 	pos = -6.40003,8.934973,-0.04827785
 	attPos = 7.375625E-07,0.4860659,3.009691E-07
 	attPos0 = -1.591675E-07,-0.5060301,5.887014E-07
-	rot = 0.7010575,0.09229689,-0.09229434,-0.7010575
+	rot = 0.7010574,0.09229685,-0.09229431,-0.7010574
 	attRot = 0.9999999,0,0,0
 	attRot0 = 0.499999,1.788139E-07,0.866026,1.087785E-06
 	mir = 1,1,1
@@ -7628,8 +10510,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = standardNoseCone_4294610442
-	attN = bottom01,RAPIER_4294609238
+	sym = standardNoseCone_4289955672
+	attN = bottom01,RAPIER_4289955546
 	EVENTS
 	{
 	}
@@ -7646,6 +10528,47 @@ PART
 		stagingEnabled = True
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.625
+		defaultScale = 0.625
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 180
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -7704,9 +10627,9 @@ PART
 }
 PART
 {
-	part = structuralWing_4294610296
+	part = structuralWing_4289955362
 	partName = Part
-	pos = -1.2,10.51149,-8.318096
+	pos = -1.2,10.51149,-8.318176
 	attPos = -1.192093E-07,3.797018,0.3018804
 	attPos0 = 1.192093E-07,0.002985954,-1.878514
 	rot = 0.4992904,-0.5007087,-0.4992904,0.5007087
@@ -7723,8 +10646,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = StandardCtrlSrf_4294608776
-	srfN = srfAttach,adapterMk3-Size2Slant_4294696368
+	link = StandardCtrlSrf_4289955324
+	srfN = srfAttach,adapterMk3-Size2Slant_4289957668
 	EVENTS
 	{
 	}
@@ -7760,6 +10683,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 500
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -7799,7 +10763,7 @@ PART
 }
 PART
 {
-	part = StandardCtrlSrf_4294608776
+	part = StandardCtrlSrf_4289955324
 	partName = Part
 	pos = -1.200001,11.42009,-10.11737
 	attPos = 0,0,0
@@ -7818,7 +10782,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	srfN = srfAttach,structuralWing_4294610296
+	srfN = srfAttach,structuralWing_4289955362
 	EVENTS
 	{
 	}
@@ -7832,11 +10796,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = False
+		usesMirrorDeploy = True
 		ignorePitch = True
 		ignoreYaw = False
 		ignoreRoll = True
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 109.8
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -7857,6 +10825,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -7887,6 +10866,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 400
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -7930,7 +10950,7 @@ PART
 }
 PART
 {
-	part = wingShuttleElevon2_4294551302
+	part = wingShuttleElevon2_4289955288
 	partName = Part
 	pos = 0.4278272,10.46427,-8.523746
 	attPos = 0.00402689,-6.999015,-1.650484
@@ -7949,8 +10969,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = R8winglet_4294539414
-	sym = wingShuttleElevon2_4294606272
+	link = R8winglet_4289955250
+	link = winglet_4289954660
+	sym = wingShuttleElevon2_4289955206
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -7965,11 +10986,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = True
+		usesMirrorDeploy = True
 		ignorePitch = False
 		ignoreYaw = True
 		ignoreRoll = True
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 100
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -7990,6 +11015,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -8020,6 +11056,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1300
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -8063,9 +11140,9 @@ PART
 }
 PART
 {
-	part = R8winglet_4294539414
+	part = R8winglet_4289955250
 	partName = Part
-	pos = 2.44944,10.41072,-9.323927
+	pos = 2.449486,10.41072,-9.324007
 	attPos = 0,0,0
 	attPos0 = -2.021568,-0.8015261,-0.02560283
 	rot = 8.338757E-05,0.7372773,0.6755905,-8.417918E-05
@@ -8082,8 +11159,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = R8winglet_4294606230
-	srfN = srfAttach,wingShuttleElevon2_4294551302
+	sym = R8winglet_4289955168
+	srfN = srfAttach,wingShuttleElevon2_4289955288
 	EVENTS
 	{
 	}
@@ -8097,11 +11174,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = True
+		usesMirrorDeploy = True
 		ignorePitch = True
 		ignoreYaw = True
 		ignoreRoll = False
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 100
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -8122,6 +11203,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -8152,6 +11244,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 640
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -8195,7 +11328,7 @@ PART
 }
 PART
 {
-	part = wingShuttleElevon2_4294606272
+	part = wingShuttleElevon2_4289955206
 	partName = Part
 	pos = -2.827827,10.46427,-8.523746
 	attPos = -0.00402689,-6.999017,-1.650484
@@ -8214,8 +11347,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = R8winglet_4294606230
-	sym = wingShuttleElevon2_4294551302
+	link = R8winglet_4289955168
+	link = winglet_4289954624
+	sym = wingShuttleElevon2_4289955288
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -8230,11 +11364,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = False
+		usesMirrorDeploy = True
 		ignorePitch = False
 		ignoreYaw = True
 		ignoreRoll = True
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 100
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -8255,6 +11393,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -8285,6 +11434,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1300
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -8328,9 +11518,9 @@ PART
 }
 PART
 {
-	part = R8winglet_4294606230
+	part = R8winglet_4289955168
 	partName = Part
-	pos = -4.849398,10.41072,-9.323929
+	pos = -4.849398,10.41072,-9.324009
 	attPos = 0,0,0
 	attPos0 = -2.021568,-0.8015261,-0.02560283
 	rot = -0.6755909,8.414702E-05,-8.34173E-05,-0.737277
@@ -8347,8 +11537,8 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = R8winglet_4294539414
-	srfN = srfAttach,wingShuttleElevon2_4294606272
+	sym = R8winglet_4289955250
+	srfN = srfAttach,wingShuttleElevon2_4289955206
 	EVENTS
 	{
 	}
@@ -8362,11 +11552,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = False
+		usesMirrorDeploy = True
 		ignorePitch = True
 		ignoreYaw = True
 		ignoreRoll = False
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 100
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -8387,6 +11581,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -8417,6 +11622,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 640
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -8460,9 +11706,9 @@ PART
 }
 PART
 {
-	part = kOSMachineRad_4291973172
+	part = kOSMachineRad_4289955124
 	partName = Part
-	pos = -1.2,10.70807,7.078526
+	pos = -1.2,10.70807,7.078571
 	attPos = 0,-0.2785311,0.1060085
 	attPos0 = 0,-1.874999,1.667175
 	rot = -0.5000001,0.5000001,0.5000001,-0.5000001
@@ -8479,7 +11725,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
+	srfN = srfAttach,adapterMk3-Size2Slant_4289957708
 	EVENTS
 	{
 	}
@@ -8493,11 +11739,10 @@ PART
 	{
 		name = kOSProcessor
 		isEnabled = True
-		bootFile = boot.ks
+		bootFile = boot.ksm
 		diskSpace = 60000
 		baseDiskSpace = 60000
-		baseModuleCost = 0
-		basePartMass = 0.03
+		baseModuleMass = 0
 		additionalCost = 0
 		MaxPartId = 100
 		RequiredPower = 0.04
@@ -8506,6 +11751,7 @@ PART
 		bootFile_UIEditor
 		{
 			controlEnabled = True
+			options = None, boot.ks, boot.ksm
 		}
 		EVENTS
 		{
@@ -8678,9 +11924,9 @@ PART
 }
 PART
 {
-	part = batteryBank_4291872420
+	part = batteryBank_4289955082
 	partName = Part
-	pos = -1.2,8.049981,7.22639
+	pos = -1.2,8.049981,7.226435
 	attPos = 0,0.5001993,0.5387306
 	attPos0 = 0,-0.3608541,1.192093E-07
 	rot = 0.7071068,0,0,0.7071068
@@ -8697,9 +11943,9 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	link = probeCoreOcto2_4294675834
-	attN = top,asasmodule1-2_4294668192
-	attN = bottom,probeCoreOcto2_4294675834
+	link = probeCoreOcto2_4289954974
+	attN = top,asasmodule1-2_4289957118
+	attN = bottom,probeCoreOcto2_4289954974
 	EVENTS
 	{
 	}
@@ -8708,6 +11954,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 880
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -8761,7 +12048,7 @@ PART
 }
 PART
 {
-	part = shockConeIntake_4291735116
+	part = shockConeIntake_4289955050
 	partName = Part
 	pos = -1.2,7.684866,13.83289
 	attPos = 0,-0.3990993,1.192093E-07
@@ -8780,7 +12067,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	attN = bottom,adapterSize2-Size1Slant_4294703746
+	attN = bottom,adapterSize2-Size1Slant_4289957588
 	EVENTS
 	{
 	}
@@ -8869,6 +12156,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1.25
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 3050
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -8919,9 +12247,9 @@ PART
 }
 PART
 {
-	part = radialRCSTank_4290751750
+	part = radialRCSTank_4289955002
 	partName = Part
-	pos = -1.2,8.037048,6.916123
+	pos = -1.2,8.037048,6.916168
 	attPos = -1.192093E-07,0.06226732,1.759151
 	attPos0 = 1.192093E-07,-0.2331896,-1.207484
 	rot = 0,0,0,1
@@ -8938,7 +12266,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	srfN = srfAttach,asasmodule1-2_4294668192
+	srfN = srfAttach,asasmodule1-2_4289957118
 	EVENTS
 	{
 	}
@@ -8947,6 +12275,47 @@ PART
 	}
 	PARTDATA
 	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 128
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
 	}
 	MODULE
 	{
@@ -9000,9 +12369,9 @@ PART
 }
 PART
 {
-	part = probeCoreOcto2_4294675834
+	part = probeCoreOcto2_4289954974
 	partName = Part
-	pos = -1.2,8.049981,7.054474
+	pos = -1.2,8.049981,7.054519
 	attPos = 0,0,0
 	attPos0 = 0,-0.171916,-5.960464E-08
 	rot = 0.7071068,0,0,0.7071068
@@ -9019,7 +12388,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	attN = top,batteryBank_4291872420
+	attN = top,batteryBank_4289955082
 	EVENTS
 	{
 	}
@@ -9090,6 +12459,47 @@ PART
 		}
 		EVENTS
 		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 1480
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			ToggleStaging
 			{
 				active = True
@@ -9189,10 +12599,10 @@ PART
 {
 	part = wingShuttleRudder_4294365694
 	partName = Part
-	pos = -0.2050167,8.36841,7.704659
-	attPos = 0.6288194,1.119019,-0.03050917
+	pos = -0.1999953,8.523029,7.622564
+	attPos = 0.6238,1.036852,0.1240481
 	attPos0 = -1.623801,-2.646433,-0.536015
-	rot = -4.213241E-08,0.7253745,0.6883547,1.103276E-09
+	rot = -4.213241E-08,0.7253745,0.6883546,1.103274E-09
 	attRot = 0.02617694,0,0,0.9996573
 	attRot0 = 0.02617693,2.901198E-08,-3.057225E-08,0.9996574
 	mir = 1,1,1
@@ -9207,7 +12617,7 @@ PART
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
 	sym = wingShuttleRudder_4294179604
-	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
+	srfN = srfAttach,adapterMk3-Size2Slant_4289957708
 	EVENTS
 	{
 	}
@@ -9221,11 +12631,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = False
+		usesMirrorDeploy = True
 		ignorePitch = True
 		ignoreYaw = True
 		ignoreRoll = True
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 80.6
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -9246,6 +12660,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -9276,6 +12701,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2500
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -9321,8 +12787,8 @@ PART
 {
 	part = wingShuttleRudder_4294179604
 	partName = Part
-	pos = -2.194982,8.36841,7.70466
-	attPos = -0.6288192,1.11902,-0.03050917
+	pos = -2.200001,8.523029,7.622565
+	attPos = -0.6237998,1.036853,0.1240481
 	attPos0 = 1.623801,-2.646433,-0.536015
 	rot = -0.688355,-3.281038E-08,1.20435E-08,-0.7253742
 	attRot = 0.02617694,0,0,0.9996573
@@ -9339,7 +12805,7 @@ PART
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
 	sym = wingShuttleRudder_4294365694
-	srfN = srfAttach,adapterMk3-Size2Slant_4294697354
+	srfN = srfAttach,adapterMk3-Size2Slant_4289957708
 	EVENTS
 	{
 	}
@@ -9353,11 +12819,15 @@ PART
 	{
 		name = ModuleControlSurface
 		isEnabled = True
+		mirrorDeploy = True
+		usesMirrorDeploy = True
 		ignorePitch = True
 		ignoreYaw = True
 		ignoreRoll = True
 		deploy = False
 		deployInvert = False
+		partDeployInvert = False
+		authorityLimiter = 80.6
 		stagingEnabled = True
 		ignorePitch_UIFlight
 		{
@@ -9378,6 +12848,17 @@ PART
 		deployInvert_UIFlight
 		{
 			controlEnabled = True
+		}
+		partDeployInvert_UIFlight
+		{
+			controlEnabled = True
+		}
+		authorityLimiter_UIFlight
+		{
+			controlEnabled = True
+			minValue = -150
+			maxValue = 150
+			stepIncrement = 0.1
 		}
 		EVENTS
 		{
@@ -9412,6 +12893,47 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 2500
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = 
@@ -9451,7 +12973,7 @@ PART
 }
 PART
 {
-	part = RCSBlock_4293948582
+	part = RCSBlock_4289954836
 	partName = Part
 	pos = 0.4803879,8.935607,2.240989
 	attPos = 0,0.1081093,1.286389E-08
@@ -9470,7 +12992,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = RCSBlock_4293948432
+	sym = RCSBlock_4289954792
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -9487,12 +13009,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -9501,8 +13026,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -9535,7 +13105,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -9548,6 +13118,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 620
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -9591,7 +13202,7 @@ PART
 }
 PART
 {
-	part = RCSBlock_4293948432
+	part = RCSBlock_4289954792
 	partName = Part
 	pos = -2.880388,8.935607,2.240989
 	attPos = 0,0.1081093,1.286389E-08
@@ -9610,7 +13221,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = RCSBlock_4293948582
+	sym = RCSBlock_4289954836
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -9627,12 +13238,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -9641,8 +13255,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -9675,7 +13334,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -9688,6 +13347,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 620
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -9731,7 +13431,7 @@ PART
 }
 PART
 {
-	part = linearRcs_4293947628
+	part = linearRcs_4289954748
 	partName = Part
 	pos = 0.5238004,8.934865,2.242971
 	attPos = 0.09999979,0.3926621,4.680896E-08
@@ -9750,7 +13450,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = linearRcs_4293947460
+	sym = linearRcs_4289954704
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -9767,12 +13467,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -9781,8 +13484,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -9815,7 +13563,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -9828,6 +13576,47 @@ PART
 			{
 				actionGroup = None
 			}
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 280
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
 		}
 	}
 	MODULE
@@ -9871,7 +13660,7 @@ PART
 }
 PART
 {
-	part = linearRcs_4293947460
+	part = linearRcs_4289954704
 	partName = Part
 	pos = -2.9238,8.934865,2.242971
 	attPos = -0.0999999,0.3926621,4.680896E-08
@@ -9890,7 +13679,7 @@ PART
 	modCost = 0
 	modMass = 0
 	modSize = (0.0, 0.0, 0.0)
-	sym = linearRcs_4293947628
+	sym = linearRcs_4289954748
 	srfN = srfAttach,mk3CargoBayL_4294493264
 	EVENTS
 	{
@@ -9907,12 +13696,15 @@ PART
 		isEnabled = True
 		rcsEnabled = True
 		thrustPercentage = 100
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		currentShowToggles = False
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
+		useThrottle = False
+		fullThrust = False
 		stagingEnabled = True
 		thrustPercentage_UIFlight
 		{
@@ -9921,8 +13713,53 @@ PART
 			maxValue = 100
 			stepIncrement = 0.5
 		}
+		enableYaw_UIFlight
+		{
+			controlEnabled = True
+		}
+		enablePitch_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableRoll_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableX_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableY_UIFlight
+		{
+			controlEnabled = True
+		}
+		enableZ_UIFlight
+		{
+			controlEnabled = True
+		}
+		useThrottle_UIFlight
+		{
+			controlEnabled = True
+		}
+		fullThrust_UIFlight
+		{
+			controlEnabled = True
+		}
 		EVENTS
 		{
+			ToggleToggles
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Actuation Toggles
+				guiName = Show Actuation Toggles
+				category = Actuation Toggles
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
 			Disable
 			{
 				active = True
@@ -9955,7 +13792,7 @@ PART
 				guiActive = False
 				guiActiveUncommand = False
 				guiIcon = Disable Staging
-				guiName = Disable Staging
+				guiName = RCS: Disable Staging
 				category = Disable Staging
 				guiActiveUnfocused = False
 				unfocusedRange = 2
@@ -9972,9 +13809,322 @@ PART
 	}
 	MODULE
 	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 280
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
 		name = KOSNameTag
 		isEnabled = True
 		nameTag = P2RCS
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = winglet_4289954660
+	partName = Part
+	pos = 1.830295,11.06868,-9.508846
+	attPos = 0,0,0
+	attPos0 = -1.40245,-0.9633728,0.6384212
+	rot = 0.4720142,-0.4901009,-0.509707,0.5265005
+	attRot = 0,-0.7071067,0,-0.7071067
+	attRot0 = 0.02619964,-0.7066213,-0.02619943,-0.7066212
+	mir = 1,1,-1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = winglet_4289954624
+	srfN = srfAttach,wingShuttleElevon2_4289955288
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleLiftingSurface
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, -1.25)
+		DryCost = 500
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+			PopupNameTagChanger
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Change Name Tag
+				guiName = Change Name Tag
+				category = Change Name Tag
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+}
+PART
+{
+	part = winglet_4289954624
+	partName = Part
+	pos = -4.230276,11.06868,-9.508846
+	attPos = 0,0,0
+	attPos0 = -1.402449,-0.9633734,-0.6384202
+	rot = -0.5097069,0.5265005,0.4720142,-0.4901011
+	attRot = 0,0.7071067,0,-0.7071067
+	attRot0 = 0.02619927,-0.7066213,0.02619977,0.7066213
+	mir = 1,1,1
+	symMethod = Mirror
+	istg = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = 1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = (0.0, 0.0, 0.0)
+	sym = winglet_4289954660
+	srfN = srfAttach,wingShuttleElevon2_4289955206
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleLiftingSurface
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 500
+		stagingEnabled = True
+		EVENTS
+		{
+			debugOutput
+			{
+				active = True
+				guiActive = True
+				guiActiveEditor = True
+				guiActiveUncommand = False
+				guiIcon = Debug
+				guiName = Debug
+				category = Debug
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+			ToggleStaging
+			{
+				active = True
+				guiActive = False
+				guiActiveUncommand = False
+				guiIcon = Disable Staging
+				guiName = Disable Staging
+				category = Disable Staging
+				guiActiveUnfocused = False
+				unfocusedRange = 2
+				externalToEVAOnly = True
+			}
+		}
+		ACTIONS
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
 		stagingEnabled = True
 		EVENTS
 		{
