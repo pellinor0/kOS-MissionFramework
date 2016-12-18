@@ -7,19 +7,18 @@ function loadPersistent {
 }
 
 function writePersistent {
-    log "" to "persistent.ks".
-    delete "persistent.ks".
-    log "set pMissionCounter to " +pMissionCounter +"." to persistent.ks.
+    log "" to "1:/persistent.ks".
+    DeletePath("1:/persistent.ks").
+    log "set pMissionCounter to " +pMissionCounter +"." to "1:/persistent.ks".
 }
 
 function runFile {
     parameter path.
     parameter fileName.
 
-    switch to 0.
-    copy path+fileName to 1.
-    switch to 1.
-    rename fileName to tmp.ks.
-    run tmp.ks.
-    delete tmp.ks.
+    CopyPath(path+fileName, "1:/").
+    local tgtFile is "1:/tmp.ks".
+    MovePath("1:/"+fileName, tgtFile).
+    RunPath(tgtFile).
+    DeletePath(tgtFile).
 }

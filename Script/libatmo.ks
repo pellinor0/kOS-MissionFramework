@@ -155,8 +155,8 @@ function atmoDeorbit {
         return.
     }
     if gIsPlane and ((not (defined gDoLog)) or (gDoLog=0)) {
-        local gLogFile is "landingLog_"+gShipType+".ks".
-        runFile("logs/", gLogFile).
+        local logFile is "landingLog_"+gShipType+".ks".
+        runFile("0:/logs/", logFile).
     }
     print "  landingPA=" +Round(gLandingPA, 2).
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
@@ -228,7 +228,7 @@ function atmoLandingPlane {
         printFuelLeft().
     } else {
         print "  Following descent path".
-        runFile("logs/", gLogFile).
+        runFile("0:/logs/", gLogFile).
         if(lList:Length < 2) print "  WARNING: "+gLogFile+" is missing or corrupt!".
     }
 
@@ -414,11 +414,11 @@ function writeLandingLog {
     lLog:Add(finalLng).
     eLog:Add(Round( Altitude*9.81 +0.5*Airspeed*Airspeed)).
 
-    local logFile is "logs/"+gLogFile.
+    local logFile is "0:/logs/"+gLogFile.
     local newLandingPA is gLandingPA -(finalLng - gSpacePort:Lng).
     switch to 0.
     log "" to logFile.
-    delete logFile.
+    DeletePath(logFile).
 
     log ("set gLandingPA to " +Round(newLandingPA, 3) +".") to logFile.
     log ("global lList is List(). global eList is List().") to logFile.

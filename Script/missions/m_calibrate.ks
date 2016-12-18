@@ -3,15 +3,15 @@ set gLandingPA to -20.
 set gSpacePort to LatLng(-0.04909, -74.697). // KSC runway 09
 set gSpacePortHeight to 0.
 { // separate context so we can have local variables
-local logFile is "logs/log_"+gShipType +".ks".
+local logFile is "0:/logs/log_"+gShipType +".ks".
 
 if missionStep() {
     print "Delete old logfile".
     switch to 0.
     log "" to logFile.
-    delete logFile.
+    DeletePath(logFile).
     local controlPart is Ship:PartsDubbed(gShipType+"Control")[0].
-    set gGearHeight to Round(Vdot(controlPart:Position, Up:Vector)+Altitude 
+    set gGearHeight to Round(Vdot(controlPart:Position, Up:Vector)+Altitude
                                   -GeoPosition:TerrainHeight, 2).
     print "  gearHeight from control part:" +gGearHeight.
     log "set gGearHeight to " +gGearHeight +"." to logFile.

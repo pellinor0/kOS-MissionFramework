@@ -373,7 +373,7 @@ function getPhaseAngle {
 }
 
 function nextNodeExists {   // copied from RAMP
-  local sentinel is Node(Time:Seconds + 9999999999, 0, 0, 0).
+  local sentinel is Node(Time:Seconds + 10^10, 0, 0, 0).
   add sentinel.
   local nn is Nextnode.
   remove sentinel.

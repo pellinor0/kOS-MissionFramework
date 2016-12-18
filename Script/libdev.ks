@@ -50,7 +50,8 @@ switch to 0.
 //print "  compiling liborbit".   compile liborbit.
 //print "  compiling libnav".     compile libnav.
 //print "  compiling libmission". compile libmission.
-print "  compiling librdv".     compile librdv.
+//print "  compiling librdv".     compile librdv.
 //compile libsystem.
+//compile libsetup.
 //compile globals.
-//compile boot.
+//compile "boot/boot.ks".

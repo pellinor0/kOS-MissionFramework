@@ -1,8 +1,10 @@
 ship = P1
-version = 1.0.5
+version = 1.1.0
 description = 
 type = SPH
 size = 4.989116,2.981312,9.314132
+upgraded = 1.1 Wheel Module Overhaul // Upgrades obsolete ModuleWheel, ModuleLandingGear, ModuleLandingLeg data into the new ModuleWheelBase and WheelSubmodules scheme.
+upgraded = 1.1 SmallGearBay Offset // Applies a small upwards offset to smallGearBay parts
 PART
 {
 	part = fuelTank.long_4294683980
@@ -113,10 +115,10 @@ PART
 {
 	part = SmallGearBay_4294652380
 	partName = Part
-	pos = 0.06435496,9.697163,-1.497622
+	pos = 0.0643549562,9.79716301,-1.49762201
 	attPos = 0.5477278,-2.107457,-0.4405859
 	attPos0 = 1.606392E-08,0.4795216,0.806448
-	rot = -2.682209E-07,-0.01348431,-4.749745E-08,-0.9999092
+	rot = -2.68220901E-07,-0.0134843104,-4.74974513E-08,-0.999909222
 	attRot = -0.7070426,-0.009534785,-0.009534846,-0.7070426
 	attRot0 = -0.7071066,3.090861E-08,3.090859E-08,0.707107
 	mir = 1,1,1
@@ -471,15 +473,38 @@ PART
 		{
 		}
 	}
+	MODULE
+	{
+		name = ModuleWheelSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelMotorSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		brakeTweak = 100
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		position = 0
+		stateString = Deployed
+	}
 }
 PART
 {
 	part = SmallGearBay_4294652098
 	partName = Part
-	pos = -1.031101,9.697163,-1.497622
+	pos = -1.03110099,9.79716301,-1.49762201
 	attPos = -0.5477278,-2.107458,-0.4405859
 	attPos0 = -1.606392E-08,0.4795216,0.806448
-	rot = 2.682209E-07,-0.01348431,-4.749745E-08,0.9999092
+	rot = 2.68220901E-07,-0.0134843104,-4.74974513E-08,0.999909222
 	attRot = -0.7070426,-0.009534785,-0.009534846,-0.7070426
 	attRot0 = -0.7071066,-3.09086E-08,-3.090858E-08,0.707107
 	mir = 1,1,1
@@ -833,6 +858,29 @@ PART
 		ACTIONS
 		{
 		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelMotorSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		brakeTweak = 100
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		position = 0
+		stateString = Deployed
 	}
 }
 PART
@@ -4158,10 +4206,10 @@ PART
 {
 	part = SmallGearBay_4294653204
 	partName = Part
-	pos = -0.4833728,9.66302,1.748103
+	pos = -0.483372808,9.76302052,1.74810302
 	attPos = 0,3.935852,-0.4041687
 	attPos0 = 0,-0.1358516,0.8041679
-	rot = -5.78503E-09,-1,1.192093E-07,1.998401E-15
+	rot = -5.78502979E-09,-1,1.19209304E-07,1.99840102E-15
 	attRot = 0,-0.9999999,0,0
 	attRot0 = -4.090635E-09,-0.7071068,0.7071069,-4.090633E-09
 	mir = 1,1,1
@@ -4514,6 +4562,29 @@ PART
 		ACTIONS
 		{
 		}
+	}
+	MODULE
+	{
+		name = ModuleWheelSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelMotorSteering
+		steeringEnabled = False
+		steeringInvert = False
+	}
+	MODULE
+	{
+		name = ModuleWheelBrakes
+		brakeTweak = 100
+	}
+	MODULE
+	{
+		name = ModuleWheelDeployment
+		position = 0
+		stateString = Deployed
 	}
 }
 PART
