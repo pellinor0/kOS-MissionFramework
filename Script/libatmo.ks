@@ -250,7 +250,7 @@ function atmoLandingPlane {
 
     // set profile as a list of height/aoa pairs
     local proH is List(70000,40000,0).  // height
-    local proA is List(   60,   60,10). // AoA
+    local proA is List(   60,   40,10). // AoA
     local j is 1.
     function getAoa {
       if (Altitude < proH[j]) {
@@ -285,8 +285,7 @@ function atmoLandingPlane {
         wait 0.01.
         local aoa is getAoa().
 
-        if (not gDoLog and lList:Length > 2) {
-            set steerDir to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
+        if ((not gDoLog) and lList:Length > 2) {
             set aoaCorr to Max(3.5-aoa, Min(-0.5*eErr, 90-aoa)).
             set aoaCorr to Min(aoaCorr, aoa).
             set relLng to Mod(GeoPosition:Lng -gSpacePort:Lng -720, 360). // norm to [-360,0]
@@ -317,6 +316,7 @@ function atmoLandingPlane {
             //print "hIst="+Round(headIst,  2)+"   " at (38,11).
             //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
         }
+        set steerDir to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
         //print "aoaT="+Round(aoa, 2)+"   " at (38,13).
         //print "aoaE="+Round(Vang(Facing:Forevector,
         //                         Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
