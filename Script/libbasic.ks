@@ -9,7 +9,7 @@ function warpRails {
     if (countDown()<0) { return. }
 
     set Warp to 0.
-    wait 0.01.
+    wait 0.
     set WarpMode to "RAILS".
     if (countdown() >  5) {set Warp to 1. wait 0.1.}
     if (countdown() > 25) {set Warp to 2. wait 0.1.}
@@ -21,7 +21,7 @@ function warpRails {
         if (countdown() > deadline) {
             set Warp to level.          // 10k
             until Warp=level or countdown() < deadline {
-                wait 0.01.
+                wait 0.
                 set Warp to level.
             }
             wait until countdown() < deadline.
@@ -68,7 +68,7 @@ function killRot {
     local dz is 64.
 
     until av:Mag<accuracy {
-        wait 0.01.
+        wait 0.
         set av to -Facing*Ship:AngularVel.
         if(Ship:Control:Roll *av:Z < 0) set dZ to dZ/2.
         if(Ship:Control:Pitch*av:X < 0) set dX to dX/2.
@@ -90,7 +90,7 @@ function killRotByWarp {
     until Warp=1 {
       set WarpMode to "RAILS".
       set Warp to 1.
-      wait 0.01.
+      wait 0.
     }
     wait 0.1.
     set Warp to 0.

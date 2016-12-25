@@ -58,7 +58,7 @@ function atmoAscentRocket {
 
     if Body:Atm:Exists {
         print "  Coasting to space".
-        wait 0.01.
+        wait 0.
         coastToSpace(tgtAP).
     }
     set Warp to 0.
@@ -96,7 +96,7 @@ function atmoAscentPlane {
     local aoaTgt is 0.
     local ppMJ is 0.
     function update {
-        wait 0.01.
+        wait 0.
         set v to Velocity:Surface.
         set vTgt to 300+Altitude/30.
         set aoaTgt to Max(3, (v:Mag-vTgt)/15). // try to keep speed
@@ -131,7 +131,7 @@ function atmoAscentPlane {
         if (eng:Isp > 1000)  // don't do this twice on resume
           eng:GetModule("MultiModeEngine"):DoEvent("Toggle Mode").
     }
-    wait 0.01.
+    wait 0.
     local tmpDV is getDeltaV().
     print "  tmpDv="+Round(tmpDv).
 
@@ -177,7 +177,7 @@ function atmoLandingRocket {
         set WarpMode to "RAILS".
         until (Altitude < Body:Atm:Height) {
             if (Warp < 3) set Warp to 3.
-            wait 0.01.
+            wait 0.
         }
         set Warp to 0.
     }
@@ -214,7 +214,7 @@ function atmoLandingPlane {
         set WarpMode to "RAILS".
         until (Altitude < Body:Atm:Height) {
             if (Warp < 3) set Warp to 3.
-            wait 0.01.
+            wait 0.
         }
     }
     set WarpMode to "PHYSICS".
@@ -282,7 +282,7 @@ function atmoLandingPlane {
     Gear off.
     clearScreen2().
     until flareCondition() {
-        wait 0.01.
+        wait 0.
         local aoa is getAoa().
 
         if ((not gDoLog) and lList:Length > 2) {
@@ -375,7 +375,7 @@ function coastToSpace {
     lock Throttle to Max(0, (tgtAP-Apoapsis)/2000).
     until Altitude > Body:Atm:Height {
       //print "tt   ="+Round(Throttle, 3)       at (38,0).
-      wait 0.01.
+      wait 0.
     }
     unlock Steering.
     unlock Throttle.
@@ -416,7 +416,6 @@ function writeLandingLog {
 
     local logFile is "0:/logs/"+gLogFile.
     local newLandingPA is gLandingPA -(finalLng - gSpacePort:Lng).
-    switch to 0.
     log "" to logFile.
     DeletePath(logFile).
 

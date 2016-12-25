@@ -39,7 +39,7 @@ function nodeTuneCapturePE {
     local step is 2.
     until (Abs(d)<0.02) {
         set NextNode:RadialOut to NextNode:RadialOut+d.
-        wait 0.01.
+        wait 0.
         //print "  pe="+Round(NextNode:Orbit:Periapsis)
         //     +", dV="+Round(NextNode:RadialOut,2) +", d="+Round(d,3).
 
@@ -75,7 +75,7 @@ function nodeReturnFromMoon {
 
     add Node(Time:Seconds, 0,0,nodeVel-Velocity:Orbit:Mag).
     print "  dvCost="+Round(nodeVel-Velocity:Orbit:Mag, 2).
-    wait 0.01.
+    wait 0.
 
     // check direction => shift time
     // Assumption: prograde circ equatorial orbit
@@ -121,7 +121,7 @@ function nodeReturnFromMoon {
         set par to par+d.
         local escNormal is -par*moonPrograde + 100*V(0,1,0).
         tweakNodeInclination(escNormal, -1).
-        wait 0.01.
+        wait 0.
 //          print " Iteration".
 //          print "  par="+Round(par,3).
 //          print "  tmpHeight="+Round(tmpHeight).
@@ -180,7 +180,7 @@ function nodeHohmann {
     //             Target orbit is equatorial
     //             Ship orbit is circular
     // Return: rdvTime = Time(UT) of Intersect
-    wait 0.01.
+    wait 0.
     local synPeriod is 1/ (1/Obt:Period - 1/Target:Obt:Period).
     local ap is (Target:Apoapsis + Target:Periapsis)/2.
     //local transTime is (Target:Obt:Period + Obt:Period)/4.
@@ -205,7 +205,7 @@ function nodeHohmann {
 
     local t is Time:Seconds +waitTime.
     nodeUncircularize(ap, t).
-    wait 0.01.
+    wait 0.
 
     until not (NextNode:Orbit:Transition = "ENCOUNTER" and
         NextNode:Orbit:NextPatch:Body <> Target) {
@@ -237,7 +237,7 @@ function nodeHohmann {
 //     print "  dAP ="+Round(ap -NextNode:Orbit:Apoapsis).
 //     remove NextNode.
 //     nodeUncircularize(ap, t).
-//     wait 0.01.
+//     wait 0.
 //     set rdvTime to NextNode:Eta+NextNode:Orbit:Period/2.
 //     set frame to getOrbitFacing(Ship, rdvTime).
 //     set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
@@ -249,7 +249,7 @@ function nodeHohmann {
 //     print " tune timing".
 //     set NextNode:Eta to NextNode:Eta +dx:Z/dv:Z.
 //     print "  dt="+Round(dx:Z/dv:Z).
-//     wait 0.01.
+//     wait 0.
 //     set frame to getOrbitFacing(Ship, rdvTime).
 //     set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
 //     set dv to -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
@@ -258,7 +258,6 @@ function nodeHohmann {
 //
 //     add Node(Time:Seconds+ NextNode:Eta+ 2*6*3600, 0,6,0).
 
-     //run once libnav.
      //refineRdvBruteForce(rdvTime).
 
     local n is getOrbitNormal(Ship).
@@ -282,7 +281,7 @@ function nodeDeorbit {
 
     //print " nodeDeorbit".
     nodeUnCircularize(tgtPE,Time:Seconds).
-    wait 0.01.
+    wait 0.
     //print "  HasNode="+HasNode.
     //print "  eta="+Round(NextNode:Eta, 2).
     //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
@@ -316,7 +315,7 @@ function nodeDeorbit {
           set NextNode:Eta to NextNode:Eta-synPeriod.
 
         set counter to counter+1.
-        wait 0.01.
+        wait 0.
     }
 
     //print "  tweak inclination".
@@ -336,7 +335,7 @@ function tweakNodeInclination {
     //   while keeping speed/PE constant
     // Assumption: Node is set
 //    print " tweakNodeInclination".
-    wait 0.01.
+    wait 0.
     local t is Time:Seconds+NextNode:Eta.
     local v is VelocityAt(Ship,t+0.01):Orbit.
     local pos is PositionAt(Ship,t+0.01)-Body:Position.
@@ -369,7 +368,7 @@ function tweakNodeInclination {
 function refineRdvBruteForce {
     parameter t.
 
-    wait 0.01.
+    wait 0.
     local myNode is NextNode.
     local lock pRel to (PositionAt(Ship, t) - PositionAt(Target, t)):Mag.
     local lock vRel to (VelocityAt(Ship, t):Orbit - VelocityAt(Target, t):Orbit):Mag.
@@ -393,73 +392,73 @@ function refineRdvBruteForce {
 
         // try radial
         set mynode:RadialOut to (mynode:RadialOut + d).
-        wait 0.01.
+        wait 0.
         if (measure < best) {
             set best to measure.
             set better to 1.
         } else {
             set mynode:RadialOut to (mynode:RadialOut - 2*d).
-            wait 0.01.
+            wait 0.
             if (measure < best) {
                 set best to measure.
                 set better to 1.
             } else {
                 set mynode:RadialOut to (mynode:RadialOut + d).
-                wait 0.01.
+                wait 0.
             }
         }
 
         // try normal
         set mynode:Normal to (mynode:Normal + d).
-        wait 0.01.
+        wait 0.
         if (measure < best) {
             set best to measure.
             set better to 1.
         } else {
             set mynode:Normal to (mynode:Normal - 2*d).
-            wait 0.01.
+            wait 0.
             if (measure < best) {
                 set best to measure.
                 set better to 1.
             } else {
                 set mynode:Normal to (mynode:Normal + d).
-                wait 0.01.
+                wait 0.
             }
         }
 
         // try prograde
         set mynode:Prograde to (mynode:Prograde + d).
-        wait 0.01.
+        wait 0.
         if (measure < best) {
             set best to measure.
             set better to 1.
         } else {
             set mynode:Prograde to (mynode:Prograde - 2*d).
-            wait 0.01.
+            wait 0.
             if (measure < best) {
                 set best to measure.
                 set better to 1.
             } else {
                 set mynode:Prograde to (mynode:Prograde + d).
-                wait 0.01.
+                wait 0.
             }
         }
 
         // shift node time
         set mynode:Eta to (mynode:Eta + d).
-        wait 0.01.
+        wait 0.
         if (measure < best) {
             set best to measure.
             set better to 1.
         } else {
             set mynode:Eta to (mynode:Eta - 2*d).
-            wait 0.01.
+            wait 0.
             if (measure < best) {
                 set best to measure.
                 set better to 1.
             } else {
                 set mynode:Eta to (mynode:Eta + d).
-                wait 0.01.
+                wait 0.
             }
         }
 

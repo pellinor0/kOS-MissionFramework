@@ -1,7 +1,8 @@
 @lazyglobal off.
-run once libbasic.
-run once liborbit.
-run once librdv.
+RunOncePath("0:/libbasic").
+RunOncePath("0:/liborbit").
+RunOncePath("0:/librdv").
+RunOncePath("0:/libnav").
 print "  Loading libmission".
 
 // == Mission Steps ==
@@ -60,7 +61,7 @@ function m_ascentLKO {
         } else if Verticalspeed < -1 {
             print "  Skipping: this looks like a landing".
         } else {
-            run once libatmo.
+            RunOncePath("0:/libatmo").
             set launchTime to Time:Seconds.
             set launchAngle to Longitude.
             if gIsPlane
@@ -80,7 +81,6 @@ function m_ascentLKO {
         } else {
             if not nextNodeExists() {
                 nodeCircAtAP().
-                run once libnav.
                 tweakNodeInclination(V(0,1,0), 0.01).
             }
             execNode().
@@ -98,14 +98,13 @@ function m_landFromLKO {
 
     if missionStep() {
         print "Deorbit".
-        run once libatmo.
-        run once libnav.
+        RunOncePath("0:/libatmo").
         atmoDeorbit().
     }
 
     if missionStep() {
         print "Landing".
-        run once libatmo.
+        RunOncePath("0:/libatmo").
         if (gIsPlane)
           atmoLandingPlane().
         else
@@ -142,12 +141,12 @@ function m_undock {
             return.
         }
         gMyPort:ControlFrom.
-        wait 0.01.
+        wait 0.
         gMyPort:Undock().
-        wait 0.01.
+        wait 0.
         gMyPort:ControlFrom.
         Core:DoEvent("open terminal").
-        wait 0.01.
+        wait 0.
 
         //debugDirection(Facing).
         local mp is Ship:MonoPropellant.
@@ -170,8 +169,7 @@ function m_undock {
 function m_rendezvousDock {
     if missionStep() {
         print "Rendezvous".
-        run once librdv.
-        run once libnav.
+        RunOncePath("0:/librdv").
         rdvDock().
         Core:DoEvent("open terminal").
     }
@@ -180,7 +178,6 @@ function m_rendezvousDock {
 function m_hohmannToTarget {
     if missionStep() {
         print "Hohmann Transfer".
-        run once libnav.
         if not nextNodeExists() nodeHohmann().
         execNode().
     }
@@ -189,7 +186,6 @@ function m_hohmannToTarget {
 function m_fineRdv {
     if missionStep() {
         print "Fine tuning approach".
-        run once libnav.
         if not nextNodeExists() nodeFineRdv().
         execNode().
         checkRdv().
@@ -199,7 +195,6 @@ function m_fineRdv {
 function m_nodeIncCorr {
     if missionStep() {
         print "Correct for inclination".
-        run once libnav.
         if not nextNodeExists() nodeHohmannInc().
         execNode().
     }
@@ -207,7 +202,6 @@ function m_nodeIncCorr {
 
 function m_vacLand {
     parameter tgt. // GeoCoordinates
-    run once libnav.
     if missionStep() {
         print "Landing at Target (Vac)".
         // Assumption: starting in low orbit
@@ -239,7 +233,6 @@ function m_returnFromMoon {
 
     if missionStep() {
         print "Return from Moon".
-        run once libnav.
         if not nextNodeExists() nodeReturnFromMoon().
         execNode().
     }
@@ -247,7 +240,6 @@ function m_returnFromMoon {
 
     if missionStep() {
         print "Correct Inclination".
-        run once libnav.
         if not nextNodeExists() nodeIncChange(V(0,1,0)).
         execNode().
     }
@@ -259,9 +251,8 @@ function m_capture {
 
     if missionStep() {
         print "Adjust PE".
-        run once libnav.
         nodeTuneCapturePE(alt).
-        wait 0.01.
+        wait 0.
         tweakNodeInclination( V(0,1,0), -1).
         execNode().
     }
@@ -269,9 +260,8 @@ function m_capture {
     if missionStep() {
         print "Circularize at PE".
         if not nextNodeExists() {
-            run once libnav.
             nodeUnCircularize(alt, Time:Seconds+Eta:Periapsis).
-            wait 0.01.
+            wait 0.
             tweakNodeInclination( V(0,1,0), 0.02).
         }
         execNode().
@@ -292,13 +282,10 @@ function m_returnFromHighOrbit {
 function prepareMission {
     parameter name.
 
-    switch to 1.
-    log "" to mission.ks.
+    log "" to "1:/mission.ks".
     DeletePath("1:/mission.ks").
     local missionName is "m_"+name+".ks".
-    switch to 0.
     CopyPath("0:/missions/"+missionName, "1:/mission.ks").
-    switch to 1.
     //rename file missionName to mission.ks.
     set pMissionCounter to 1.
     log "set pMissionCounter to 1." to "1:/persistent.ks".
@@ -306,21 +293,19 @@ function prepareMission {
 
 function resumeMission {
     set gMissionCounter to 0.
-    switch to 1.
     if (gMissionStartManual)
       print "Resume Mission (manual)".
     else
       print "Resume Mission (Auto)".
 
-    run mission.ks.
+    RunPath("1:/mission.ks").
     if (gMissionCounter = 100000) {
         //print "Mission interrupted!".
     } else {
         print "Mission finished!".
         set gMissionCounter to 0.
         set pMissionCounter to 0.
-        switch to 1.
-        log "set pMissionCounter to 0." to persistent.ks.
+        log "set pMissionCounter to 0." to "1:/persistent.ks".
     }
 }
 
@@ -330,7 +315,6 @@ function interruptMission {
 }
 
 function missionStep {
-    switch to 0.
     if (gMissionCounter > pMissionCounter) {
         //print "  interrupted mission: mc="+missionCounter +", pmc=" +pMissionCounter.
         return 0.
@@ -338,9 +322,7 @@ function missionStep {
         set gMissionCounter to gMissionCounter+1.
         set pMissionCounter to pMissionCounter+1.
         //print "  running mission: mc="+missionCounter +", pmc=" +pMissionCounter.
-        switch to 1.
-        log "set pMissionCounter to " +gMissionCounter +"." to persistent.ks.
-        switch to 0.
+        log "set pMissionCounter to " +gMissionCounter +"." to "1:/persistent.ks".
         return 1.
     } else if (gMissionCounter = pMissionCounter-1) {
         set gMissionCounter to gMissionCounter+1.

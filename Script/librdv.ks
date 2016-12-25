@@ -4,7 +4,7 @@ print "  Loading librdv".
 
 function checkRdv {
     parameter offsetP is V(0,0,0).
-    wait 0.01.
+    wait 0.
     local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
     local dX1 is Target:Position+offsetP.
     local dX2 is PositionAt(Target,rdvTime)+offsetP -PositionAt(Ship,rdvTime).
@@ -40,7 +40,7 @@ function rdvDock {
     } else print "  Docking not possible: Rdv only".
 
     // determine targetPos
-    wait 0.01.
+    wait 0.
     if dock {
         // gShipRadius from target port
         lock targetPos to targetPort:NodePosition
@@ -97,7 +97,7 @@ function rdv {
     local lock offset to targetPos()-Target:Position.
 
     function update {
-        wait 0.01.
+        wait 0.
         set dX to (targetPos() -Ship:Position).
         set dV to Velocity:Orbit - Target:Velocity:Orbit.
         set brakeAcc to dV:SqrMagnitude/(2* Vdot(dV:Normalized, dX)).
@@ -199,7 +199,7 @@ function dockingApproach {
     clearScreen2().
     local offset is 1.
     function update {
-        wait 0.01.
+        wait 0.
         set dX to gMyPort:NodePosition-targetPort:NodePosition
                   -offset*targetPort:PortFacing:ForeVector.
 
@@ -246,7 +246,7 @@ function cancelRelativeVel {
 
     // until stop or overshoot
     until (dV:Mag < 0.001) or (Vdot(v0dir, dV:Normalized) < 0) {
-        wait 0.01.
+        wait 0.
         set dV to Target:Velocity:Orbit - Velocity:Orbit.
         set t to Max(0,Vdot(dV:Normalized, Facing:Vector)).
 
@@ -269,7 +269,7 @@ function cancelRelativeVelRCS {
     RCS on.
     // until stop or overshoot
     until (dV:Mag < 0.001) or (Vdot(v0dir, dV:Normalized) < 0) {
-        wait 0.01.
+        wait 0.
         set dV to Target:Velocity:Orbit - Velocity:Orbit.
 
         set tmpVec to -Facing * dV:Normalized.

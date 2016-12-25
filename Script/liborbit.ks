@@ -35,7 +35,7 @@ function nodeUncircularize {
     local sma is 0.5*(alt+otherEnd+Body:Radius).
     local v2 is Sqrt(Body:Mu *(2/(alt) - 1/sma)). // vis-viva eq.
     add Node(t,0,0,v2-v1).
-    wait 0.01.
+    wait 0.
     //print " nodeUncircularize".
     //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
 }
@@ -70,7 +70,7 @@ function suicideBurn {
     lock Throttle to tt.
     lock Steering to stSrfRetro().
     until Status = "LANDED" or Status = "SPLASHED" {
-        wait 0.01.
+        wait 0.
         set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing +hCorr.
         if (height>0) {
             set accNeeded to (v:SqrMagnitude - v0*v0)/(2*height) + g.
@@ -90,7 +90,7 @@ function suicideBurn {
     lock Steering to stUp().
     //wait 5.
     unlock Steering.
-    wait 0.01.
+    wait 0.
 }
 
 function vacAscent {
@@ -167,7 +167,7 @@ function vacLandAtTgt {
     lock Throttle to tt.
 
     function update {
-        wait 0.01.
+        wait 0.
         set v to Velocity:Surface.
         set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing.
         set brakeAcc to v:SqrMagnitude/(2*height) + g.
@@ -224,7 +224,7 @@ function suicideBurnChutes {
     set tt to 1.
 
     until Status = "LANDED" or Status = "SPLASHED" {
-        wait 0.01.
+        wait 0.
         print "  vZ  =" +Round(VerticalSpeed) at (38,0).
     }
     set tt to 0.
@@ -235,12 +235,12 @@ function suicideBurnChutes {
 function execNode {
     parameter doDynWarp is true.
     print "  execNode".
-    wait 0.01.
+    wait 0.
     set Warp to 0.
     lock Throttle to 0. // workaround for bug at kssTest circularize
     if (NextNode:DeltaV:Mag<0.15) {
         print "  dV="+NextNode:DeltaV:Mag.
-        remove NextNode. wait 0.01.
+        remove NextNode. wait 0.
         return.
     }
     local acc is Ship:AvailableThrust / Mass.
@@ -253,7 +253,7 @@ function execNode {
         print "  WARNING: inconsistent ManeuverNode!".
         print "   deltaV    ="+Round(NextNode:DeltaV:Mag, 2).
         print "   components="+Round(debugDV, 2).
-        if (debugDV<0.1) {remove NextNode. wait 0.01. return.}
+        if (debugDV<0.1) {remove NextNode. wait 0. return.}
     }
 
     local burntime is NextNode:Deltav:Mag / acc.
@@ -287,7 +287,7 @@ function execNode {
 
     lock Throttle to (NextNode:Deltav:Mag / acc / 2).
     until (chaseAngle > 60) or (NextNode:Deltav:Mag < 0.05) {
-        wait 0.01.
+        wait 0.
         if doDynWarp dynWarp().
         print "tt   ="+Round(Throttle, 2)       AT (38,0).
         print "st   ="+Steering AT (38,1).
@@ -299,7 +299,7 @@ function execNode {
     unlock Throttle.
     unlock Steering.
     if (doDynWarp=false and hasRcsDeltaV(5)) execNodeRcs.
-    if HasNode {remove NextNode. wait 0.01.}
+    if HasNode {remove NextNode. wait 0.}
     set Warp to 0.
 }
 
@@ -312,7 +312,7 @@ function execNodeRcs {
     RCS on.
 
     function update {
-        wait 0.01.
+        wait 0.
         set dV to NextNode:Deltav.
         //print "dV  ="+Round(dV:Mag,3)  at (38,0).
         if(dV:Mag > 0.05)
@@ -328,7 +328,7 @@ function execNodeRcs {
     set Ship:Control:Translation to 0.
     RCS off.
     remove NextNode.
-    wait 0.01.
+    wait 0.
 }
 
 function rcsPrecisionBurn {
@@ -341,7 +341,7 @@ function rcsPrecisionBurn {
     set Warp to 0.
     RCS on.
     until (Ship:Monopropellant<=tMP) {
-        wait 0.01.
+        wait 0.
         set Ship:Control:Translation to -Facing*dV:Normalized.
     }
     set Ship:Control:Translation to 0.

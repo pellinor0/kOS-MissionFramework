@@ -1,6 +1,5 @@
-switch to 0.
-run once libdev.
-run once libsystem.
-run once libmission.
+RunOncePath("0:/libdev").
+RunOncePath("0:/libsystem").
+RunOncePath("0:/libmission").
 set gMissionStartManual to 1.
 resumeMission().

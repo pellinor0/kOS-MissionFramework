@@ -51,7 +51,7 @@ switch to 0.
 //print "  compiling libnav".     compile libnav.
 //print "  compiling libmission". compile libmission.
 //print "  compiling librdv".     compile librdv.
-//compile libsystem.
-//compile libsetup.
-//compile globals.
-//compile "boot/boot.ks".
+//print "  compiling libsystem".  compile libsystem.
+//print "  compiling libsetup".   compile libsetup.
+//print "  compiling globals".    compile globals.
+//print "  compiling boot".       compile "boot/boot.ks".

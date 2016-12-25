@@ -2,8 +2,8 @@
 //print "  Loading libsystem".
 
 function loadPersistent {
-    log "" to persistent.ks.
-    run persistent.ks.
+    log "" to "1:/persistent.ks".
+    RunPath("1:/persistent.ks").
 }
 
 function writePersistent {
