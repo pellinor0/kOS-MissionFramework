@@ -31,7 +31,7 @@ function m_waitForLaunchWindow {
         local launchTime is launchTimeToRdv( launchPA+transferPA -0). // some error margin
         print "Warping to Launch (dt="+Round(launchTime - Time:Seconds) +")".
         warpRails(launchTime).
-    } else print "Skipping Launch Timing (not PRELAUNCH)".
+    } else print "Skipping Launch Timing (state=" +Status +" != PRELAUNCH)".
 }
 
 function m_waitForTransition {

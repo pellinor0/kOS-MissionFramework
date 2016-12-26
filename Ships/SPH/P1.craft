@@ -2,7 +2,7 @@ ship = P1
 version = 1.2.2
 description = 
 type = SPH
-size = 4.98911762,3.0317173,9.31419945
+size = 4.98911762,3.03172684,9.3142128
 PART
 {
 	part = fuelTank.long_4294683980
@@ -113,7 +113,7 @@ PART
 {
 	part = SmallGearBay_4294652380
 	partName = Part
-	pos = 0.0643549562,9.79716301,-1.49764442
+	pos = 0.0643549562,9.79716301,-1.49764872
 	attPos = 0.547727823,-2.10745692,-0.440585911
 	attPos0 = 1.606392E-08,0.479521602,0.806447983
 	rot = -2.68220901E-07,-0.0134843094,-4.74974513E-08,-0.999909163
@@ -424,7 +424,7 @@ PART
 {
 	part = SmallGearBay_4294652098
 	partName = Part
-	pos = -1.03110099,9.79716301,-1.49764442
+	pos = -1.03110099,9.79716301,-1.49764872
 	attPos = -0.547727823,-2.10745811,-0.440585911
 	attPos0 = -1.606392E-08,0.479521602,0.806447983
 	rot = 2.68220901E-07,-0.0134843094,-4.74974513E-08,0.999909163
@@ -773,9 +773,9 @@ PART
 		rcsEnabled = True
 		thrustPercentage = 100
 		currentShowToggles = False
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
@@ -874,9 +874,9 @@ PART
 		rcsEnabled = True
 		thrustPercentage = 100
 		currentShowToggles = False
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
@@ -975,9 +975,9 @@ PART
 		rcsEnabled = True
 		thrustPercentage = 100
 		currentShowToggles = False
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
@@ -1076,9 +1076,9 @@ PART
 		rcsEnabled = True
 		thrustPercentage = 100
 		currentShowToggles = False
-		enableYaw = True
-		enablePitch = True
-		enableRoll = True
+		enableYaw = False
+		enablePitch = False
+		enableRoll = False
 		enableX = True
 		enableY = True
 		enableZ = True
@@ -1139,7 +1139,7 @@ PART
 {
 	part = solarPanels5_4294259614
 	partName = Part
-	pos = -0.483372808,10.6275301,1.75253141
+	pos = -0.483372808,10.6275301,1.7525357
 	attPos = 5.96046412E-08,1.77544498,0.0547150411
 	attPos0 = -5.96046412E-08,-0.153264403,-0.619225621
 	rot = -2.84988204E-07,0.707106471,0.707107186,-2.84988204E-07
@@ -1245,7 +1245,7 @@ PART
 {
 	part = Mark1Cockpit_4294695684
 	partName = Part
-	pos = -0.483372808,10.0630198,2.1803534
+	pos = -0.483372808,10.0630198,2.18035769
 	attPos = 0,0,-0.116079397
 	attPos0 = 0,2.04999995,-2.44379095E-07
 	rot = 0.707106829,0,0,0.707106829
@@ -1443,21 +1443,6 @@ PART
 	}
 	MODULE
 	{
-		name = ModuleLogisticsConsumer
-		isEnabled = True
-		stagingEnabled = True
-		EVENTS
-		{
-		}
-		ACTIONS
-		{
-		}
-		UPGRADESAPPLIED
-		{
-		}
-	}
-	MODULE
-	{
 		name = TweakScale
 		isEnabled = True
 		currentScale = 1.25
@@ -1524,7 +1509,7 @@ PART
 	RESOURCE
 	{
 		name = MonoPropellant
-		amount = 2.8940000000000001
+		amount = 5.2499999105930328
 		maxAmount = 7.5
 		flowState = True
 		isTweakable = True
@@ -1537,7 +1522,7 @@ PART
 {
 	part = IntakeRadialLong_4292249516
 	partName = Part
-	pos = 0.03134799,9.9499197,-1.39937937
+	pos = 0.03134799,9.9499197,-1.39938366
 	attPos = -0.0892108083,-3.55784512,0.113100499
 	attPos0 = 0.603931606,-0.0218428504,2.60387001E-09
 	rot = -0.017498672,-0.0174987912,0.706890285,0.706890225
@@ -1639,7 +1624,7 @@ PART
 {
 	part = IntakeRadialLong_4292249480
 	partName = Part
-	pos = -0.998093605,9.9499197,-1.39938343
+	pos = -0.998093605,9.9499197,-1.39938772
 	attPos = 0.0892108083,-3.55784607,0.113100499
 	attPos0 = -0.603931606,-0.0218427908,2.60386401E-09
 	rot = -0.0174986124,0.0174987316,-0.706890404,0.706890106
@@ -1741,7 +1726,7 @@ PART
 {
 	part = fuelTankSmallFlat_4294089596
 	partName = Part
-	pos = -0.483372808,10.0630198,-2.05192232
+	pos = -0.483372808,10.0630198,-2.05192661
 	attPos = 0,0.0177731495,-2.11869611E-09
 	attPos0 = 0,-2.200001,2.622605E-07
 	rot = 0.707106829,0,0,0.707106829
@@ -1838,7 +1823,7 @@ PART
 {
 	part = ServiceBay.125_4292249412
 	partName = Part
-	pos = -0.483372808,10.0630198,-2.66442132
+	pos = -0.483372808,10.0630198,-2.66442561
 	attPos = 0,0.453457594,-5.40563292E-08
 	attPos0 = 0,-0.612500727,7.30157694E-08
 	rot = 0.50000006,0.50000006,0.50000006,0.50000006
@@ -1982,7 +1967,7 @@ PART
 {
 	part = dockingPort3_4292249102
 	partName = Part
-	pos = -0.483372808,9.53413868,-2.67692232
+	pos = -0.483372808,9.53413868,-2.67692661
 	attPos = 0.0962762237,-0.281917989,1.14770202E-08
 	attPos0 = -0.625162184,0.269417793,-4.47228103E-08
 	rot = 1.00000012,2.52881108E-07,0,0
@@ -2072,7 +2057,7 @@ PART
 {
 	part = kOSMachineRad_4292249060
 	partName = Part
-	pos = -0.483372808,10.5871601,-2.64004707
+	pos = -0.483372808,10.5871601,-2.64005136
 	attPos = -0.0916996598,-0.225624099,-1.09314398E-08
 	attPos0 = 0.615836322,0.249999493,1.03215697E-07
 	rot = 0.50000006,-0.50000006,-0.50000006,0.50000006
@@ -2112,7 +2097,7 @@ PART
 		baseModuleMass = 0
 		additionalCost = 0
 		MaxPartId = 100
-		RequiredPower = 0.00999999978
+		RequiredPower = 0.0399999991
 		stagingEnabled = True
 		activated = True
 		EVENTS
@@ -2181,7 +2166,7 @@ PART
 	{
 		name = KOSNameTag
 		isEnabled = True
-		nameTag = P1 calibrate
+		nameTag = P1 kssTest
 		stagingEnabled = True
 		EVENTS
 		{
@@ -2198,7 +2183,7 @@ PART
 {
 	part = ksp.r.largeBatteryPack_4292249018
 	partName = Part
-	pos = -0.483372897,10.2495804,-2.86880541
+	pos = -0.483372897,10.2495804,-2.8688097
 	attPos = 0,-0.837446213,0.435699612
 	attPos0 = -5.96046412E-08,0.0205650292,-0.622256279
 	rot = 5.18578247E-08,-1.00000012,2.38418579E-07,-1.95399252E-14
@@ -2279,10 +2264,10 @@ PART
 {
 	part = winglet3_4293974602
 	partName = Part
-	pos = 0.00372523069,9.86736965,3.72126675
+	pos = 0.00372523069,9.86736965,3.72127533
 	attPos = -0.610387981,2.16795301,0.188732907
 	attPos0 = 1.09748602,1.42291999,0.00692160008
-	rot = -4.3235687E-08,0.72537446,0.688354611,-4.10291108E-08
+	rot = -4.32356906E-08,0.72537452,0.688354671,-4.10291143E-08
 	attRot = 0.02617695,0,0,0.999657393
 	attRot0 = -1.56027002E-09,0.999657273,-0.0261768699,-5.95842202E-08
 	mir = 1,1,1
@@ -2386,7 +2371,7 @@ PART
 {
 	part = winglet3_4293974426
 	partName = Part
-	pos = -0.970470786,9.86736965,3.72126794
+	pos = -0.970470786,9.86736965,3.72127652
 	attPos = 0.610387981,2.16795397,0.188732907
 	attPos0 = -1.09748602,1.42291999,0.00692160008
 	rot = -0.68835485,9.32200717E-09,1.31467379E-08,-0.725374222
@@ -2493,10 +2478,10 @@ PART
 {
 	part = structuralWing_4294005916
 	partName = Part
-	pos = 0.175744414,10.1317797,-1.30472803
+	pos = 0.175744414,10.1317797,-1.30473018
 	attPos = -5.96046448E-08,-1.93730235,-0.0687597394
 	attPos0 = 0.659117281,0.50224632,-5.98724199E-08
-	rot = -4.32356906E-08,0.725374162,0.688355029,-4.1029093E-08
+	rot = -4.32356586E-08,0.725374162,0.688355029,-4.1029061E-08
 	attRot = 0.02617695,0,0,0.999657393
 	attRot0 = -1.56027002E-09,0.999657273,-0.0261768699,-5.95842202E-08
 	mir = 1,1,1
@@ -2579,7 +2564,7 @@ PART
 {
 	part = structuralWing_4293974142
 	partName = Part
-	pos = -1.14249003,10.1317797,-1.30472779
+	pos = -1.14249003,10.1317797,-1.30472994
 	attPos = 5.96046448E-08,-1.93730211,-0.0687597394
 	attPos0 = -0.659117281,0.50224638,-5.9872427E-08
 	rot = -0.688354969,9.32199207E-09,1.31467388E-08,-0.725374222
@@ -2665,7 +2650,7 @@ PART
 {
 	part = RAPIER_4292248828
 	partName = Part
-	pos = -0.483372808,10.0630198,-3.89139462
+	pos = -0.483372808,10.0630198,-3.8914032
 	attPos = 0,0.373997688,-4.45839987E-08
 	attPos0 = -1.46261698E-07,-1.22693205,-1.74357497E-14
 	rot = 0.707106888,0,0,0.707106888
@@ -2947,7 +2932,7 @@ PART
 {
 	part = winglet_4292248684
 	partName = Part
-	pos = -0.483372509,10.8250847,-3.14534783
+	pos = -0.483372509,10.8250933,-3.14535642
 	attPos = 2.84217094E-14,-7.1525568E-07,0.500152707
 	attPos0 = 3.27825603E-07,0.746047497,-1.26216805
 	rot = -0.499999881,0.500000358,0.499999881,-0.500000358
@@ -3032,7 +3017,7 @@ PART
 {
 	part = SmallGearBay_4292248648
 	partName = Part
-	pos = -0.483372808,9.76302052,1.74812543
+	pos = -0.483372808,9.76302052,1.74812973
 	attPos = 0,3.93585205,-0.404168695
 	attPos0 = 0,-0.135851607,0.804167926
 	rot = -5.78503023E-09,-1.00000012,1.1920929E-07,1.99840144E-15
@@ -3342,7 +3327,7 @@ PART
 {
 	part = GooExperiment_4292248418
 	partName = Part
-	pos = -0.483372808,9.78551769,-2.94481587
+	pos = -0.483372808,9.78551769,-2.94482446
 	attPos = 0,-0.852886677,-0.336460114
 	attPos0 = 0,-0.0399658717,0.613962173
 	rot = 0.707106829,-0.707106829,5.96046448E-08,5.96046448E-08

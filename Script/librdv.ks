@@ -92,7 +92,7 @@ function rdv {
     local steerVec is -dV:Normalized*brakeAcc.
     local count is 0.
     local far is true.               // use orbital mechanics
-    local useRCS is hasRcsDeltaV(5).
+    local useRCS is hasRcsDeltaV(10).
     local rdvT is 0.
     local lock offset to targetPos()-Target:Position.
 
@@ -156,7 +156,7 @@ function rdv {
         else if (tt=0) set Warp to 2.
     }
     set Warp to 0.
-    set far to false. print " force near". // Workaround against jumping of 'offset'
+    set far to false. print " force rdv mode NEAR". // Workaround against jumping of 'offset'
 
     until (dX:Mag < 200) update().
     checkRdv().

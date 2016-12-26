@@ -249,10 +249,12 @@ function execNode {
         return.
     }
     local debugDV is V(NextNode:Prograde,NextNode:RadialOut,NextNode:Normal):Mag.
-    if Abs(debugDV -NextNode:DeltaV:Mag) >0.15 {
+    if Abs(debugDV -NextNode:DeltaV:Mag) >0.15
+      AND Abs(1 - debugDV/NextNode:DeltaV:Mag) > 0.01 {
         print "  WARNING: inconsistent ManeuverNode!".
         print "   deltaV    ="+Round(NextNode:DeltaV:Mag, 2).
         print "   components="+Round(debugDV, 2).
+        //print "   ratio=" +Round(Abs(debugDV/NextNode:DeltaV:Mag));
         if (debugDV<0.1) {remove NextNode. wait 0. return.}
     }
 

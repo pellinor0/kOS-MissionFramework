@@ -4,6 +4,7 @@ print "m_kssTest".
 if (Ship:Name <> gTgtVesselName) // can't do this when docked to target Vessel
   set Target to Vessel(gTgtVesselName).
 
+Brakes On. Wait 0.8.
 m_waitForLaunchWindow().
 m_ascentLKO().
 

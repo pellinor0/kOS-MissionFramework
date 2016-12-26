@@ -81,6 +81,7 @@ function atmoAscentPlane {
     lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
 
     local engines is Ship:PartsDubbed(gShipType+"Engine").
+    Brakes off.
     stage.
     set WarpMode to "PHYSICS".
     set Warp to 2.
