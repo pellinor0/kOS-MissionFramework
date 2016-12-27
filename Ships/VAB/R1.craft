@@ -2,7 +2,7 @@ ship = R1
 version = 1.2.2
 description = 
 type = VAB
-size = 1.40129507,12.4698563,1.40129507
+size = 1.40129507,12.4698563,1.40129495
 PART
 {
 	part = mk1pod_4293921048
@@ -323,7 +323,7 @@ PART
 	istg = 0
 	resPri = 0
 	dstg = 0
-	sidx = 0
+	sidx = 1
 	sqor = 0
 	sepI = -1
 	attm = 0
@@ -479,6 +479,8 @@ PART
 	link = solarPanels5_4291427172
 	link = kOSMachineRad_4294505780
 	link = batteryBank_4293553522
+	link = radialDrogue_4294216284
+	link = radialDrogue_4294215100
 	attN = top,mk1pod_4293921048
 	attN = bottom,batteryBank_4293553522
 	EVENTS
@@ -552,7 +554,7 @@ PART
 {
 	part = solarPanels5_4293848626
 	partName = Part
-	pos = 0.0157848783,20.6802902,0.351006657
+	pos = 0.0157848783,20.6802902,0.351009756
 	attPos = 1.67638106E-07,0.519981325,7.1525568E-07
 	attPos0 = 0,-0.231893495,0.562873781
 	rot = -1.78813934E-07,-1.1920929E-07,0,-1.00000012
@@ -660,10 +662,10 @@ PART
 {
 	part = solarPanels5_4291427210
 	partName = Part
-	pos = 0.503250122,20.6802902,-0.493308008
+	pos = 0.503253222,20.6802902,-0.493309557
 	attPos = 5.66244125E-07,0.519981325,-3.87430191E-07
 	attPos0 = 0.487462997,-0.231893495,-0.28143701
-	rot = -8.94069245E-08,-0.866025507,1.54857375E-07,-0.50000006
+	rot = -8.94069316E-08,-0.866025507,1.54857389E-07,-0.50000006
 	attRot = 0,0,0,1
 	attRot0 = 8.94069316E-08,0.866025388,-1.54857403E-07,0.499999911
 	mir = 1,1,1
@@ -768,10 +770,10 @@ PART
 {
 	part = solarPanels5_4291427172
 	partName = Part
-	pos = -0.47168079,20.6802902,-0.493308067
+	pos = -0.471684664,20.6802902,-0.493310392
 	attPos = -4.76837215E-07,0.519981325,-2.08616299E-07
 	attPos0 = -0.487463087,-0.231893495,-0.28143689
-	rot = -8.94069245E-08,0.866025507,-1.54857375E-07,-0.50000006
+	rot = -8.94069316E-08,0.866025507,-1.54857389E-07,-0.50000006
 	attRot = 0,0,0,1
 	attRot0 = -8.9406953E-08,0.866025388,-1.54857403E-07,-0.500000119
 	mir = 1,1,1
@@ -876,7 +878,7 @@ PART
 {
 	part = kOSMachineRad_4294505780
 	partName = Part
-	pos = 0.0157846399,20.6634197,-0.773392677
+	pos = 0.0157846399,20.6634197,-0.773395777
 	attPos = -1.86264204E-09,0.561441422,-4.17232513E-07
 	attPos0 = -4.84287916E-08,-0.290226012,-0.561519921
 	rot = -1.26440497E-07,0.70710659,1.26440611E-07,-0.707107186
@@ -1696,7 +1698,7 @@ PART
 {
 	part = launchClamp1_4292678138
 	partName = Part
-	pos = -1.41393447,12.7715197,-0.211869687
+	pos = -1.41394067,12.7715197,-0.211869687
 	attPos = 0,0,0
 	attPos0 = -1.42971802,-0.961780488,1.19209304E-07
 	rot = 0,0.707106948,0,0.707106829
@@ -1784,6 +1786,296 @@ PART
 	{
 		name = ModuleTestSubject
 		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = radialDrogue_4294216284
+	partName = Part
+	pos = 0.0157846995,21.1417885,-0.785737634
+	attPos = 5.96046519E-08,0.905668259,-0.0108155012
+	attPos0 = -5.96046448E-08,-0.156080246,-0.56305027
+	rot = -5.96046448E-08,-3.27825546E-07,1.95399252E-14,-1.00000012
+	attRot = 0,0,0,1
+	attRot0 = -5.96046377E-08,-3.27825518E-07,1.95399235E-14,-1
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = 0
+	resPri = 0
+	dstg = 0
+	sidx = 0
+	sqor = 0
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	sym = radialDrogue_4294215100
+	srfN = srfAttach,fuelTankSmall_4291431876
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleParachute
+		isEnabled = True
+		persistentState = STOWED
+		animTime = 0
+		minAirPressureToOpen = 0.0199999996
+		deployAltitude = 2500
+		spreadAngle = 7
+		automateSafeDeploy = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			DeployAction
+			{
+				actionGroup = None
+			}
+			CutAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTestSubject
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleDragModifier
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleDragModifier
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 150
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = KOSNameTag
+		isEnabled = True
+		nameTag = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = radialDrogue_4294215100
+	partName = Part
+	pos = 0.0157847591,21.1417885,0.36199823
+	attPos = -5.96046448E-08,0.905668259,0.0108157396
+	attPos0 = 1.1920929E-07,-0.156080246,0.56305027
+	rot = 1.95399252E-14,-1.00000012,5.96046448E-08,3.27825546E-07
+	attRot = 0,0,0,1
+	attRot0 = 2.48689924E-14,-1,5.96046377E-08,4.47034779E-07
+	mir = 1,1,1
+	symMethod = Radial
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = 0
+	resPri = 0
+	dstg = 0
+	sidx = 0
+	sqor = 0
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	sym = radialDrogue_4294216284
+	srfN = srfAttach,fuelTankSmall_4291431876
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleParachute
+		isEnabled = True
+		persistentState = STOWED
+		animTime = 0
+		minAirPressureToOpen = 0.0199999996
+		deployAltitude = 2500
+		spreadAngle = 7
+		automateSafeDeploy = 0
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			DeployAction
+			{
+				actionGroup = None
+			}
+			CutAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTestSubject
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleDragModifier
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleDragModifier
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 150
 		stagingEnabled = True
 		EVENTS
 		{

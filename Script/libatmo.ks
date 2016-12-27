@@ -192,10 +192,10 @@ function atmoLandingRocket {
     wait until Altitude < 30000.
     set Warp to 1.
 
+    print "  arm Chutes".
+    Chutes on.
     wait until (Velocity:Surface:Mag < 260
             and Velocity:Surface:Mag <> 0). // seems to happen if pod explodes
-    print "  Chutes".
-    Chutes on.
     lock Steering to stSrfRetro().
     wait until (Altitude - Max(0, GeoPosition:TerrainHeight)) < 500.
 

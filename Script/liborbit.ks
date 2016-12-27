@@ -292,7 +292,7 @@ function execNode {
         wait 0.
         if doDynWarp dynWarp().
         print "tt   ="+Round(Throttle, 2)       AT (38,0).
-        print "st   ="+Steering AT (38,1).
+        //print "st   ="+Steering AT (38,1).
     }.
 
     if(NextNode:Deltav:Mag > 0.05) {
