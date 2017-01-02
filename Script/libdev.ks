@@ -1,10 +1,31 @@
 @lazyglobal off.
 print "  Loading libdev".
 
-
-function aeroBrake {
-
+global gDebug is 0.
+function deb {
+    parameter str.
+    //  if gDebug=0 set gDebug to Time:Seconds.
+    // local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
+    // local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
+    print "  deb "+str.
+    //print "   warp=" +Warp +" " +WarpMode.
+    print 1/0.
 }
+
+// ====  AutoStart =======
+// debug hook: this code is called before the other libraries are loaded
+switch to 0.
+//print "  compiling libbasic".   compile libbasic.
+//print "  compiling libatmo".    compile libatmo.
+//print "  compiling liborbit".   compile liborbit.
+//print "  compiling libnav".     compile libnav.
+print "  compiling libmission". compile libmission.
+//print "  compiling librdv".     compile librdv.
+//print "  compiling libsystem".  compile libsystem.
+//print "  compiling libsetup".   compile libsetup.
+//print "  compiling globals".    compile globals.
+//print "  compiling boot".       compile "boot/boot.ks".
+// =======================
 
 function dynWarp {
     parameter errFactor is 1.
@@ -24,34 +45,3 @@ function dynWarp {
     else if (err>0.03) set Warp to 2.
     else set Warp to 3.
 }
-
-
-global gDebug is 0.
-function deb {
-    parameter str.
-
-    //  if gDebug=0 set gDebug to Time:Seconds.
-    // local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-    // local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
-    // print "  deb "+str
-    //     +": dX="
-    //     +Round((PositionAt(Ship,rdvTime)-PositionAt(Target,rdvTime)):Mag)
-    //     +", dV="+Round(v0,1)
-    //     +", t=" +Round(rdvTime-gDebug)
-    //     +", dt="+Round(rdvTime-Time:Seconds).
-}
-
-// ====  AutoStart =======
-// debug hook: this code is called before the other libraries are loaded
-
-switch to 0.
-//print "  compiling libbasic".   compile libbasic.
-//print "  compiling libatmo".    compile libatmo.
-//print "  compiling liborbit".   compile liborbit.
-//print "  compiling libnav".     compile libnav.
-//print "  compiling libmission". compile libmission.
-//print "  compiling librdv".     compile librdv.
-//print "  compiling libsystem".  compile libsystem.
-//print "  compiling libsetup".   compile libsetup.
-//print "  compiling globals".    compile globals.
-//print "  compiling boot".       compile "boot/boot.ks".

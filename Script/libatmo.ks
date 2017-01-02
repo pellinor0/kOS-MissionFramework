@@ -2,14 +2,31 @@
 @lazyglobal off.
 print "  Loading libAtmo".
 
-function atmoAscentRocket {
+function planeToHeading {
+  parameter normal.                          // desired orbital plane
+  set normal to Vxcl(normal, Up:ForeVector). // plane through current position
+  return Body:GeoPositionOf(Ship:Position +Vcrs(Up:ForeVector, normal)):Heading.
+}
 
+function getHeading {
+  return Body:GeoPositionOf(Ship:Position +Ship:Velocity:Surface):Heading.
+}
+
+function atmoAscentRocket {
+    parameter tgtPlane is V(0,1,0).
+    set tgtPlane to Vxcl(tgtPlane, Up:ForeVector). // plane through current position
     local tgtAP is gLkoAP.
     local lock ppp to 90.
     lock vel to Velocity:Surface.
     local lock velPP to 90-Vang(Up:Vector, vel).
-    local lock headCorr to -Vdot(vel:Normalized, North:Vector).
-    lock Steering to Heading(90+headCorr, ppp).
+
+    if (tgtPlane = V(0,0,0)) {
+      set tgtPlane to Ship:North:ForeVector.
+    }
+
+    local launchHeading is planeToHeading(tgtPlane).
+    print "  launchHeading="+launchHeading.
+    lock Steering to Heading(launchHeading, ppp).
     lock Throttle to 1.
 
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
@@ -65,30 +82,35 @@ function atmoAscentRocket {
 }
 
 function atmoAscentPlane {
+    parameter tgtPlane is V(0,1,0).
     // todo: support different engine configurations
     // * rapier
     // * rapier +nuke (light nukes before air runs out)
     // * panther/whiplash +rocket (switch mode + switch to rockets)
+    set tgtPlane to Vxcl(Up:ForeVector, tgtPlane):Normalized. // plane through current position
+    //print "  tgtInc=" +Round(Vang(V(0,1,0), tgtPlane) ,2).
+    lock vel to Velocity:Surface.
 
     local ppmin is 13.
     lock Throttle to 1.
 
     local pp is ppMin.
-    local lock rollCorr to -Vdot(Velocity:Orbit:Normalized, North:Vector).
     local lock velPP to 90-Vang(Up:Vector, Velocity:Surface).
 
-    //set SteeringManager:PitchTorqueFactor to 5.
-    lock Steering to Heading (90, pp-gBuiltinAoA) *R(0,0,rollCorr).
-
     local engines is Ship:PartsDubbed(gShipType+"Engine").
+
+    // Takeoff
     Brakes off.
     stage.
     set WarpMode to "PHYSICS".
     set Warp to 2.
+    lock Steering to Heading(gSpacePortHeading, pp-gBuiltinAoA).
 
     wait until (VerticalSpeed > 5).
     print "  takeoffVel="+Round(Velocity:Surface:Mag,1).
     Gear off.
+    local lock rollCorr to Max(-20, Min(20, -100*Vdot(vel:Normalized, tgtPlane))).
+    lock Steering to Heading (getHeading(), pp-gBuiltinAoA) *R(0,0,rollCorr).
 
     // flightPath von MJ (startAlt=0)
     local lock shape to ((Altitude-0) / (19000-0)) ^gLaunchParam.
@@ -112,11 +134,18 @@ function atmoAscentPlane {
         print "aoaT=" +Round(aoaTgt, 2)+"  " at (38, 2).
         print "pp  =" +Round(pp, 2)    +"  " at (38, 3).
         print "ppMJ=" +Round(ppMJ, 2)  +"  " at (38, 4).
-        print "ttAP=" +Round(Eta:Apoapsis,1) +"  " at (38, 5).
+        //print "ttAP=" +Round(Eta:Apoapsis,1) +"  " at (38, 5).
+        print "rc  =" +Round(rollCorr, 2)    at (38, 6).
+        print "hdg =" +Round(getHeading(),2) at (38, 7).
+        //DebugDirection(Steering).
     }
 
     print "  Initial Climb".
     until (Altitude>25000) update().
+    when (Altitude>30000) then {
+        lock vel to ((Altitude-30000)*Velocity:Orbit +(40000-Altitude)*Velocity:Surface)/10000.
+        when (Altitude>40000) then lock vel to Velocity:Orbit.
+    }
 
     set pp to ppMin.
     set Warp to 2.  // wait until max speed (better: watch ttAP ?)
@@ -151,6 +180,7 @@ function atmoAscentPlane {
 }
 
 function atmoDeorbit {
+    parameter waitForInc is true.
     if(Periapsis < Body:Atm:Height) {
         print "  WARNING: atmoDeorbit: not in Orbit!".
         return.
@@ -162,7 +192,7 @@ function atmoDeorbit {
     print "  landingPA=" +Round(gLandingPA, 2).
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
     print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
-    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height*0.75, gDeorbitPE).
+    if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height*0.75, gDeorbitPE, waitForInc).
     execNode().
 }
 
@@ -304,7 +334,7 @@ function atmoLandingPlane {
             set latErr to Latitude-gSpacePort:Lat.
             set angErr to latErr/(-relLng) *(180/3.1415). // small angle approx.
             set headSoll to 90 +2*angErr.
-            set roll to -headSoll + headIst.
+            set roll to Max(-20, Min(20, -headSoll + headIst)).
 
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
@@ -313,9 +343,10 @@ function atmoLandingPlane {
             print "latE="+Round(latErr*10472, 1)+"  " at (38,4). // meters
             //print "angE="+Round(angErr, 3)+"   " at (38,4).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
-            //print "roll="+Round(roll,     2)+"   " at (38,6).
+            print "roll="+Round(roll,     2)+"   " at (38,6).
             //print "hIst="+Round(headIst,  2)+"   " at (38,11).
             //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
+            print "lat ="+Round(Latitude,2)     at (38,7).
         }
         set steerDir to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
         //print "aoaT="+Round(aoa, 2)+"   " at (38,13).

@@ -55,7 +55,6 @@ function nodeTuneCapturePE {
 
 function nodeReturnFromMoon {
     // Assumption: prograde circular equatorial orbit
-
     // find final speed
     local tgtPE is 70000.
     local parent is Body:Body.
@@ -122,9 +121,9 @@ function nodeReturnFromMoon {
         local escNormal is -par*moonPrograde + 100*V(0,1,0).
         tweakNodeInclination(escNormal, -1).
         wait 0.
-//          print " Iteration".
-//          print "  par="+Round(par,3).
-//          print "  tmpHeight="+Round(tmpHeight).
+        //  print " Iteration".
+        //  print " par="+Round(par,3).
+        //  print " tmpHeight="+Round(tmpHeight).
         if (tmpHeight>0) {
             if (d>0) {
                 set step to 0.5.
@@ -135,36 +134,36 @@ function nodeReturnFromMoon {
     }
     print "  dvCost="+Round(NextNode:DeltaV:Mag -(nodeVel-Velocity:Orbit:Mag), 2).
 
-// == old code ==
-// => more analytical calculation
-// (probably useful when starting from an inclined orbit)
-//     local tgtNormal is Vcrs(midPos-Body:Body:Position, midPos-Body:Position):Normalized.
-//     print "  tgtNormal="+vecToString(tgtNormal).
-//     print "  tgtInc   ="+Round(VectorAngle(tgtNormal, parentNormal),2).
-//
-//     // * this gives a target normal speed at escape
-//     // * get target (Moon) orbit plane from that
-//     local parentVel is tgtVel*Vcrs(tgtNormal, Body:Position-Body:Body:Position):Normalized.
-//     print "  bodyVel=" +vecToString(Body:Obt:Velocity:Orbit).
-//     local bodyNormal is Vcrs(Body:Orbit:Velocity:Orbit,
-//                              Body:Position-Body:Body:Position):Normalized.
-//     print "  bodyNormal=" +vecToString(bodyNormal).
-//     // ^^ above is in parent-SOI-coords
-//     // vv belov is in moon-SOI coords
-//     local escNormalVel is Vdot( bodyNormal, parentVel ) / 2.
-//     print "  escNormalVel=" +Round(escNormalVel, 2).
-//     local escHorizVel is Sqrt(escVel^2 - escNormalVel^2).
-//     print "  escHorizVel=" +Round(escHorizVel,2).
-//     local escNormal is escNormalVel*moonPrograde + escHorizVel*V(0,1,0). // moon-frame
-// //    local escNormal is escNormalVel*Body:Orbit:Velocity:Orbit:Normalized
-// //                      +escHorizVel*bodyNormal. // parent-fr
-//     print "  escNormal=" +vecToString(escNormal).
-//     print "  escAngle=" +Vang(escNormal, V(0,1,0)).
-//
-//     //tweakNodeInclination(escNormal, -1).
-//     print "  actEscAngle="+Round(VectorAngle(Vcrs(Body:Position,Velocity:Orbit),V(0,1,0)),2).
+    // == old code ==
+    // => more analytical calculation
+    // (probably useful when starting from an inclined orbit)
+    //     local tgtNormal is Vcrs(midPos-Body:Body:Position, midPos-Body:Position):Normalized.
+    //     print "  tgtNormal="+vecToString(tgtNormal).
+    //     print "  tgtInc   ="+Round(VectorAngle(tgtNormal, parentNormal),2).
+    //
+    //     // * this gives a target normal speed at escape
+    //     // * get target (Moon) orbit plane from that
+    //     local parentVel is tgtVel*Vcrs(tgtNormal, Body:Position-Body:Body:Position):Normalized.
+    //     print "  bodyVel=" +vecToString(Body:Obt:Velocity:Orbit).
+    //     local bodyNormal is Vcrs(Body:Orbit:Velocity:Orbit,
+    //                              Body:Position-Body:Body:Position):Normalized.
+    //     print "  bodyNormal=" +vecToString(bodyNormal).
+    //     // ^^ above is in parent-SOI-coords
+    //     // vv belov is in moon-SOI coords
+    //     local escNormalVel is Vdot( bodyNormal, parentVel ) / 2.
+    //     print "  escNormalVel=" +Round(escNormalVel, 2).
+    //     local escHorizVel is Sqrt(escVel^2 - escNormalVel^2).
+    //     print "  escHorizVel=" +Round(escHorizVel,2).
+    //     local escNormal is escNormalVel*moonPrograde + escHorizVel*V(0,1,0). // moon-frame
+    // //    local escNormal is escNormalVel*Body:Orbit:Velocity:Orbit:Normalized
+    // //                      +escHorizVel*bodyNormal. // parent-fr
+    //     print "  escNormal=" +vecToString(escNormal).
+    //     print "  escAngle=" +Vang(escNormal, V(0,1,0)).
+    //
+    //     //tweakNodeInclination(escNormal, -1).
+    //     print "  actEscAngle="+Round(VectorAngle(Vcrs(Body:Position,Velocity:Orbit),V(0,1,0)),2).
 
-    //todo: same thing from an inclined orbit
+    // todo: same thing from an inclined orbit
     //      (when launching from a non-eq moon base)
 }
 
@@ -192,16 +191,16 @@ function nodeHohmann {
     local waitTime is waitAngle * synPeriod/360.
     local rdvTime is Time:Seconds +transTime +waitTime.
 
-//      print " hohmannNode".
-//      print "  transTime  ="+Round(transTime).
-//      print "  transSma   ="+Round(transSma).
-//      print "  phase angle="+Round(phaseAngle, 2).
-//      print "  synPeriod  ="+Round(synPeriod).
-//      print "  transAngle ="+Round(transAngle, 2).
-//      print "  waitAngle  ="+Round(waitAngle, 2).
-//      print "  waitTime   ="+Round(waitTime).
-//      print "  ETA to rdv ="+Round(rdvTime-Time:Seconds).
-//      print "  tgtAP      ="+Round(ap).
+    //  print " hohmannNode".
+    //  print "  transTime  ="+Round(transTime).
+    //  print "  transSma   ="+Round(transSma).
+    //  print "  phase angle="+Round(phaseAngle, 2).
+    //  print "  synPeriod  ="+Round(synPeriod).
+    //  print "  transAngle ="+Round(transAngle, 2).
+    //  print "  waitAngle  ="+Round(waitAngle, 2).
+    //  print "  waitTime   ="+Round(waitTime).
+    //  print "  ETA to rdv ="+Round(rdvTime-Time:Seconds).
+    //  print "  tgtAP      ="+Round(ap).
 
     local t is Time:Seconds +waitTime.
     nodeUncircularize(ap, t).
@@ -217,48 +216,48 @@ function nodeHohmann {
     }
 
     // refine
-//     print " initial node".
-//     local frame is getOrbitFacing(Ship, rdvTime).
-//     local dX is -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
-//     local dv is -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
-//     print "  dx="+vecToString(dx/1000).
-//     print "  dv="+vecToString(dv).
+    // print " initial node".
+    // local frame is getOrbitFacing(Ship, rdvTime).
+    // local dX is -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
+    // local dv is -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
+    // print "  dx="+vecToString(dx/1000).
+    // print "  dv="+vecToString(dv).
     // diff = rad+, norm+, prograde
 
     // radial => change node:Prograde
-//     print " tune prograde".
-//     //set ap to ap+dX:X.
-//      print "  apOld=" +Round((Target:Apoapsis + Target:Periapsis)/2).
-//      print "  tgtAP=" +Round(Target:Apoapsis).
-//      print "  tgtPE=" +Round(Target:Periapsis).
+    // print " tune prograde".
+    // //set ap to ap+dX:X.
+    //  print "  apOld=" +Round((Target:Apoapsis + Target:Periapsis)/2).
+    //  print "  tgtAP=" +Round(Target:Apoapsis).
+    //  print "  tgtPE=" +Round(Target:Periapsis).
 
-//     set ap to (PositionAt(Target,rdvTime)-Body:Position):Mag -Body:Radius.
-//     print "  apNew=" +Round(ap).
-//     print "  dAP ="+Round(ap -NextNode:Orbit:Apoapsis).
-//     remove NextNode.
-//     nodeUncircularize(ap, t).
-//     wait 0.
-//     set rdvTime to NextNode:Eta+NextNode:Orbit:Period/2.
-//     set frame to getOrbitFacing(Ship, rdvTime).
-//     set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
-//     set dv to -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
-//     print "  dx="+vecToString(dx/1000).
-//     print "  dv="+vecToString(dv).
+    // set ap to (PositionAt(Target,rdvTime)-Body:Position):Mag -Body:Radius.
+    // print "  apNew=" +Round(ap).
+    // print "  dAP ="+Round(ap -NextNode:Orbit:Apoapsis).
+    // remove NextNode.
+    // nodeUncircularize(ap, t).
+    // wait 0.
+    // set rdvTime to NextNode:Eta+NextNode:Orbit:Period/2.
+    // set frame to getOrbitFacing(Ship, rdvTime).
+    // set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
+    // set dv to -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
+    // print "  dx="+vecToString(dx/1000).
+    // print "  dv="+vecToString(dv).
 
     // prograde => shift t (linear approx)
-//     print " tune timing".
-//     set NextNode:Eta to NextNode:Eta +dx:Z/dv:Z.
-//     print "  dt="+Round(dx:Z/dv:Z).
-//     wait 0.
-//     set frame to getOrbitFacing(Ship, rdvTime).
-//     set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
-//     set dv to -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
-//     print "  dx="+vecToString(dx/1000).
-//     print "  dv="+vecToString(dv).
-//
-//     add Node(Time:Seconds+ NextNode:Eta+ 2*6*3600, 0,6,0).
+    // print " tune timing".
+    // set NextNode:Eta to NextNode:Eta +dx:Z/dv:Z.
+    // print "  dt="+Round(dx:Z/dv:Z).
+    // wait 0.
+    // set frame to getOrbitFacing(Ship, rdvTime).
+    // set dX to -frame*(PositionAt(Target,rdvTime)-PositionAt(Ship,rdvTime)).
+    // set dv to -frame*(VelocityAt(Target,rdvTime):Orbit-VelocityAt(Ship,rdvTime):Orbit).
+    // print "  dx="+vecToString(dx/1000).
+    // print "  dv="+vecToString(dv).
+    //
+    // add Node(Time:Seconds+ NextNode:Eta+ 2*6*3600, 0,6,0).
 
-     //refineRdvBruteForce(rdvTime).
+    // refineRdvBruteForce(rdvTime).
 
     local n is getOrbitNormal(Ship).
     local h is Vdot(PositionAt(Target,rdvTime)-Body:Position, n)/2.
@@ -268,7 +267,7 @@ function nodeHohmann {
     //print "  tgtAngle="+Round(tgtAngle,2).
     local tgtNormal is n*Sqrt(NextNode:Orbit:SemiMinorAxis^2 + h^2)
                        -VelocityAt(Ship,Time:Seconds+NextNode:Eta+0.1):Orbit:Normalized*h.
-    tweakNodeInclination(tgtNormal, 0.01).
+    tweakNodeInclination(tgtNormal, -1).
     return rdvTime.
 }
 
@@ -276,6 +275,7 @@ function nodeDeorbit {
     parameter tgtPos. // GeoCoord
     parameter tgtHeight.
     parameter tgtPE.
+    parameter waitForInc is false.
     // Make a node with tgtPE such that my altitude at tgtPos is tgtHeight
     // Assumption: start in circular orbit
 
@@ -294,16 +294,19 @@ function nodeDeorbit {
     local lngErr is 1000.
     local t2 is 0.
     local counter is 0.
+    local descendTime is 0.
     until Abs(lngErr)<0.1 or counter>6 {
         //print " Iteration".
         set t2 to timeToAltitude2(tgtHeight,
                                     Time:Seconds+NextNode:Eta,
                                     Time:Seconds+NextNode:Eta+NextNode:Orbit:Period/2).
+        set descendTime to t2-NextNode:Eta-Time:Seconds.
         local lng1 is Body:GeoPositionOf(PositionAt(Ship,t2)):Lng.
         local lng2 is tgtPos:lng +360*(t2-Time:Seconds)/Body:RotationPeriod.
         set lngErr to lng1-lng2.
         if (lngErr < -180) set lngErr to lngErr+360.
         local dt is -(lngErr/360)*synPeriod.
+        //print "  descendTime=" +Round(descendTime,2).
         //print "  t2="+Round(t2-Time:Seconds).
         //print "  lngErr="+Round(lngErr, 2).
         //print "  lngDelta="+Round(360*(t2-Time:Seconds)/Body:RotationPeriod).
@@ -318,14 +321,80 @@ function nodeDeorbit {
         wait 0.
     }
 
+    function frame {
+      parameter dt.
+      return -AngleAxis((dt)*360/Body:RotationPeriod, V(0,1,0)).
+    }
+    function getIncError {
+      parameter dt.
+      return Vang(getOrbitNormal(Ship),
+                  frame(dt) * Vcrs(tgtPos:Velocity:Orbit, tgtPos:Position)).
+    }
+
+    if (waitForInc) {
+      local anglestep is 360 -360*Obt:Period/synPeriod.
+      local plane is getOrbitNormal(Ship).
+      local dt is NextNode:Eta+descendTime.
+      print "  dt   =" +Round(dt).
+      print "  plane=" +VecToString(plane:Normalized).
+      print "  geoPos="+Body:GeoPositionOf(Body:Position -plane).
+      print "  angleStep=" +Round(angleStep,2).
+      local lng1 is Body:GeoPositionOf(Body:Position -plane):Lng.
+      if (tgtPos:Lat<0) set lng1 to -lng1.
+      local lngDiff is Mod((tgtPos:Lng -lng1 -360*dt/Body:RotationPeriod)+180, 360)-180.
+      print "  lngDiff=" +Round(lngDiff,2).
+
+      local t is Time:Seconds+NextNode:Eta+descendTime.
+      local incError is getIncError(dt).
+      local lng1 is Body:GeoPositionOf(-getOrbitNormal(Ship,t)):Lng
+                    -360*(NextNode:Eta+descendTime)/synPeriod.
+      local lngError is Mod(tgtPos:Lng-lng1+180, 360)-180.
+      print "  incError0=" +Round(incError, 2).
+      print "  lngError0=" +Round(lngError, 2).
+      print "  angleStep=" +Round(Mod(angleStep+180,360)-180,2).
+      local numSteps is Round(6*3600/Obt:Period).  // max wait: 1 day
+      local step is 1.
+      local actIncErr is incError.
+      local actLngErr is lngDiff.
+      local bestStep is 0.
+      until step > numSteps {
+        local incErr2 is getIncError(dt+step*synPeriod).
+        local lngErr2 is Mod(lngDiff +step*angleStep +180,360)-180.
+        //local incErr2 is Vang(getOrbitNormal(Ship,t),
+        //                       (-frame(NextNode:Eta+descendTime +step*synPeriod))
+        //                       * Vcrs(tgtPos:Velocity:Orbit, tgtPos:Position)).
+        //if (incErr2 < actIncErr){
+        if (abs(lngErr2) < abs(actLngErr)) {
+          //set actIncErr to incErr2.
+          set actLngErr to lngErr2.
+          set bestStep to step.
+        }
+        print "  step" +step
+          +": lngErr=" +Round(lngErr2, 2)
+          +", incErr=" +Round(incErr2, 2).
+        set step to step + 1.
+      }
+      print "  bestStep=" +bestStep.
+      set t2 to t2 +bestStep*synPeriod.
+      set NextNode:Eta to NextNode:Eta +bestStep*synPeriod.
+    }
+
     //print "  tweak inclination".
-    local frame is AngleAxis((t2-Time:Seconds)*360/Body:RotationPeriod, V(0,1,0)).
-    local p2 is (-frame) * (tgtPos:Position-Body:Position).
+    local p2 is frame(NextNode:Eta) * (tgtPos:Position-Body:Position).
     local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
-    //if Vdot(normal,)<0 set normal to -normal.
-    tweakNodeInclination(normal, -1).
+    tweakNodeInclination(normal, 0.1).
 }
 
+function nodeCircularize {
+  parameter t.
+  local sma is (PositionAt(Ship,t)-Body:Position).
+  local v is VelocityAt(Ship,t):Orbit.
+  local circVel is Sqrt(Body:Mu / sma:Mag) * Vxcl(sma,v):Normalized.
+  local nodeDv is -getOrbitFacing(Ship, t)*(circVel-v).
+  add Node(t,0,0,0).
+  setNextNodeDV(nodeDv).
+  print "  nodeCircularize: dV="+Round(nodeDv:Mag,2).
+}
 
 // == tweak an existing node ==
 function tweakNodeInclination {
@@ -334,7 +403,7 @@ function tweakNodeInclination {
     // manipulate node to kill normal component
     //   while keeping speed/PE constant
     // Assumption: Node is set
-//    print " tweakNodeInclination".
+    // print " tweakNodeInclination".
     wait 0.
     local t is Time:Seconds+NextNode:Eta.
     local v is VelocityAt(Ship,t+0.01):Orbit.
@@ -351,11 +420,10 @@ function tweakNodeInclination {
         //print "  pos ="+vecToString(-frame*pos).
         //print "  vN  ="+vecToString(-frame*vN).
         //print "  vErr="+vecToString(-frame*vErr).
-
-//        print "  inc before=" +Round(NextNode:Orbit:Inclination, 3).
+        //print "  oldinc=" +Round(NextNode:Orbit:Inclination, 3).
         setNextNodeDV(newDv).
-//        print "  inc after =" +Round(NextNode:Orbit:Inclination, 3).
-//        print "  dvCost    =" +Round(dvCost,2).
+        //print "  newInc=" +Round(NextNode:Orbit:Inclination, 3).
+        print "  dvCost=" +Round(dvCost, 2).
     } else {
         // adjust the normal to use less dV
         print " tweakNodeInclination: limiting change to budget".
@@ -507,8 +575,8 @@ function timeToAltitude2 {
     local dt is (t1-t0)/2.
     local t is t0.
     until (dt < 1) {
-//         print "  dir="+dir.
-//         print "  tgtAlt="+tgtAlt.
+        // print "  dir="+dir.
+        // print "  tgtAlt="+tgtAlt.
         if ( (dir * (tgtAlt - (PositionAt(Ship,t+dt) -Body:Position):Mag)) > 0)
           set t to t+dt.
 
@@ -537,16 +605,16 @@ function timeToDist {
 function findClosestApproach {
     parameter t0.
     parameter t1.
-//     print "findClosestApproach".
+    // print "findClosestApproach".
     // Assume Target is set.
     // Assume circular orbits
 
     local linearThreshold is Min(Target:Obt:Period, Obt:Period)/36. // 10°
 
-//     print "  First Step: brute force search".
+    // print "  First Step: brute force search".
     local steps is Ceiling( (t1-t0)/linearThreshold ).
-//     print "  steps=" +steps.
-//     print "  stepsize=" +Round(linearThreshold).
+    // print "  steps=" +steps.
+    // print "  stepsize=" +Round(linearThreshold).
     local period is Obt:Period.
     local i is 0.
     local tMin is 0.
@@ -562,8 +630,8 @@ function findClosestApproach {
         }
         set i to i+1.
     }
-//     print "    tMin="+Round(tMin-Time:Seconds).
-//     print "    dmin="+Round(dMin).
+    // print "    tMin="+Round(tMin-Time:Seconds).
+    // print "    dmin="+Round(dMin).
 
     local finished is 0.
     local dt is 0.
@@ -586,12 +654,12 @@ function findClosestApproach {
         } else {
             set finished to 1.
         }
-//         print "  Linear Approximation".
-//         print "    vRel=" +Round(vRel:Mag, 2). //+vecToString(vRel).
-//         print "    dist=" +Round(dist:Mag, 2). //+vecToString(dist).
-//         print "    dPar="+Round(dPar, 2).
-//         print "    dt  ="+Round(dt, 2).
-//         print "    d   ="+Round(d, 2).
+        // print "  Linear Approximation".
+        // print "    vRel=" +Round(vRel:Mag, 2). //+vecToString(vRel).
+        // print "    dist=" +Round(dist:Mag, 2). //+vecToString(dist).
+        // print "    dPar="+Round(dPar, 2).
+        // print "    dt  ="+Round(dt, 2).
+        // print "    d   ="+Round(d, 2).
     }
 
 
@@ -619,18 +687,18 @@ function timeToAnDn {
         set t0 to t1.
         set t1 to t1+Obt:Period/2.
     }
-//     print "  t0="+Round(t0-Time:Seconds) +", t1="+Round(t1-Time:Seconds).
-//     print "  startAngle="+Round(Vang(p0,p1)).
-//     print "  tgtAngle=" +Round(tgtAngle,2).
+    // print "  t0="+Round(t0-Time:Seconds) +", t1="+Round(t1-Time:Seconds).
+    // print "  startAngle="+Round(Vang(p0,p1)).
+    // print "  tgtAngle=" +Round(tgtAngle,2).
 
     // Binary search
     local dt is (t1-t0)/2.
     local t is t0.
     until (dt < 1) {
         set p0 to PositionAt(ship,t+dt)-Body:Position.
-//         print "  t="  +Round(t-Time:Seconds)
-//              +", ang="+Round(Vang(p0,p1),2)
-//              +", dt=" +Round(dt,1).
+        // print "  t="  +Round(t-Time:Seconds)
+        //  +", ang="+Round(Vang(p0,p1),2)
+        //  +", dt=" +Round(dt,1).
         if ( Vang(p0,p1) > tgtAngle)
           set t to t+dt.
 
@@ -666,5 +734,9 @@ function setNextNodeDV {
 
 function getOrbitNormal {
     parameter tgt.
-    return Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized.
+    parameter t is 0.
+    if (t=0)
+      return Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized.
+    else
+      return Vcrs(VelocityAt(tgt,t):Orbit, PositionAt(tgt,t)-Body:Position):Normalized.
 }

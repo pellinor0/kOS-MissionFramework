@@ -25,6 +25,8 @@ run params.ks.
 loadPersistent().
 writePersistent().
 
+on AG1 { deb("AG1"). }
+
 if (pMissionCounter > 0) {
     Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
     switch to 0.

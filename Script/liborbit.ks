@@ -10,11 +10,11 @@ function launchTimeToRdv {
     if (waitAngle < 0) { set waitAngle to waitAngle+360. }
     local synPeriod is 1/ (1/Target:Obt:Period - 1/(6*3600)).
     local launchTime is Time:Seconds +waitAngle/360*synPeriod.
-//     print "LaunchTimeToRdv".
-//     print "  phaseAngle      =" + phaseAngle.
-//     print "  launchPhaseAngle=" + launchPhaseAngle.
-//     print "  synPeriod       =" + synPeriod.
-//     print "  waitAngle =" + ROUND(waitAngle).
+    // print "LaunchTimeToRdv".
+    // print "  phaseAngle      =" + phaseAngle.
+    // print "  launchPhaseAngle=" + launchPhaseAngle.
+    // print "  synPeriod       =" + synPeriod.
+    // print "  waitAngle =" + ROUND(waitAngle).
     return launchTime.
 }
 
@@ -179,11 +179,11 @@ function vacLandAtTgt {
         set steerVec to -v:Normalized*brakeAcc -vErr:Normalized*corrAcc.
         set tt to Max(0,((steerVec:Mag/acc)-0.4)*5 *accFactor
                         *Vdot(steerVec, Facing:Forevector)).
-//         print "bAcc=" +Round(brakeAcc,    2) at (38, 0).
-//         print "cAcc=" +Round(corrAcc,     2) at (38, 1).
-//         print "sAcc=" +Round(steerVec:Mag,2) at (38, 2).
-//         print "tAcc=" +Round(tt/accFactor,2) at (38, 3).
-//         print "h   =" +Round(height,      1) at (38, 4).
+        // print "bAcc=" +Round(brakeAcc,    2) at (38, 0).
+        // print "cAcc=" +Round(corrAcc,     2) at (38, 1).
+        // print "sAcc=" +Round(steerVec:Mag,2) at (38, 2).
+        // print "tAcc=" +Round(tt/accFactor,2) at (38, 3).
+        // print "h   =" +Round(height,      1) at (38, 4).
         print "vErr=" +Round(vErr:Mag,1)+"  "    at (38, 0).
     }
 
@@ -206,8 +206,8 @@ function vacLandAtTgt {
     print "  posError=" +Round(tgt:Position:Mag,1).
 
     lock Steering to stUp().
-//     print "  ang="+Round(Vang(Up:Vector, Facing:ForeVector),2)
-//          +", vel="+Round(Ship:AngularVel:Mag,2).
+    // print "  ang="+Round(Vang(Up:Vector, Facing:ForeVector),2)
+    //      +", vel="+Round(Ship:AngularVel:Mag,2).
     wait until (Vang(Up:Vector, Facing:ForeVector)<1 and Ship:AngularVel:Mag<0.1).
 }
 
@@ -364,13 +364,13 @@ function getPhaseAngle {
     parameter period2.
 
     local synPeriod is 1/ (1/period1 - 1/period2). // negative if p1 > p2
-//     print "getPhaseAngle".
-//     print "  timeDiff ="+Round(timeDiff,2).
-//     print "  angleDiff="+Round(angleDiff,2).
-//     print "  synPeriod="+Round(synPeriod,2).
-//     print "  period1  ="+Round(period1,2).
-//     print "  period2  ="+Round(period2,2).
-//     print "  Result   ="+Round(angleDiff + (timeDiff/synPeriod)*360 ,2).
+    // print "getPhaseAngle".
+    // print "  timeDiff ="+Round(timeDiff,2).
+    // print "  angleDiff="+Round(angleDiff,2).
+    // print "  synPeriod="+Round(synPeriod,2).
+    // print "  period1  ="+Round(period1,2).
+    // print "  period2  ="+Round(period2,2).
+    // print "  Result   ="+Round(angleDiff + (timeDiff/synPeriod)*360 ,2).
     return angleDiff + (timeDiff/synPeriod)*360.
 }
 

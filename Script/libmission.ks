@@ -10,28 +10,55 @@ print "  Loading libmission".
 //  can break the resume mechanic (so caution with 'if' clauses around such a call!).
 function m_waitForLaunchWindow {
     if not missionStep() return.
+    local launchTime is Time:Seconds.
 
-    if(Status = "PRELAUNCH") {
-        local lkoPeriod is 2*3.1415*sqrt((gLkoAP+Body:Radius)^3 / Body:Mu).
-        local tgtPeriod is Target:Obt:Period.
-        local launchPA is getPhaseAngle(gLaunchDuration,
-                                        gLaunchAngle,
-                                        Body:RotationPeriod,
-                                        tgtPeriod).
+    if(Status <> "PRELAUNCH") {
+      print "Skipping Launch Timing (state=" +Status +" != PRELAUNCH)". return.
+    }
 
-        local transferPA is getPhaseAngle(0.5*(lkoPeriod+tgtPeriod),
-                                        0,
-                                        lkoPeriod,
-                                        tgtPeriod).
-        //print "  lkoPeriod=" +Round(lkoPeriod).
-        print "  launchPA =" +Round(launchPA,   2).
-        print "  transPA  =" +Round(transferPA, 2).
+    local tgtPlane is getOrbitNormal(Target).
+    local tgtInc is Vang(tgtPlane, V(0,1,0)).
+    if (tgtInc > 1) and (Abs(Latitude) > 1) {
+      print "  Launch into plane of target".
+      if (tgtInc <= Abs(Latitude))
+      {
+        // launch when closest to target plane
+        local lng2 is Body:GeoPositionOf(Body:Position-tgtPlane):Lng.
+        local angle is Mod(lng2-Longitude+360, 360).
+        set launchTime to Time:Seconds +(angle/360)*Body:RotationPeriod.
+        print "  lng1 =" +Round(Longitude,2).
+        print "  lng2 =" +Round(lng2,2).
+        print "  angle=" +Round(angle,2).
+      } else {
+        // launch when crossing target plane
+        print "WARNING: m_waitForLaunchWindow: not implemented yet".
+        return.
+      }
+    }
+    else
+    {
+      print "  Try to match phase of target".
+      local lkoPeriod is 2*3.1415*sqrt((gLkoAP+Body:Radius)^3 / Body:Mu).
+      local tgtPeriod is Target:Obt:Period.
+      local launchPA is getPhaseAngle(gLaunchDuration,
+                                      gLaunchAngle,
+                                      Body:RotationPeriod,
+                                      tgtPeriod).
 
-        //wait 1.
-        local launchTime is launchTimeToRdv( launchPA+transferPA -0). // some error margin
-        print "Warping to Launch (dt="+Round(launchTime - Time:Seconds) +")".
-        warpRails(launchTime).
-    } else print "Skipping Launch Timing (state=" +Status +" != PRELAUNCH)".
+      local transferPA is getPhaseAngle(0.5*(lkoPeriod+tgtPeriod),
+                                      0,
+                                      lkoPeriod,
+                                      tgtPeriod).
+      //print "  lkoPeriod=" +Round(lkoPeriod).
+      print "  launchPA =" +Round(launchPA,   2).
+      print "  transPA  =" +Round(transferPA, 2).
+
+      //wait 1.
+      set launchTime to launchTimeToRdv( launchPA+transferPA -0). // some error margin
+    }
+
+    print "Warping to Launch (dt="+Round(launchTime - Time:Seconds) +")".
+    warpRails(launchTime).
 }
 
 function m_waitForTransition {
@@ -51,6 +78,8 @@ function m_waitForTransition {
 }
 
 function m_ascentLKO {
+    parameter tgtPlane is V(0,1,0).
+
     local launchTime is 0.
     local launchAngle is 0.
 
@@ -65,9 +94,9 @@ function m_ascentLKO {
             set launchTime to Time:Seconds.
             set launchAngle to Longitude.
             if gIsPlane
-              atmoAscentPlane().
+              atmoAscentPlane(tgtPlane).
             else
-              atmoAscentRocket().
+              atmoAscentRocket(tgtPlane).
 
             if (Obt:Inclination > 0.01)
               print "  Inclination=" +Round(Obt:Inclination, 3).
@@ -79,9 +108,13 @@ function m_ascentLKO {
         if (Periapsis > Body:Atm:Height) {
             print "  Skipping :already in orbit".
         } else {
+            if (HasTarget) set tgtPlane to getOrbitNormal(Target).
+            //print "  relativeInc=" +Round(Vang(getOrbitNormal(Ship), tgtPlane ),2).
             if not nextNodeExists() {
                 nodeCircAtAP().
-                tweakNodeInclination(V(0,1,0), 0.01).
+                if (tgtPlane <> V(0,0,0)) {
+                  tweakNodeInclination(tgtPlane, -1).
+                }
             }
             execNode().
 
@@ -92,14 +125,25 @@ function m_ascentLKO {
             //if launchTime<>0 print "  angle to LKO =" +(Longitude-launchAngle).
         }
     }
+
+    if missionStep() {
+        if (Apoapsis/Periapsis > 1.05) {
+            print "Circle correction".
+            if not nextNodeExists() {
+                nodeCircularize(Time:Seconds+20).
+            }
+            execNode().
+        }
+    }
 }
 
 function m_landFromLKO {
+    parameter waitForInc is true.
 
     if missionStep() {
         print "Deorbit".
         RunOncePath("0:/libatmo").
-        atmoDeorbit().
+        atmoDeorbit(waitForInc).
     }
 
     if missionStep() {

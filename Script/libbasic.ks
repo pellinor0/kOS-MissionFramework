@@ -11,6 +11,7 @@ function warpRails {
     set Warp to 0.
     wait 0.
     set WarpMode to "RAILS".
+
     if (countdown() >  5) {set Warp to 1. wait 0.1.}
     if (countdown() > 25) {set Warp to 2. wait 0.1.}
     if (countdown() > 50) {set Warp to 3. wait 0.1.}
@@ -43,6 +44,19 @@ function warpRails {
 
     if (countDown() < 0) print "  WARNING: warpRails: countdown="+countdown().
     //print "   warpRails end".
+}
+
+function setTarget {
+  parameter tgt is Ship.
+  if (tgt <> Ship) {
+    local count is 0.
+    until HasTarget {
+      set Target to tgt.
+      wait 0.
+      set count to count+1.
+    }
+    if (count>1) print "WARNING: setTarget: count="+count.
+  }
 }
 
 function normalizeAngle {
