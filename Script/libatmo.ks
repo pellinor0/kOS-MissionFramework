@@ -191,9 +191,25 @@ function atmoDeorbit {
     }
     print "  landingPA=" +Round(gLandingPA, 2).
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
-    print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
+    //print "  tgt=LatLng(" +Round(tgt:Lat) +", "+Round(tgt:Lng)+")".
     if (not nextNodeExists()) nodeDeorbit(tgt, Body:Atm:Height*0.75, gDeorbitPE, waitForInc).
     execNode().
+
+    //local t is timeToAltitude2(Body:Atm:Height*0.75, Time:Seconds, Time:Seconds +Obt:Period/2).
+    //local p is PositionAt(Ship,t).
+    //local lngFromRot is 360*(t-Time:Seconds)/(6*3600).
+    //local actLngErr is Body:GeoPositionOf(p):Lng -gSpacePort:Lng -gLandingPA -lngFromRot.
+    //print "  lngErr=" +Round(Mod(actLngErr+180,360)-180, 2).
+
+    //print "  rotAng=" +Round(Body:RotationAngle, 2).
+    //print "  lan   =" +Round(Obt:Lan, 2).
+    //print "  lng   =" +Round(gSpacePort:Lng, 2).
+    //local lanErr is (Obt:Lan+90) -(gSpacePort:Lng+Body:RotationAngle). // tgt should be highest point of orbit
+    //print "  lanErr=" +Round( Mod(lanErr+180,360)-180, 2).
+    print "  lanErr=" +Round( Mod(getLanDiffToKsc()+180,360)-180, 2).
+    //debugVec(5, Body:Position, 1000000*SolarPrimeVector, "SolarPrime").
+    //print "  lngFromRot=" +Round(lngFromRot, 2).
+    //wait 1000.
 }
 
 function atmoLandingRocket {
@@ -266,10 +282,6 @@ function atmoLandingPlane {
     local i is 0.
     local eDot is 1000000.
 
-    local headIst is 90.
-    local latErr is 0.
-    local angErr is 0.
-    local headSoll is 90.
     local roll is 0.
 
     local s is 0. // path parameter
@@ -310,6 +322,17 @@ function atmoLandingPlane {
     //else
     //  lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
 
+    function getRunwayHeading {
+      local dLng is Sin(gSpacePortHeading).
+      local dLat is Cos(gSpacePortHeading).
+      local p1 is gSpacePort:Position.
+      local p2 is LatLng( gSpacePort:Lat +dLat, gSpacePort:Lng +dLng ):Position.
+      print "  dLat=" +Round(dLat,2).
+      print "  dLng=" +Round(dLng,2).
+      return Body:GeoPositionOf(p2-p1+Body:Position).
+    }
+    local rwHeading is getRunwayHeading. // as GeoCoords so it doesn't change over time
+
     Gear off.
     clearScreen2().
     until flareCondition() {
@@ -317,9 +340,14 @@ function atmoLandingPlane {
         local aoa is getAoa().
 
         if ((not gDoLog) and lList:Length > 2) {
+            local aimPoint is gSpacePort:Position -Min(Abs(relLng), 10)*10000*rwHeading:Position:Normalized.
+            local bearSoll is Body:GeoPositionOf(aimPoint):Bearing.
+            set roll to Max(-15, Min(15, -3*bearSoll)).
+
             set aoaCorr to Max(3.5-aoa, Min(-0.5*eErr, 90-aoa)).
             set aoaCorr to Min(aoaCorr, aoa).
-            set relLng to Mod(GeoPosition:Lng -gSpacePort:Lng -720, 360). // norm to [-360,0]
+            set relLng to -Vang(gSpacePort:Position-Body:Position, Ship:Position-Body:Position)
+                          -Abs(gSpacePort:Bearing)*0.01.  // room for turning
             set v to Velocity:Surface:Mag.
             set e to 0.5*v*v +9.81*(Altitude -gSpacePortHeight).
             until (lList[i] > relLng) {
@@ -330,30 +358,18 @@ function atmoLandingPlane {
             set eSoll to s*eList[i] + (1-s)*eList[i-1].
             set eErr to (e-eSoll)/eDot.      // Steering value for conserving/wasting energy
 
-            set headIst to Vang(Vxcl(Velocity:Surface, Up:Vector), North:Vector).
-            set latErr to Latitude-gSpacePort:Lat.
-            set angErr to latErr/(-relLng) *(180/3.1415). // small angle approx.
-            set headSoll to 90 +2*angErr.
-            set roll to Max(-20, Min(20, -headSoll + headIst)).
-
+            debugVec(1, Body:Position, (aimPoint-Body:Position)*2, "aimPoint").
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
             print "aoaC="+Round(aoaCorr, 3) at (38,2).
-
-            print "latE="+Round(latErr*10472, 1)+"  " at (38,4). // meters
-            //print "angE="+Round(angErr, 3)+"   " at (38,4).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
             print "roll="+Round(roll,     2)+"   " at (38,6).
-            //print "hIst="+Round(headIst,  2)+"   " at (38,11).
-            //print "hSol="+Round(headSoll, 2)+"   " at (38,12).
-            print "lat ="+Round(Latitude,2)     at (38,7).
+            //print "bSol="+Round(bearSoll,2)+"   "  at (38,7).
+            //print "lat ="+Round(Latitude,2)     at (38,13).
         }
         set steerDir to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
-        //print "aoaT="+Round(aoa, 2)+"   " at (38,13).
-        //print "aoaE="+Round(Vang(Facing:Forevector,
-        //                         Velocity:Surface)-(aoa+aoaCorr)+gBuiltinAoA, 2) at (38,14).
 
-        when Altitude<200 then {
+        when (Altitude<200) then {
             Gear on.
             Lights on.
         }
@@ -384,7 +400,7 @@ function atmoLandingPlane {
     // print "   h  =" +Round(Altitude).
     // print "   h0 =" +Round(gSpacePortHeight).
     set roll to 0.
-    lock Steering to Heading(90, 10-gBuiltinAoa).
+    lock Steering to Heading(gSpacePortHeading, 10-gBuiltinAoa).
     if gDoLog writeLandingLog().
 
     wait until Status <> "FLYING".

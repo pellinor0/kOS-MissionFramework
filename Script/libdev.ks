@@ -19,7 +19,7 @@ switch to 0.
 //print "  compiling libatmo".    compile libatmo.
 //print "  compiling liborbit".   compile liborbit.
 //print "  compiling libnav".     compile libnav.
-print "  compiling libmission". compile libmission.
+//print "  compiling libmission". compile libmission.
 //print "  compiling librdv".     compile librdv.
 //print "  compiling libsystem".  compile libsystem.
 //print "  compiling libsetup".   compile libsetup.

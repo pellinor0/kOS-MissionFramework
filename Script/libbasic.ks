@@ -71,7 +71,6 @@ function targetBaseName {
     return tmp[0].
 }
 
-
 function killRot {
     parameter accuracy is 0.01.
     print " killRot".
@@ -166,6 +165,30 @@ function debugDirectionOff {
     set yAxis to VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "Y axis", 1, false ).
     set zAxis to VecDraw( V(0,0,0), V(0,0,1), RGB(0.5,0.5,1.0), "Z axis", 1, false ).
 }
+
+global debugVec1 is VecDraw( V(0,0,0), V(0,1,0), RGB(1.0,0.5,0.5), "v1", 1, false ).
+global debugVec2 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,1.0,0.5), "v2", 1, false ).
+global debugVec3 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,0.5,1.0), "v3", 1, false ).
+global debugVec4 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,0.5,1.0), "v4", 1, false ).
+global debugVec5 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,0.5,1.0), "v5", 1, false ).
+function debugVec {
+  parameter n.
+  parameter v1.
+  parameter v2.
+  parameter str is "".
+
+  if (n=1)
+    set debugVec1 to VecDraw( v1, v2, RGB(1,0,0), str, 1, true ).
+  else if (n=2)
+    set debugVec2 to VecDraw( v1, v2, RGB(0,1,0), str, 1, true ).
+  else if (n=3)
+    set debugVec3 to VecDraw( v1, v2, RGB(0,1,1), str, 1, true ).
+  else if (n=4)
+    set debugVec4 to VecDraw( v1, v2, RGB(1.0,0.5,0.5), str, 1, true ).
+  else if (n=5)
+    set debugVec5 to VecDraw( v1, v2, RGB(0.5,1.0,0.5), str, 1, true ).
+}
+
 
 function clearScreen2 {
     from {local x is 0.} until x = 10 step {set x to x+1.} DO {

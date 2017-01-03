@@ -285,12 +285,9 @@ function nodeDeorbit {
     //print "  HasNode="+HasNode.
     //print "  eta="+Round(NextNode:Eta, 2).
     //print "  dv ="+Round(NextNode:DeltaV:Mag, 2).
+    //print "  tgtPos=" +tgtPos.
 
     local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).
-    //set synPeriod to 2*Orbit:Period -synPeriod.  // correction if Retrograde
-    //print "  period   ="+Round(Obt:Period).
-    //print "  synPeriod="+Round(synPeriod).
-    //print "  rotPeriod="+Round(Body:RotationPeriod).
     local lngErr is 1000.
     local t2 is 0.
     local counter is 0.
@@ -323,55 +320,29 @@ function nodeDeorbit {
 
     function frame {
       parameter dt.
-      return -AngleAxis((dt)*360/Body:RotationPeriod, V(0,1,0)).
-    }
-    function getIncError {
-      parameter dt.
-      return Vang(getOrbitNormal(Ship),
-                  frame(dt) * Vcrs(tgtPos:Velocity:Orbit, tgtPos:Position)).
+      return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)).
     }
 
     if (waitForInc) {
+      // try to hit the target while it is in our orbital plane
+      // (assumption: inc <= tgt:Lat)
       local anglestep is 360 -360*Obt:Period/synPeriod.
-      local plane is getOrbitNormal(Ship).
-      local dt is NextNode:Eta+descendTime.
-      print "  dt   =" +Round(dt).
-      print "  plane=" +VecToString(plane:Normalized).
-      print "  geoPos="+Body:GeoPositionOf(Body:Position -plane).
-      print "  angleStep=" +Round(angleStep,2).
-      local lng1 is Body:GeoPositionOf(Body:Position -plane):Lng.
-      if (tgtPos:Lat<0) set lng1 to -lng1.
-      local lngDiff is Mod((tgtPos:Lng -lng1 -360*dt/Body:RotationPeriod)+180, 360)-180.
-      print "  lngDiff=" +Round(lngDiff,2).
-
-      local t is Time:Seconds+NextNode:Eta+descendTime.
-      local incError is getIncError(dt).
-      local lng1 is Body:GeoPositionOf(-getOrbitNormal(Ship,t)):Lng
-                    -360*(NextNode:Eta+descendTime)/synPeriod.
-      local lngError is Mod(tgtPos:Lng-lng1+180, 360)-180.
-      print "  incError0=" +Round(incError, 2).
-      print "  lngError0=" +Round(lngError, 2).
       print "  angleStep=" +Round(Mod(angleStep+180,360)-180,2).
+
+      local lanError is getLanDiffToKsc() -360*(NextNode:Eta+descendTime)/Body:RotationPeriod. //not sure about sign
+      local bestLanErr is Mod(lanError+180, 360)-180.
+      print "  startLanError=" +Round(bestLanErr, 2).
       local numSteps is Round(6*3600/Obt:Period).  // max wait: 1 day
-      local step is 1.
-      local actIncErr is incError.
-      local actLngErr is lngDiff.
+      local step is 0.
       local bestStep is 0.
       until step > numSteps {
-        local incErr2 is getIncError(dt+step*synPeriod).
-        local lngErr2 is Mod(lngDiff +step*angleStep +180,360)-180.
-        //local incErr2 is Vang(getOrbitNormal(Ship,t),
-        //                       (-frame(NextNode:Eta+descendTime +step*synPeriod))
-        //                       * Vcrs(tgtPos:Velocity:Orbit, tgtPos:Position)).
-        //if (incErr2 < actIncErr){
-        if (abs(lngErr2) < abs(actLngErr)) {
-          //set actIncErr to incErr2.
-          set actLngErr to lngErr2.
+        local lanErr2 is Mod(lanError -step*angleStep +180,360)-180.
+        if (abs(lanErr2) < abs(bestLanErr)) {
+          set bestLanErr to lanErr2.
           set bestStep to step.
         }
         print "  step" +step
-          +": lngErr=" +Round(lngErr2, 2)
-          +", incErr=" +Round(incErr2, 2).
+          +", lanErr=" +Round(lanErr2, 2).
         set step to step + 1.
       }
       print "  bestStep=" +bestStep.
@@ -379,10 +350,13 @@ function nodeDeorbit {
       set NextNode:Eta to NextNode:Eta +bestStep*synPeriod.
     }
 
-    //print "  tweak inclination".
     local p2 is frame(NextNode:Eta) * (tgtPos:Position-Body:Position).
     local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
     tweakNodeInclination(normal, 0.1).
+}
+
+function getLanDiffToKsc {
+  return (Obt:Lan+90) -(gSpacePort:Lng+Body:RotationAngle).
 }
 
 function nodeCircularize {
@@ -735,8 +709,12 @@ function setNextNodeDV {
 function getOrbitNormal {
     parameter tgt.
     parameter t is 0.
-    if (t=0)
+    if (t=0) {
+      //debugVec(2, V(0,0,0), tgt:Velocity:Orbit:Normalized*1000000,"vel").
+      //debugVec(3, V(0,0,0), (tgt:Position-Body:Position):Normalized*1000000,"pos").
+      //debugVec(4, V(0,0,0), Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized*1000000, "Vcrs").
       return Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized.
-    else
+    } else {
       return Vcrs(VelocityAt(tgt,t):Orbit, PositionAt(tgt,t)-Body:Position):Normalized.
+    }
 }
