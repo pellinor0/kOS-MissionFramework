@@ -182,19 +182,17 @@ function nodeHohmann {
     wait 0.
     local synPeriod is 1/ (1/Obt:Period - 1/Target:Obt:Period).
     local ap is (Target:Apoapsis + Target:Periapsis)/2.
-    //local transTime is (Target:Obt:Period + Obt:Period)/4.
     local transSma is Body:Radius +(Altitude +ap)/2.
     local transTime is Sqrt(4*3.1415^2 *transSma^3 /Body:Mu)/2.
     local transAngle is -(-180 +transTime/Target:Obt:Period *360).
     local waitAngle is Target:Longitude - Longitude - transAngle.
-    if (waitAngle < 0) set waitAngle to waitAngle+360.
-    local waitTime is waitAngle * synPeriod/360.
+    local waitTime is synPeriod * waitAngle/360.
+    if (waitTime < 0) set waitTime to waitTime +Abs(synPeriod).
     local rdvTime is Time:Seconds +transTime +waitTime.
 
     //  print " hohmannNode".
     //  print "  transTime  ="+Round(transTime).
     //  print "  transSma   ="+Round(transSma).
-    //  print "  phase angle="+Round(phaseAngle, 2).
     //  print "  synPeriod  ="+Round(synPeriod).
     //  print "  transAngle ="+Round(transAngle, 2).
     //  print "  waitAngle  ="+Round(waitAngle, 2).
