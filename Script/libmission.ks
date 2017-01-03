@@ -12,7 +12,7 @@ function m_waitForLaunchWindow {
     if not missionStep() return.
     local launchTime is Time:Seconds.
 
-    if(Status <> "PRELAUNCH") {
+    if(Status<>"PRELAUNCH" and Status<>"LANDED") {
       print "Skipping Launch Timing (state=" +Status +" != PRELAUNCH)". return.
     }
 
@@ -220,9 +220,10 @@ function m_rendezvousDock {
 }
 
 function m_hohmannToTarget {
+    parameter incBudget is -1.
     if missionStep() {
         print "Hohmann Transfer".
-        if not nextNodeExists() nodeHohmann().
+        if not nextNodeExists() nodeHohmann(incBudget).
         execNode().
     }
 }
@@ -317,7 +318,7 @@ function m_returnFromHighOrbit {
         //todo: should I reenter or come to a space station?
 
         //toDo: aerobrake
-        aeroBrake().
+        //aeroBrake().
     }
 }
 

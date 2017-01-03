@@ -53,6 +53,11 @@ function rdvDock {
     }
     //print "  offset="+Round(gOffset:Mag,2).
 
+    local distances is KUNIVERSE:DEFAULTLOADDISTANCE.
+    set KUniverse:DefaultLoadDistance:Orbit:Pack to 2300.
+    set KUniverse:DefaultLoadDistance:Orbit:Unpack to 2050.
+    wait 0.
+
     local rcsDV is getRcsDeltaV().
     rdv(targetPos, targetUp).
     unlock targetPos.

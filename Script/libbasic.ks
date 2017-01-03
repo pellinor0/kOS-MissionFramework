@@ -173,20 +173,20 @@ global debugVec4 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,0.5,1.0), "v4", 1, fals
 global debugVec5 is VecDraw( V(0,0,0), V(0,1,0), RGB(0.5,0.5,1.0), "v5", 1, false ).
 function debugVec {
   parameter n.
-  parameter v1.
-  parameter v2.
-  parameter str is "".
+  parameter str.
+  parameter vec.
+  parameter vBase is V(0,0,0).
 
   if (n=1)
-    set debugVec1 to VecDraw( v1, v2, RGB(1,0,0), str, 1, true ).
+    set debugVec1 to VecDraw( vBase, vec, RGB(1,0,0), str, 1, true ).
   else if (n=2)
-    set debugVec2 to VecDraw( v1, v2, RGB(0,1,0), str, 1, true ).
+    set debugVec2 to VecDraw( vBase, vec, RGB(0,1,0), str, 1, true ).
   else if (n=3)
-    set debugVec3 to VecDraw( v1, v2, RGB(0,1,1), str, 1, true ).
+    set debugVec3 to VecDraw( vBase, vec, RGB(0,1,1), str, 1, true ).
   else if (n=4)
-    set debugVec4 to VecDraw( v1, v2, RGB(1.0,0.5,0.5), str, 1, true ).
+    set debugVec4 to VecDraw( vBase, vec, RGB(1.0,0.5,0.5), str, 1, true ).
   else if (n=5)
-    set debugVec5 to VecDraw( v1, v2, RGB(0.5,1.0,0.5), str, 1, true ).
+    set debugVec5 to VecDraw( vBase, vec, RGB(0.5,1.0,0.5), str, 1, true ).
 }
 
 

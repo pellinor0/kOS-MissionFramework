@@ -4,7 +4,7 @@ print "  Loading libAtmo".
 
 function planeToHeading {
   parameter normal.                          // desired orbital plane
-  set normal to Vxcl(normal, Up:ForeVector). // plane through current position
+  set normal to Vxcl(Up:ForeVector, normal). // plane through current position
   return Body:GeoPositionOf(Ship:Position +Vcrs(Up:ForeVector, normal)):Heading.
 }
 
@@ -14,7 +14,7 @@ function getHeading {
 
 function atmoAscentRocket {
     parameter tgtPlane is V(0,1,0).
-    set tgtPlane to Vxcl(tgtPlane, Up:ForeVector). // plane through current position
+    set tgtPlane to Vxcl(Up:ForeVector, tgtPlane):Normalized. // plane through current position
     local tgtAP is gLkoAP.
     local lock ppp to 90.
     lock vel to Velocity:Surface.
@@ -25,7 +25,7 @@ function atmoAscentRocket {
     }
 
     local launchHeading is planeToHeading(tgtPlane).
-    print "  launchHeading="+launchHeading.
+    print "  launchHeading="+Round(launchHeading,2).
     lock Steering to Heading(launchHeading, ppp).
     lock Throttle to 1.
 
@@ -207,7 +207,7 @@ function atmoDeorbit {
     //local lanErr is (Obt:Lan+90) -(gSpacePort:Lng+Body:RotationAngle). // tgt should be highest point of orbit
     //print "  lanErr=" +Round( Mod(lanErr+180,360)-180, 2).
     print "  lanErr=" +Round( Mod(getLanDiffToKsc()+180,360)-180, 2).
-    //debugVec(5, Body:Position, 1000000*SolarPrimeVector, "SolarPrime").
+    //debugVec(5, "SolarPrime", 1000000*SolarPrimeVector, Body:Position).
     //print "  lngFromRot=" +Round(lngFromRot, 2).
     //wait 1000.
 }
@@ -358,7 +358,7 @@ function atmoLandingPlane {
             set eSoll to s*eList[i] + (1-s)*eList[i-1].
             set eErr to (e-eSoll)/eDot.      // Steering value for conserving/wasting energy
 
-            debugVec(1, Body:Position, (aimPoint-Body:Position)*2, "aimPoint").
+            debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
             print "aoaC="+Round(aoaCorr, 3) at (38,2).

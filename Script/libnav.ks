@@ -175,8 +175,8 @@ function nodeIncChange {
 }
 
 function nodeHohmann {
+    parameter incBudget is -1.
     // Assumption: Target is set
-    //             Target orbit is equatorial
     //             Ship orbit is circular
     // Return: rdvTime = Time(UT) of Intersect
     wait 0.
@@ -259,6 +259,7 @@ function nodeHohmann {
 
     // refineRdvBruteForce(rdvTime).
 
+    // Tweak inclination such that the new AN/DN is half way to the target orbit.
     local n is getOrbitNormal(Ship).
     local h is Vdot(PositionAt(Target,rdvTime)-Body:Position, n)/2.
     local tgtAngle is arcTan(h/NextNode:Orbit:SemiMinorAxis).
@@ -267,7 +268,8 @@ function nodeHohmann {
     //print "  tgtAngle="+Round(tgtAngle,2).
     local tgtNormal is n*Sqrt(NextNode:Orbit:SemiMinorAxis^2 + h^2)
                        -VelocityAt(Ship,Time:Seconds+NextNode:Eta+0.1):Orbit:Normalized*h.
-    tweakNodeInclination(tgtNormal, -1).
+
+    tweakNodeInclination(tgtNormal, incBudget).
     return rdvTime.
 }
 
@@ -327,11 +329,11 @@ function nodeDeorbit {
       // try to hit the target while it is in our orbital plane
       // (assumption: inc <= tgt:Lat)
       local anglestep is 360 -360*Obt:Period/synPeriod.
-      print "  angleStep=" +Round(Mod(angleStep+180,360)-180,2).
+      //print "  angleStep=" +Round(Mod(angleStep+180,360)-180,2).
 
       local lanError is getLanDiffToKsc() -360*(NextNode:Eta+descendTime)/Body:RotationPeriod. //not sure about sign
       local bestLanErr is Mod(lanError+180, 360)-180.
-      print "  startLanError=" +Round(bestLanErr, 2).
+      //print "  startLanError=" +Round(bestLanErr, 2).
       local numSteps is Round(6*3600/Obt:Period).  // max wait: 1 day
       local step is 0.
       local bestStep is 0.
@@ -341,11 +343,10 @@ function nodeDeorbit {
           set bestLanErr to lanErr2.
           set bestStep to step.
         }
-        print "  step" +step
-          +", lanErr=" +Round(lanErr2, 2).
+        //print "  step" +step +", lanErr=" +Round(lanErr2, 2).
         set step to step + 1.
       }
-      print "  bestStep=" +bestStep.
+      //print "  bestStep=" +bestStep.
       set t2 to t2 +bestStep*synPeriod.
       set NextNode:Eta to NextNode:Eta +bestStep*synPeriod.
     }
@@ -710,9 +711,9 @@ function getOrbitNormal {
     parameter tgt.
     parameter t is 0.
     if (t=0) {
-      //debugVec(2, V(0,0,0), tgt:Velocity:Orbit:Normalized*1000000,"vel").
-      //debugVec(3, V(0,0,0), (tgt:Position-Body:Position):Normalized*1000000,"pos").
-      //debugVec(4, V(0,0,0), Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized*1000000, "Vcrs").
+      //debugVec(2, "vel", tgt:Velocity:Orbit:Normalized*1e6).
+      //debugVec(3, "pos", (tgt:Position-Body:Position):Normalized*1e6).
+      //debugVec(4, "vcrs", Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized*1e6).
       return Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized.
     } else {
       return Vcrs(VelocityAt(tgt,t):Orbit, PositionAt(tgt,t)-Body:Position):Normalized.
