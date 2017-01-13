@@ -1,11 +1,29 @@
 @lazyglobal off.
 //print "  Loading libbasic".
 
+Function askConfirmation {
+  parameter deadline is Time:Seconds+1e9.
+  set AG1 to false.
+  print "  == press AG1 to continue ==".
+  until (AG1 or (Time:Seconds>deadline)) {
+    print "dt =" +Round(deadline-Time:Seconds)+"  " at (38,1).
+    //print "AG1=" +AG1+"  " at (38,1).
+    wait 0.
+  }
+}
+
 function warpRails {
     parameter tPar.
-    print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
-
     function countDown {return tPar - Time:Seconds.}
+    if (countDown() > 4*3600) {
+      if countDown()< 6*3600
+        print "  warpRails: dt=" +Round(countDown()/3600,2) +" h".
+      else
+        print "  warpRails: dt=" +Round(countDown()/(6*3600),2) +" day(s)".
+      //print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
+      askConfirmation(tPar).
+    }
+
     if (countDown()<0) { return. }
 
     set Warp to 0.
@@ -51,11 +69,11 @@ function setTarget {
   if (tgt <> Ship) {
     local count is 0.
     until HasTarget {
+      if (count=1) print "WARNING: setTarget only works when KSP is focused!".
       set Target to tgt.
       wait 0.
       set count to count+1.
     }
-    if (count>1) print "WARNING: setTarget: count="+count.
   }
 }
 

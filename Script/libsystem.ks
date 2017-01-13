@@ -12,13 +12,13 @@ function writePersistent {
     log "set pMissionCounter to " +pMissionCounter +"." to "1:/persistent.ks".
 }
 
-function runFile {
-    parameter path.
-    parameter fileName.
-
-    CopyPath(path+fileName, "1:/").
-    local tgtFile is "1:/tmp.ks".
-    MovePath("1:/"+fileName, tgtFile).
-    RunPath(tgtFile).
-    DeletePath(tgtFile).
+function setControlPart {
+  local pList is Ship:PartsDubbed(gShipType+"Control").
+  if (pList:Length=1)
+    pList[0]:ControlFrom.
+  else
+  {
+    print "ERROR: no unique control part found: num="+pList:Length.
+    interruptMission().
+  }
 }

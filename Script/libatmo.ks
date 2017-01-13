@@ -186,8 +186,8 @@ function atmoDeorbit {
         return.
     }
     if gIsPlane and ((not (defined gDoLog)) or (gDoLog=0)) {
-        local logFile is "landingLog_"+gShipType+".ks".
-        runFile("0:/logs/", logFile).
+        local logFile is "0:/logs/landingLog_"+gShipType+".ks".
+        if (Exists(logFile)) RunPath(logFile).
     }
     print "  landingPA=" +Round(gLandingPA, 2).
     local tgt is LatLng(gSpaceport:Lat, gSpacePort:Lng+gLandingPA).
@@ -275,7 +275,7 @@ function atmoLandingPlane {
         printFuelLeft().
     } else {
         print "  Following descent path".
-        runFile("0:/logs/", gLogFile).
+        RunPath("0:/logs/"+gLogFile).
         if(lList:Length < 2) print "  WARNING: "+gLogFile+" is missing or corrupt!".
     }
 
@@ -283,6 +283,7 @@ function atmoLandingPlane {
     local eDot is 1000000.
 
     local roll is 0.
+    local rollPID is PidLoop(1, 0.1, 0.1, -15,15). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
 
     local s is 0. // path parameter
     local eSoll is 0.
@@ -307,14 +308,17 @@ function atmoLandingPlane {
 
     local aoa is 60.
     local aoaCorr is 0.
+    local yaw is 0.
     //when Altitude < 40000 then {
     //    lock aoa to (Altitude*0.001 +20).
     //    when Altitude < 3000 then lock aoa to 10+Altitude*0.0033.
     //}
 
-    local steerDir is Prograde.
+    local steerDir is LookdirUp(Prograde:Vector, Up:Vector).
     lock Steering to steerDir.
-    //set SteeringManager:PitchTorqueFactor to 5.
+    Gear off.
+    wait until Vang(Facing:ForeVector, steerDir:Vector)<10.
+    wait until Vang(Facing:UpVector, Up:Vector)<5.
 
     //if gDoLog
      // assume we are braking (with what acceleration?)
@@ -333,7 +337,6 @@ function atmoLandingPlane {
     }
     local rwHeading is getRunwayHeading. // as GeoCoords so it doesn't change over time
 
-    Gear off.
     clearScreen2().
     until flareCondition() {
         wait 0.
@@ -341,10 +344,10 @@ function atmoLandingPlane {
 
         if ((not gDoLog) and lList:Length > 2) {
             local aimPoint is gSpacePort:Position -Min(Abs(relLng), 10)*10000*rwHeading:Position:Normalized.
-            local bearSoll is Body:GeoPositionOf(aimPoint):Bearing.
-            set roll to Max(-15, Min(15, -3*bearSoll)).
+            local bearErr is Body:GeoPositionOf(aimPoint):Bearing.
+            set roll to rollPID:update(Time:Seconds, bearErr). // set roll to Max(-15, Min(15, -3*bearSoll)).
 
-            set aoaCorr to Max(3.5-aoa, Min(-0.5*eErr, 90-aoa)).
+            set aoaCorr to Max(5-aoa, Min(-0.5*eErr, 90-aoa)).
             set aoaCorr to Min(aoaCorr, aoa).
             set relLng to -Vang(gSpacePort:Position-Body:Position, Ship:Position-Body:Position)
                           -Abs(gSpacePort:Bearing)*0.01.  // room for turning
@@ -364,17 +367,23 @@ function atmoLandingPlane {
             print "aoaC="+Round(aoaCorr, 3) at (38,2).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
             print "roll="+Round(roll,     2)+"   " at (38,6).
-            //print "bSol="+Round(bearSoll,2)+"   "  at (38,7).
+            print "bErr="+Round(bearErr, 2)+"   "  at (38,7).
             //print "lat ="+Round(Latitude,2)     at (38,13).
+        } else {
+           local bearErr is 90-Vang(Velocity:Surface, North:Vector).
+           set roll to rollPID:update(Time:Seconds, bearErr).
+           print "roll="+Round(roll,     2)+"   " at (38,6).
+           print "bErr="+Round(bearErr,2)+"   "  at (38,7).
+           set yaw to 5.
         }
-        set steerDir to SrfPrograde *R(0,0,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
+        set steerDir to SrfPrograde *R(0,yaw,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
 
         when (Altitude<200) then {
             Gear on.
             Lights on.
         }
         dynWarp().
-        //debugDirection (Steering).
+        debugDirection (Steering).
     }
     Gear on.
     Lights on.
@@ -400,7 +409,11 @@ function atmoLandingPlane {
     // print "   h  =" +Round(Altitude).
     // print "   h0 =" +Round(gSpacePortHeight).
     set roll to 0.
-    lock Steering to Heading(gSpacePortHeading, 10-gBuiltinAoa).
+    if (gDoLog)
+      lock Steering to Heading(gSpacePortHeading, 10-gBuiltinAoa).
+    else
+      set steerDir to SrfPrograde *R(-(20-gBuiltinAoA),0,0).
+
     if gDoLog writeLandingLog().
 
     wait until Status <> "FLYING".

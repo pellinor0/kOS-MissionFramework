@@ -86,7 +86,7 @@ function nodeReturnFromMoon {
     //print "  waitAngle=" +Round(waitAngle,2).
     //print "  theta=" +Round(theta,2).
     set NextNode:Eta to NextNode:Eta +Obt:Period*waitAngle/360.
-    tweakNodeInclination( Vcrs(Body:Obt:Velocity:Orbit, Body:Position-Body:Body:Position), -1).
+    tweakNodeInclination( Vcrs(Body:Obt:Velocity:Orbit, Body:Position-Body:Body:Position) ).
 
     print" try to get an AN/DN halfway home".
 
@@ -119,7 +119,7 @@ function nodeReturnFromMoon {
 
         set par to par+d.
         local escNormal is -par*moonPrograde + 100*V(0,1,0).
-        tweakNodeInclination(escNormal, -1).
+        tweakNodeInclination(escNormal).
         wait 0.
         //  print " Iteration".
         //  print " par="+Round(par,3).
@@ -160,7 +160,7 @@ function nodeReturnFromMoon {
     //     print "  escNormal=" +vecToString(escNormal).
     //     print "  escAngle=" +Vang(escNormal, V(0,1,0)).
     //
-    //     //tweakNodeInclination(escNormal, -1).
+    //     //tweakNodeInclination(escNormal).
     //     print "  actEscAngle="+Round(VectorAngle(Vcrs(Body:Position,Velocity:Orbit),V(0,1,0)),2).
 
     // todo: same thing from an inclined orbit
@@ -171,7 +171,32 @@ function nodeIncChange {
     // change inclination at next AN/DN
     parameter tgtNormal.
     add Node(timeToAnDn(tgtNormal), 0,0,0).
-    tweakNodeInclination(tgtNormal, -1).
+    tweakNodeInclination(tgtNormal).
+}
+
+function nodeFastTransfer {
+    // transfer between low orbits where synodic period
+    // is too long to wait for a hohmann window
+    // Assumptions: * both orbits are circular
+    //              * relative inclination is small
+    //              * close to equatorial
+
+    // timing: AN/DN with target
+    local an is Vcrs(getOrbitNormal(Ship), getOrbitNormal(Target)):Normalized.
+    if (Vdot(an, Prograde:Vector)<0) set an to -an.
+    local dt is Obt:Period * Vang(-Body:Position, an)/360.
+    local tNode is dt+Time:Seconds.
+
+    // prograde component: catch up in one orbit
+    local synPeriod is 1/ (1/Obt:Period - 1/Target:Obt:Period).
+    local waitAngle is Mod(-Target:Longitude + Longitude +360, 360).
+    local transPeriod is (1 + waitAngle/360)*Target:Obt:Period.
+    local transSma is (transPeriod^2 *Body:Mu /(4* 3.1415^2) )^(1/3).
+    local transAp is 2*(transSma -Body:Radius) -(Obt:SemiMajorAxis-Body:Radius).
+    nodeUnCircularize(transAp, tNode).
+
+    // normal component: do half of the inc change
+    tweakNodeInclination( getOrbitNormal(Ship)+getOrbitNormal(Target) ).
 }
 
 function nodeHohmann {
@@ -372,7 +397,7 @@ function nodeCircularize {
 // == tweak an existing node ==
 function tweakNodeInclination {
     parameter normal.
-    parameter budget. // as a factor of initial node deltaV
+    parameter budget is -1. // as a factor of initial node deltaV
     // manipulate node to kill normal component
     //   while keeping speed/PE constant
     // Assumption: Node is set
@@ -709,9 +734,9 @@ function getOrbitNormal {
     parameter tgt.
     parameter t is 0.
     if (t=0) {
-      //debugVec(2, "vel", tgt:Velocity:Orbit:Normalized*1e6).
-      //debugVec(3, "pos", (tgt:Position-Body:Position):Normalized*1e6).
-      //debugVec(4, "vcrs", Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized*1e6).
+      //debugVec(2, "vel", tgt:Velocity:Orbit:Normalized*1e6, tgt:Position).
+      //debugVec(3, "pos", (tgt:Position-Body:Position):Normalized*1e6, tgt:Position).
+      //debugVec(4, "vcrs", Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized*1e6, tgt:Position).
       return Vcrs(tgt:Velocity:Orbit, tgt:Position-Body:Position):Normalized.
     } else {
       return Vcrs(VelocityAt(tgt,t):Orbit, PositionAt(tgt,t)-Body:Position):Normalized.

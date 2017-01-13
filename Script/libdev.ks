@@ -12,6 +12,11 @@ function deb {
     print 1/0.
 }
 
+//print "== refresh mission file ==".
+//DeletePath("1:mission.ks").
+//CopyPath("0:missions/m_tmp.ks", "1:").
+//MovePath("1:m_tmp.ks", "1:mission.ks").
+
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded
 switch to 0.

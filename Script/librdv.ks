@@ -2,6 +2,31 @@
 @lazyglobal off.
 print "  Loading librdv".
 
+function chooseDockingPort {
+  local portList is Target:PartsTagged(Target:Name+"Port").
+  print "  ports found on target: "+portList:Length.
+  if (portList:Length=0) return false.
+
+  // if not free -> discard
+  local bestAngle is -1.
+  local index is 0.
+  until (index>=portList:Length) {
+    local port is portList[index].
+    if (port:State="READY"){
+      local angle is Vang(port:PortFacing:ForeVector, port:NodePosition).
+      print "  angle="+Round(angle,2).
+      if (angle<120 and angle>bestAngle){
+        set bestAngle to angle.
+        set targetPort to port. // global variable declared by calling function
+      }
+    }
+    set index to index+1.
+  }
+
+  print "  bestAngle="+Round(bestAngle,2).
+  return (bestAngle<>-1).
+}
+
 function checkRdv {
     parameter offsetP is V(0,0,0).
     wait 0.
@@ -31,13 +56,15 @@ function rdvDock {
 
     // find docking ports
     local dock is 0.
-    local tmp is Target:DockingPorts.
     global targetPort is 0.
-    if (tmp:Length>0 and isDockable()) {
-      set targetPort to tmp[0].
-      set dock to 1.
+    if isDockable()
+      set dock to chooseDockingPort().
+
+    if dock
       print "  Docking possible".
-    } else print "  Docking not possible: Rdv only".
+    else
+      print "  Docking not possible: Rdv only".
+
 
     // determine targetPos
     wait 0.

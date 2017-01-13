@@ -20,19 +20,28 @@ function m_waitForLaunchWindow {
     local tgtInc is Vang(tgtPlane, V(0,1,0)).
     if (tgtInc > 1) and (Abs(Latitude) > 1) {
       print "  Launch into plane of target".
-      if (tgtInc <= Abs(Latitude))
+      // find LAT extremum of target plane
+      local lng2 is Body:GeoPositionOf(Body:Position-tgtPlane):Lng.
+      local angle is Mod(lng2-Longitude+360, 360).
+      set launchTime to Time:Seconds +(angle/360)*Body:RotationPeriod.
+      //print "  lng1 =" +Round(Longitude,2).
+      //print "  lng2 =" +Round(lng2,2).
+      //print "  angle=" +Round(angle,2).
+      //print "  lat=" +Round(Latitude,2) +", inc="+Round(tgtInc,2).
+      //debugVec(1, "tgtPlane", 1e6*tgtPlane, Body:Position).
+      //wait 1000.
+
+      if (tgtInc > Abs(Latitude))
       {
-        // launch when closest to target plane
-        local lng2 is Body:GeoPositionOf(Body:Position-tgtPlane):Lng.
-        local angle is Mod(lng2-Longitude+360, 360).
-        set launchTime to Time:Seconds +(angle/360)*Body:RotationPeriod.
-        print "  lng1 =" +Round(Longitude,2).
-        print "  lng2 =" +Round(lng2,2).
-        print "  angle=" +Round(angle,2).
-      } else {
         // launch when crossing target plane
-        print "WARNING: m_waitForLaunchWindow: not implemented yet".
-        return.
+        local angleDiff is arcCos(Abs(Latitude)/tgtInc).
+        //print "  angleDiff="+Round(angleDiff,2).
+        local dt is Body:RotationPeriod *angleDiff/360.
+        //print "  dt="+Round(dt,2).
+        if (launchTime-dt > Time:Seconds)
+          set launchTime to launchTime-dt.
+        else
+          set launchTime to launchTime+dt.
       }
     }
     else
@@ -113,7 +122,7 @@ function m_ascentLKO {
             if not nextNodeExists() {
                 nodeCircAtAP().
                 if (tgtPlane <> V(0,0,0)) {
-                  tweakNodeInclination(tgtPlane, -1).
+                  tweakNodeInclination(tgtPlane).
                 }
             }
             execNode().
@@ -170,8 +179,7 @@ function m_askConfirmation {
             set gMissionStartManual to 0.
         else {
             print msg.
-            print "  type RUN RESUME to continue".
-            interruptMission().
+            askConfirmation().
         }
     }
 }
@@ -180,13 +188,22 @@ function m_undock {
     if missionStep() {
         if (not hasPort()) return.
         print "Undock".
-        if(not gMyPort:State:Contains("Docked")) {
-            print "  Port was not docked".
-            return.
-        }
         gMyPort:ControlFrom.
         wait 0.
-        gMyPort:Undock().
+        if gMyPort:State:Contains("Docked") {
+          gMyPort:Undock().
+        } else if gMyPort:State="PreAttached" {
+          print "  PortState=PreAttached".
+          //print "  Please decouple the ship manually".
+          askConfirmation(). // not waiting here causes NAN Orbits
+          gMyPort:GetModule("ModuleDockingNode"):DoEvent("Decouple Node").
+          wait until gMyPort:State<>"PreAttached".
+          KUniverse:ForceSetActiveVessel(Ship).
+        } else {
+          Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
+          print "  Port was not docked (" +gMyPort:State +")".
+          return.
+        }
         wait 0.
         gMyPort:ControlFrom.
         Core:DoEvent("open terminal").
@@ -194,9 +211,10 @@ function m_undock {
 
         //debugDirection(Facing).
         local mp is Ship:MonoPropellant.
+        local rcsDvSoll is getRcsDeltaV()-0.5.
         RCS on.
         set Ship:Control:Fore to -1.
-        wait 4.
+        wait until getRcsDeltaV()<rcsDvSoll.
         set Ship:Control:Fore to 0.
         RCS off.
         print "  burnt "+Round(mp -Ship:MonoPropellant, 2) +" mp".
@@ -224,6 +242,14 @@ function m_hohmannToTarget {
     if missionStep() {
         print "Hohmann Transfer".
         if not nextNodeExists() nodeHohmann(incBudget).
+        execNode().
+    }
+}
+
+function m_fastTransferToTarget {
+    if missionStep() {
+        print "Fast Transfer".
+        if not nextNodeExists() nodeFastTransfer().
         execNode().
     }
 }
@@ -298,7 +324,7 @@ function m_capture {
         print "Adjust PE".
         nodeTuneCapturePE(alt).
         wait 0.
-        tweakNodeInclination( V(0,1,0), -1).
+        tweakNodeInclination( V(0,1,0) ).
         execNode().
     }
 
