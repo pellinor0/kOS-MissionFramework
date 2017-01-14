@@ -182,9 +182,14 @@ function nodeFastTransfer {
     //              * close to equatorial
 
     // timing: AN/DN with target
+    //local t2 is timeToAnDn( getOrbitNormal(Target) ). // seems not to work
     local an is Vcrs(getOrbitNormal(Ship), getOrbitNormal(Target)):Normalized.
     if (Vdot(an, Prograde:Vector)<0) set an to -an.
     local dt is Obt:Period * Vang(-Body:Position, an)/360.
+    if (dt<0) {
+      print "  WARNING: dt=" +Round(dt,2).
+      wait 1000.
+    }
     local tNode is dt+Time:Seconds.
 
     // prograde component: catch up in one orbit
@@ -193,10 +198,12 @@ function nodeFastTransfer {
     local transPeriod is (1 + waitAngle/360)*Target:Obt:Period.
     local transSma is (transPeriod^2 *Body:Mu /(4* 3.1415^2) )^(1/3).
     local transAp is 2*(transSma -Body:Radius) -(Obt:SemiMajorAxis-Body:Radius).
+    print "  waitAngle=" +Round(waitAngle,2).
     nodeUnCircularize(transAp, tNode).
 
     // normal component: do half of the inc change
     tweakNodeInclination( getOrbitNormal(Ship)+getOrbitNormal(Target) ).
+    refineRdvBruteForce(Time:Seconds+NextNode:Eta+NextNode:Obt:Period).
 }
 
 function nodeHohmann {
@@ -433,13 +440,15 @@ function tweakNodeInclination {
 
 function refineRdvBruteForce {
     parameter t.
+    parameter dVWeight is 100.
 
     wait 0.
     local myNode is NextNode.
     local lock pRel to (PositionAt(Ship, t) - PositionAt(Target, t)):Mag.
     local lock vRel to (VelocityAt(Ship, t):Orbit - VelocityAt(Target, t):Orbit):Mag.
     local vr0 is vRel.
-    local lock measure to pRel/100 +Max(0,vRel-vr0) + NextNode:DeltaV:Mag.
+    local lock dVCost to Max(0,vRel-vr0) + NextNode:DeltaV:Mag.
+    local lock measure to pRel +dVCost *dVWeight.
     local measureStart is measure.
     local oldDV is V(NextNode:RadialOut, NextNode:Normal, NextNode:Prograde).
 
@@ -541,7 +550,6 @@ function refineRdvBruteForce {
          +", dt=" +Round(NextNode:Eta+Time:Seconds -tStart,2).
 }
 
-
 // == times ==
 function timeToAltitude {
     parameter tgtAlt.
@@ -603,9 +611,9 @@ function timeToDist {
 function findClosestApproach {
     parameter t0.
     parameter t1.
-    // print "findClosestApproach".
     // Assume Target is set.
     // Assume circular orbits
+    // print "findClosestApproach".
 
     local linearThreshold is Min(Target:Obt:Period, Obt:Period)/36. // 10°
 
@@ -628,8 +636,8 @@ function findClosestApproach {
         }
         set i to i+1.
     }
-    // print "    tMin="+Round(tMin-Time:Seconds).
-    // print "    dmin="+Round(dMin).
+    //print "    tMin="+Round(tMin-Time:Seconds).
+    //print "    dmin="+Round(dMin).
 
     local finished is 0.
     local dt is 0.
@@ -640,7 +648,6 @@ function findClosestApproach {
         // when will the relative velocity be perpendicular to the distance?
         set dist to PositionAt(Ship,tMin)-PositionAt(Target,tMin).
         set vRel to VelocityAt(Target, tMin):Orbit -VelocityAt(Ship, tMin):Orbit.
-        //print "  vRel="+vRel.
         set dPar to Vdot(dist, vRel:Normalized). // contains a sign
         set dt to dPar / vRel:Mag.
         set t to tMin+dt.
@@ -652,15 +659,15 @@ function findClosestApproach {
         } else {
             set finished to 1.
         }
-        // print "  Linear Approximation".
-        // print "    vRel=" +Round(vRel:Mag, 2). //+vecToString(vRel).
-        // print "    dist=" +Round(dist:Mag, 2). //+vecToString(dist).
-        // print "    dPar="+Round(dPar, 2).
-        // print "    dt  ="+Round(dt, 2).
-        // print "    d   ="+Round(d, 2).
+        //print "  Linear Approximation".
+        //print "    vRel=" +Round(vRel:Mag, 2). //+vecToString(vRel).
+        //print "    dist=" +Round(dist:Mag, 2). //+vecToString(dist).
+        //print "    dPar="+Round(dPar, 2).
+        //print "    dt  ="+Round(dt, 2).
+        //print "    d   ="+Round(d, 2).
     }
-
-
+    //local vec is -getOrbitFacing(Ship,tMin) *dist.
+    //print "  closest approach [r/n/p]="+vecToString(vec,0).
     return tMin.
 }
 

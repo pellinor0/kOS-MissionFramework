@@ -65,8 +65,10 @@ function warpRails {
 }
 
 function setTarget {
-  parameter tgt is Ship.
-  if (tgt <> Ship) {
+  parameter tgt. // can be a vessel, body or string
+
+  function doSetTarget {
+    parameter tgt.
     local count is 0.
     until HasTarget {
       if (count=1) print "WARNING: setTarget only works when KSP is focused!".
@@ -75,6 +77,32 @@ function setTarget {
       set count to count+1.
     }
   }
+
+  if tgt:HasSuffix("Body") {
+    if (tgt=Ship) {
+      print "  WARNING: setTarget: vessel can not target itself!".
+      return.
+    }
+    doSetTarget(tgt).
+    return.
+  }
+
+  // if parameter is a vessel name
+  local vList is List().
+  list Targets in vList.
+  //print "  vessel List:".
+  for vessel in vList {
+    //print "   "+vessel:name.
+    if (vessel:Name = tgt) {
+      if (tgt=Ship) {
+        print "  WARNING: setTarget: vessel can not target itself!".
+      } else {
+        doSetTarget(vessel).
+      }
+      return.
+    }
+  }
+  print "  WARNING: setTarget: '"+tgt +"' not found!".
 }
 
 function normalizeAngle {
@@ -131,7 +159,8 @@ function killRotByWarp {
 
 function vecToString {
     parameter v.
-    return "("+Round(V:X, 3) +", " +Round(V:Y, 3) +", "+Round(V:Z, 3) +") m="+Round(v:Mag,2).
+    parameter acc is 2.
+    return "("+Round(V:X, acc) +", " +Round(V:Y, acc) +", "+Round(V:Z, acc) +") m="+Round(v:Mag,acc).
 }
 
 function getDeltaV {
@@ -163,9 +192,6 @@ function hasPort {
         return true.
     }
     return false.
-}
-function isDockable {
-    return hasPort() and (hasRcsDeltaV(2)).
 }
 
 global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).

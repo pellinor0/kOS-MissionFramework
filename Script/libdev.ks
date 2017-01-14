@@ -12,10 +12,12 @@ function deb {
     print 1/0.
 }
 
+//if(hasnode) remove nextnode.
+
 //print "== refresh mission file ==".
 //DeletePath("1:mission.ks").
-//CopyPath("0:missions/m_tmp.ks", "1:").
-//MovePath("1:m_tmp.ks", "1:mission.ks").
+//CopyPath("0:missions/m_rescue.ks", "1:").
+//MovePath("1:m_rescue.ks", "1:mission.ks").
 
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded

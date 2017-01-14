@@ -217,7 +217,7 @@ function m_undock {
         wait until getRcsDeltaV()<rcsDvSoll.
         set Ship:Control:Fore to 0.
         RCS off.
-        print "  burnt "+Round(mp -Ship:MonoPropellant, 2) +" mp".
+        print "  burned "+Round(mp -Ship:MonoPropellant, 2) +" mp".
         print "  waiting for safe distance".
         set WarpMode to "RAILS".
         set Warp to 2.
