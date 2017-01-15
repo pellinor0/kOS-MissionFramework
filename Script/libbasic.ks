@@ -105,6 +105,21 @@ function setTarget {
   print "  WARNING: setTarget: '"+tgt +"' not found!".
 }
 
+function findRescueTarget {
+  local vList is List().
+  list Targets in vList.
+  //print "  vessel List:".
+  for vessel in vList {
+    //print "   "+vessel:name.
+    if (vessel:Name:Contains("'s")) {
+      print "  rescueTarget found: " +vessel:Name.
+      setTarget(vessel).
+      return.
+    }
+  }
+  print "  no rescue target found!".
+}
+
 function normalizeAngle {
     parameter angle.
 
@@ -190,6 +205,13 @@ function hasPort {
     if tmp:Length > 0 {
         set gMyPort to tmp[0].
         return true.
+    } else return hasClaw().
+}
+function hasClaw {
+    set tmp to Ship:PartsDubbed(gShipType+"Claw").
+    if tmp:Length > 0 {
+        set gMyPort to tmp[0].
+        return true.
     }
     return false.
 }
@@ -232,7 +254,14 @@ function debugVec {
   else if (n=5)
     set debugVec5 to VecDraw( vBase, vec, RGB(0.5,1.0,0.5), str, 1, true ).
 }
-
+function debugVecOff {
+  local vec is V(0,0,0).
+  set debugVec1 to VecDraw( vec, vec, RGB(1,0,0), "", 1, false ).
+  set debugVec2 to VecDraw( vec, vec, RGB(1,0,0), "", 1, false ).
+  set debugVec3 to VecDraw( vec, vec, RGB(1,0,0), "", 1, false ).
+  set debugVec4 to VecDraw( vec, vec, RGB(1,0,0), "", 1, false ).
+  set debugVec5 to VecDraw( vec, vec, RGB(1,0,0), "", 1, false ).
+}
 
 function clearScreen2 {
     from {local x is 0.} until x = 10 step {set x to x+1.} DO {

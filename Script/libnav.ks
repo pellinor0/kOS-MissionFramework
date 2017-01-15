@@ -198,7 +198,7 @@ function nodeFastTransfer {
     local transPeriod is (1 + waitAngle/360)*Target:Obt:Period.
     local transSma is (transPeriod^2 *Body:Mu /(4* 3.1415^2) )^(1/3).
     local transAp is 2*(transSma -Body:Radius) -(Obt:SemiMajorAxis-Body:Radius).
-    print "  waitAngle=" +Round(waitAngle,2).
+    //print "  waitAngle=" +Round(waitAngle,2).
     nodeUnCircularize(transAp, tNode).
 
     // normal component: do half of the inc change

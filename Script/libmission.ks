@@ -237,6 +237,14 @@ function m_rendezvousDock {
     }
 }
 
+function m_grabWithClaw {
+      if missionStep() {
+          print "Grab with Claw".
+          RunOncePath("0:/librdv").
+          grabWithClaw().
+      }
+}
+
 function m_hohmannToTarget {
     parameter incBudget is -1.
     if missionStep() {
@@ -259,7 +267,6 @@ function m_fineRdv {
         print "Fine tuning approach".
         if not nextNodeExists() nodeFineRdv().
         execNode().
-        checkRdv().
     }
 }
 

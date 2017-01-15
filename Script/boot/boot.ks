@@ -32,4 +32,5 @@ if (pMissionCounter > 0) {
     resumeMission().
 } else {
     print "  No active mission".
+    Core:Deactivate.
 }
