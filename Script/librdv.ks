@@ -303,7 +303,7 @@ function grabWithClaw {
   local sign is 1.
   local vec is V(1,0,0).
   if p:Name:Contains("Derp") set vec to V(0,0,1). // horrible CoM!
-  if (Vang(p:Position,p:Facing:StarVector)<90) set sign to -1.
+  if (Vang(p:Position,p:Facing*vec)<90) set sign to -1.
 
   // docking approach
   gMyPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
