@@ -221,13 +221,13 @@ function dockingApproach {
       // special treatment for claw
       set isClaw to true.
       set offset to 2.
+      gMyPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
       set corrOffset to (-Facing*gMyPort:Position) +V(0,0,1). // hardcoded for stock claw
       local m is gMyPort:GetModule("ModuleAnimateGeneric").
       if m:AllEventNames:Contains("Arm") m:DoEvent("Arm").
-      gMyPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
     } else {
-      set corrOffset to (-Facing*gMyPort:NodePosition).
       gMyPort:ControlFrom.
+      set corrOffset to (-Facing*gMyPort:NodePosition).
     }
     print " corrOffset="+vecToString(corrOffset,2).
 
