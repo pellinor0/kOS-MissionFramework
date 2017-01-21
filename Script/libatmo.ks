@@ -30,12 +30,16 @@ function atmoAscentRocket {
     lock Throttle to 1.
 
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
-    if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
+    if (Stage:SolidFuel > 0) {
+      lock Throttle to (Velocity:Surface:Mag<50).
+      when (Stage:SolidFuel <= 0.02) then {
         print "  stage".
         stage.
-        if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
-            stage.
-        }
+        lock Throttle to 1.
+        //if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
+        //    stage.
+        //}
+      }
     }
 
     set Warpmode to "PHYSICS".
@@ -60,6 +64,7 @@ function atmoAscentRocket {
 
     until ((Apoapsis > 10000) or apReached) {update().}
 
+    print "   hold prograde".
     local lock ppp to velPP.
     until (Altitude > 30000) or apReached {dynWarp().}
 
@@ -283,7 +288,8 @@ function atmoLandingPlane {
     local eDot is 1000000.
 
     local roll is 0.
-    local rollPID is PidLoop(1, 0.1, 0.1, -15,15). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    local rollPID is PidLoop(1, 0, 0.1, -15,15). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    set SteeringManager:RollControlAngleRange to 90.
 
     local s is 0. // path parameter
     local eSoll is 0.
@@ -322,7 +328,7 @@ function atmoLandingPlane {
 
     //if gDoLog
      // assume we are braking (with what acceleration?)
-    lock flareCondition to (Altitude -gSpacePortHeight < 0.2*VerticalSpeed^2).
+    lock flareCondition to (Altitude -gSpacePortHeight < 0.1*VerticalSpeed^2).
     //else
     //  lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
 
@@ -343,14 +349,22 @@ function atmoLandingPlane {
         local aoa is getAoa().
 
         if ((not gDoLog) and lList:Length > 2) {
-            local aimPoint is gSpacePort:Position -Min(Abs(relLng), 10)*10000*rwHeading:Position:Normalized.
-            local bearErr is Body:GeoPositionOf(aimPoint):Bearing.
+          local bearErr is 0.
+          local aimpoint is V(0,0,0).
+          //if(relLng<0){
+
+            set aimPoint to gSpacePort:Position +(0.2-Max(0, Min(-relLng,10)))*10000*rwHeading:Position:Normalized.
+            set bearErr to Body:GeoPositionOf(aimPoint):Bearing.
+            //debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
+          //} else {
+          //  set bearErr to rwHeading:Bearing.
+          //}
             set roll to rollPID:update(Time:Seconds, bearErr). // set roll to Max(-15, Min(15, -3*bearSoll)).
 
-            set aoaCorr to Max(5-aoa, Min(-0.5*eErr, 90-aoa)).
+            set aoaCorr to Max(6-aoa, Min(-0.5*eErr, 90-aoa)).
             set aoaCorr to Min(aoaCorr, aoa).
             set relLng to -Vang(gSpacePort:Position-Body:Position, Ship:Position-Body:Position)
-                          -Abs(gSpacePort:Bearing)*0.01.  // room for turning
+                          .//-Abs(gSpacePort:Bearing)*0.01.  // room for turning
             set v to Velocity:Surface:Mag.
             set e to 0.5*v*v +9.81*(Altitude -gSpacePortHeight).
             until (lList[i] > relLng) {
@@ -358,10 +372,9 @@ function atmoLandingPlane {
                 set eDot to ( eList[i] -eList[i-1]) /gLogDeltaTime.
             }
             set s to (relLng - lList[i-1]) / (lList[i] - lList[i-1]).
-            set eSoll to s*eList[i] + (1-s)*eList[i-1].
+            set eSoll to s*eList[i] + (1-s)*eList[i-1] -2*eDot.
             set eErr to (e-eSoll)/eDot.      // Steering value for conserving/wasting energy
 
-            debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
             print "aoaC="+Round(aoaCorr, 3) at (38,2).
@@ -370,11 +383,12 @@ function atmoLandingPlane {
             print "bErr="+Round(bearErr, 2)+"   "  at (38,7).
             //print "lat ="+Round(Latitude,2)     at (38,13).
         } else {
-           local bearErr is 90-Vang(Velocity:Surface, North:Vector).
-           set roll to rollPID:update(Time:Seconds, bearErr).
-           print "roll="+Round(roll,     2)+"   " at (38,6).
-           print "bErr="+Round(bearErr,2)+"   "  at (38,7).
-           set yaw to 5.
+           //local bearErr is 90-Vang(Velocity:Surface, North:Vector).
+           //set roll to rollPID:update(Time:Seconds, bearErr).
+           set roll to 0.
+           //print "roll="+Round(roll,     2)+"   " at (38,6).
+           //print "bErr="+Round(bearErr,2)+"   "  at (38,7).
+           //set yaw to 5.
         }
         set steerDir to SrfPrograde *R(0,yaw,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
 
@@ -383,7 +397,7 @@ function atmoLandingPlane {
             Lights on.
         }
         dynWarp().
-        debugDirection (Steering).
+        //debugDirection (Steering).
     }
     Gear on.
     Lights on.
@@ -409,14 +423,16 @@ function atmoLandingPlane {
     // print "   h  =" +Round(Altitude).
     // print "   h0 =" +Round(gSpacePortHeight).
     set roll to 0.
-    if (gDoLog)
+    if (not gDoLog)
       lock Steering to Heading(gSpacePortHeading, 10-gBuiltinAoa).
     else
       set steerDir to SrfPrograde *R(-(20-gBuiltinAoA),0,0).
 
     if gDoLog writeLandingLog().
 
+    Brakes off.
     wait until Status <> "FLYING".
+    wait 2.
     Brakes on.
     wait until Airspeed < 0.1.
     Lights off.

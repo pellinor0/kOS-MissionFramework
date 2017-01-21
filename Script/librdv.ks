@@ -205,13 +205,15 @@ function dockingApproach {
     parameter portOffset. // offset to Target pos (in Target frame)
     parameter portFacing. // portFacing(Vector)   (in Target frame)
     set portFacing to portFacing:Normalized.
-    print " dockingApproach2".
-    print "  portOffset="+vecToString(portOffset,2).
-    print "  portFacing="+vecToString(portFacing,2).
+    //print " dockingApproach".
+    //print "  portOffset="+vecToString(portOffset,2).
+    //print "  portFacing="+vecToString(portFacing,2).
 
     // Assumptions:
     // * already positioned
     // * dockable
+    set WarpMode to "PHYSICS".
+    set Warp to 2. // 3x
 
     print "  aligning".
     local offset is 1.
@@ -229,7 +231,7 @@ function dockingApproach {
       gMyPort:ControlFrom.
       set corrOffset to (-Facing*gMyPort:NodePosition).
     }
-    print " corrOffset="+vecToString(corrOffset,2).
+    //print "  corrOffset="+vecToString(corrOffset,2).
 
     lock Steering to LookdirUp( Target:Facing * (-portFacing), Facing:UpVector).
     wait until Vang(Facing:ForeVector, Steering:ForeVector) < 5.
@@ -270,6 +272,7 @@ function dockingApproach {
     until (dX:Mag < 0.3) update().
     set offset to 0.
     print "  final approach".
+    set Warp to 1.  // 2x
 
     until (dX:Mag<0.1) or (not HasTarget) update().
     set Ship:Control:Translation to V(0,0,0).
@@ -301,10 +304,15 @@ function grabWithClaw {
   // chose direction
   local p is Target:Parts[0].
   local sign is 1.
-  local vec is V(1,0,0).
-  if p:Name:Contains("Derp") set vec to V(0,0,1). // horrible CoM!
-  if (Vang(p:Position,p:Facing*vec)<90) set sign to -1.
+  print "  Part=" +p:Title.
 
+  local vec is V(1,0,0).
+  if (Vang(p:Position,p:Facing:ForeVector)<120) {
+    set vec to V(0,0,-1).                           // preferred: claw at bottom node
+  } else {
+    if p:Name:Contains("Derp") set vec to V(0,0,1). // horrible CoM!
+    if (Vang(p:Position,p:Facing*vec)<90) set sign to -1.
+  }
   // docking approach
   gMyPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
   dockingApproach(vec*sign, vec*sign).

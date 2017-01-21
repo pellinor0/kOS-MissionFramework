@@ -26,7 +26,7 @@ function m_waitForLaunchWindow {
       set launchTime to Time:Seconds +(angle/360)*Body:RotationPeriod.
       //print "  lng1 =" +Round(Longitude,2).
       //print "  lng2 =" +Round(lng2,2).
-      //print "  angle=" +Round(angle,2).
+      //print "  waitAngle=" +Round(angle,2).
       //print "  lat=" +Round(Latitude,2) +", inc="+Round(tgtInc,2).
       //debugVec(1, "tgtPlane", 1e6*tgtPlane, Body:Position).
       //wait 1000.
@@ -384,6 +384,7 @@ function resumeMission {
         set gMissionCounter to 0.
         set pMissionCounter to 0.
         log "set pMissionCounter to 0." to "1:/persistent.ks".
+        Core:Deactivate.
     }
 }
 

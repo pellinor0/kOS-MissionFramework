@@ -111,7 +111,8 @@ function findRescueTarget {
   //print "  vessel List:".
   for vessel in vList {
     //print "   "+vessel:name.
-    if (vessel:Name:Contains("'s")) {
+    if vessel:Name:Contains("'s") or vessel:Name:Contains("Unit")
+    {
       print "  rescueTarget found: " +vessel:Name.
       setTarget(vessel).
       return.
