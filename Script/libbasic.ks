@@ -1,16 +1,6 @@
 @lazyglobal off.
 //print "  Loading libbasic".
 
-Function askConfirmation {
-  parameter deadline is Time:Seconds+1e9.
-  set AG1 to false.
-  print "  == press AG1 to continue ==".
-  until (AG1 or (Time:Seconds>deadline)) {
-    print "dt =" +Round(deadline-Time:Seconds)+"  " at (38,1).
-    //print "AG1=" +AG1+"  " at (38,1).
-    wait 0.
-  }
-}
 
 function warpRails {
     parameter tPar.

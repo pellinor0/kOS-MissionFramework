@@ -13,15 +13,12 @@ run once libsystem.
 
 local tmp is Core:Part:Tag:Split(" ").
 set gShipType to tmp[0].
-if(tmp:Length=2 and tmp[1]="xx") {
-    // hacky sign that we already did the setup
-    print "  Already configured".//: tmp:Length=" +tmp:Length.
-} else {
+if(not Exists("1:/params.ks")) {
     run once libsetup.
     doInitialSetup(tmp).
 }
 switch to 1.
-run params.ks.
+RunPath("1:/params.ks").
 loadPersistent().
 writePersistent().
 
