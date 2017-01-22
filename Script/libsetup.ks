@@ -3,28 +3,23 @@
 //print "  Loading libsetup".
 
 function copyParams {
-    // params.ks
-    //local fileList is List().
+    print "  Initial configuration".
+    print "  shipType=" +gShipType.
     local paraFile is "params_" +gShipType +".ks".
-    //print "  "+paraFile.
-    log "" to "1:/params.ks".
-    DeletePath("1:/params.ks").
+    if Exists("1:/params.ks") {
+      DeletePath("1:/params.ks").
+    }
     CopyPath("0:params/"+paraFile, "1:/").
     MovePath("1:/"+paraFile, "1:/params.ks").
 }
 
-function doInitialSetup {
+function setupMission {
     parameter nameList.
 
-    print "  Initial configuration".
-    print "  shipType=" +gShipType.
-    copyParams().
-    set Core:Part:Tag to gShipType+" xx".
-    log "switch to 0. run resume." to "1:/resume.ks".
-
+    set Core:Part:Tag to gShipType.
     if (nameList:Length > 2) print "  WARNING: Core tag has more than 2 words!".
     if (nameList:Length > 1) {
-        print "  Initial mission: "+nameList[1].
+        print "  Starting mission: "+nameList[1].
         RunOncePath("0:/libmission").
         prepareMission(nameList[1]).
     }
