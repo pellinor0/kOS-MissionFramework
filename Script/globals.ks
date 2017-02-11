@@ -1,7 +1,6 @@
 // Persistent Data
 global pMissionCounter is 0.
 global gMissionCounter is 0.
-global gMissionStartManual is 0.
 
 // == global Parameters ==
 // (Defaults can be overridden in the ship's params.ks)

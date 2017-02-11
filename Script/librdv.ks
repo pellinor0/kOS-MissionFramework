@@ -35,7 +35,10 @@ function warpToBrakeDist {
   add Node(t,0,0,0).
   setNextNodeDv( -getOrbitFacing(Ship, t)*dV ).
   lock Steering to stNode().
+  set WarpMode to "PHYSICS".
+  set Warp to 2.
   wait until VectorAngle(Facing:Vector, NextNode:Deltav) < 3.
+  set Warp to 0.
   unlock Steering.
   remove NextNode.
   warpRails(t -Max(loadTime, brakeTime/2) -10).
@@ -71,7 +74,8 @@ function rdvDock {
 
     rdv(targetOffset, true).
 
-    if ( hasRcsDeltaV(5) and (Velocity:Orbit-Target:Velocity:Orbit):Mag<1 ) {
+    local tmpVel is (Velocity:Orbit-Target:Velocity:Orbit):Mag.
+    if ( tmpVel<2 and hasRcsDeltaV(1.5+tmpVel) ) {
         RCS off.
         killRot().
         cancelRelativeVelRcs().
@@ -83,6 +87,7 @@ function rdvDock {
     print "  dVCost(LFO) ="+Round(deltaV-getDeltaV(),2).
 
     if dock {
+        killRotByWarp().
         dockingApproach((-Target:Facing)*(targetPort:NodePosition-Target:Position),
                         (-Target:Facing)*targetPort:PortFacing:ForeVector ).
         wait 1.
@@ -94,6 +99,7 @@ function rdv {
     parameter targetOffset is V(0,0,0).
     parameter loadedVersion is false. // false: target is out of loading range
     print " rdv".
+    if (Target:Position:Mag<100 and (Target:Velocity:Orbit-Velocity:Orbit):Mag<1) return.
     print "  targetOffset="+vecToString(targetOffset).
     if loadedVersion print "  loadedVersion=true".
 
@@ -117,6 +123,8 @@ function rdv {
     //local useRCS is hasRcsDeltaV(25).
     local rdvT is 0.
     local tOffset is V(0,0,0).
+    local vErrPIDx is PidLoop(0.2, 0, 0.05, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    local vErrPIDy is PidLoop(0.2, 0, 0.05, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
 
     function update {
         wait 0.
@@ -128,6 +136,7 @@ function rdv {
         set brakeAcc to dV:SqrMagnitude/(2* Vdot(dV:Normalized, dX)).
         if far {
             if Mod(count,5)=0 { // expensive stuff
+                wait 0.
                 set rdvT to findClosestApproach(Time:Seconds, Time:Seconds+2*dV:Mag/dX:Mag).
                 if (rdvT-Time:Seconds < 10) {
                   set far to false.
@@ -147,7 +156,13 @@ function rdv {
 
         // try to negate vErr per second
         // limit angle to retrograde when closing in
-        local corrAcc is Min(vErr:Mag/2, dX:Mag/500).
+
+        local frame is LookdirUp(dX, Body:Position).
+        local tmpX is vErrPIDx:update(Time:Seconds, Vdot(vErr,Frame:UpVector)). // set roll to Max(-15, Min(15, -3*bearSoll)).
+        local tmpY is vErrPIDy:update(Time:Seconds, Vdot(vErr,Frame:StarVector)). // set roll to Max(-15, Min(15, -3*bearSoll)).
+
+        local tmp is (tmpX*Frame:UpVector +tmpY*Frame:StarVector).
+        local corrAcc is tmp:Normalized *Min(tmp:Mag, dX:Mag/500).
 
         // correct with RCS if available
         //if useRCS {
@@ -155,13 +170,13 @@ function rdv {
         //      else set Ship:Control:Translation to -Facing*(-vErr:Normalized).
         //    set steerVec to -dV:Normalized*brakeAcc.
         //} else {
-            set steerVec to -dV:Normalized*brakeAcc -vErr:Normalized*corrAcc.
+            set steerVec to -dV:Normalized*brakeAcc +corrAcc. //-vErr:Normalized*corrAcc.
         //}
 
         local ttt is Max(0, Vdot(steerVec:Normalized, Facing:Forevector)).
         if (brakeAcc>acc/2)      // braking
           set tt to steerVec:Mag/acc *ttt^10 *accFactor.
-        else if (corrAcc > 0.03) // correction
+        else if (corrAcc:Mag > 0.03) // correction
           set tt to steerVec:Mag/acc *ttt^300 *accFactor.
         else
           set tt to 0.
@@ -173,6 +188,8 @@ function rdv {
         print "tOff=" +Round(tOffset:Mag,2)+ "  " at (38,4).
         debugVec(1, "dX", dX).
         debugVec(2, "tOffset", tOffset ,Target:Position).
+        debugVec(3, "vel", dV).
+        debugVec(4, "vErr", vErr, dV-vErr).
         set count to count+1.
     }
 
@@ -194,6 +211,7 @@ function rdv {
     } else {
       until (dV:Mag < 0.2 or Vdot(dV, dX)<0) update().
     }
+
     debugDirectionOff().
     debugVecOff().
     unlock Throttle.
@@ -213,7 +231,7 @@ function dockingApproach {
     // * already positioned
     // * dockable
     set WarpMode to "PHYSICS".
-    set Warp to 2. // 3x
+    set Warp to 1.
 
     print "  aligning".
     local offset is 1.
@@ -232,8 +250,8 @@ function dockingApproach {
       set corrOffset to (-Facing*gMyPort:NodePosition).
     }
     //print "  corrOffset="+vecToString(corrOffset,2).
-
-    lock Steering to LookdirUp( Target:Facing * (-portFacing), Facing:UpVector).
+    local steerDir is LookdirUp( Target:Facing * (-portFacing), Facing:UpVector).
+    lock Steering to steerDir.
     wait until Vang(Facing:ForeVector, Steering:ForeVector) < 5.
 
     local vSoll is 0.
@@ -245,46 +263,52 @@ function dockingApproach {
 
     function update {
         wait 0.
-        local targetDir is Target:Facing * (-portFacing).
-        local off1 is Target:Facing*portOffset.
+        if (not HasTarget) return.
+        local tgtFrame is Target:Facing.
+        local tgtDir is tgtFrame * (-portFacing).
+        local tgtPos is Target:Position.
+        local off1 is tgtFrame*portOffset.
         local cOff is Facing*corrOffset.
-        local off2 is -offset*targetDir.
-        set dX to Target:Position +off1 +off2 -cOff.
+        local off2 is -offset*tgtDir.
+        set dX to tgtPos +off1 +off2 -cOff.
 
-        debugVec(1, "dX", dX, cOff).
-        debugVec(2, "final", -off2, dX+cOff).
-        debugVec(3, "offs", off1, Target:Position ).
-        debugVec(4, "corr", cOff).
-        set vSoll to dX:Normalized * 0.2.
+        set vSoll to dX:Normalized * (0.2 +dX:Mag/200).
         set vErr to Velocity:Orbit-Target:Velocity:Orbit -vSoll.
-        if(vErr:Mag > 0.02) {
+        if(vErr:Mag > 0.03) {
           set Ship:Control:Translation to -Facing*(-vErr:Normalized).
         } else {
           set Ship:Control:Translation to V(0,0,0).
         }
-
+        set steerDir to LookdirUp( tgtFrame * (-portFacing), Facing:UpVector).
         print "dX   ="+Round(dX:Mag,2)    at (38,0).
         print "vSoll="+Round(vSoll:Mag,2) at (38,1).
         print "vErr ="+Round(vErr:Mag,2)  at (38,2).
+        debugVec(1, "dX", dX, cOff).
+        debugVec(2, "final", -off2, dX+cOff).
+        debugVec(3, "offs", off1, tgtPos ).
+        debugVec(4, "corr", cOff).
+        //wait 0.
+        //if (not HasTarget) return.
+        //debugVec(5, "vel", (Velocity:Orbit-Target:Velocity:Orbit)*25).  // 0.2m/s == 5m
     }
 
     print "  positioning".
     until (dX:Mag < 0.3) update().
     set offset to 0.
     print "  final approach".
-    set Warp to 1.  // 2x
+    set Warp to 0.
 
-    until (dX:Mag<0.1) or (not HasTarget) update().
+    until (dX:Mag<0.05) or (HasTarget=false) update().
+    if HasTarget {
+      print "  extending approach".
+      set offset to offset-2. update().
+      until (dX:Mag<0.05) or (HasTarget=false) update().
+    }
+    wait until (not HasTarget).
+
     set Ship:Control:Translation to V(0,0,0).
     unlock Steering.
     RCS off.
-
-    if (isClaw) {
-      local m is Ship:Mass.
-      wait until Ship:Mass > m+0.01. // claw has no state
-    } else {
-      wait until gMyPort:State:Contains("Docked").
-    }
     print "  docked".
     setControlPart().
     debugVecOff().
@@ -292,9 +316,12 @@ function dockingApproach {
 }
 
 function grabWithClaw {
+  parameter vec is -Target:Position. // preferred direction
+  set vec to vec:Normalized.
+
   if Target:Parts:Length>1 {
     print "  WARNING: Target has more than one part!".
-    return.
+    //return.
   }
   if (not hasClaw()) {  // this sets the claw as gMyPort
     print "  WARNING: no Claw found!".
@@ -302,17 +329,18 @@ function grabWithClaw {
   }
 
   // chose direction
-  local p is Target:Parts[0].
+  //local p is Target:Parts[0].
   local sign is 1.
-  print "  Part=" +p:Title.
+  //print "  Part=" +p:Title.
 
-  local vec is V(1,0,0).
-  if (Vang(p:Position,p:Facing:ForeVector)<120) {
-    set vec to V(0,0,-1).                           // preferred: claw at bottom node
-  } else {
-    if p:Name:Contains("Derp") set vec to V(0,0,1). // horrible CoM!
-    if (Vang(p:Position,p:Facing*vec)<90) set sign to -1.
-  }
+  //local vec is V(1,0,0).
+  //if (Vang(p:Position,p:Facing:ForeVector)<120) {
+  //  set vec to V(0,0,-1).                           // preferred: claw at bottom node
+  //} else {
+  //  if p:Name:Contains("Derp") set vec to V(0,0,1). // horrible CoM!
+  //  if (Vang(p:Position,p:Facing*vec)<90) set sign to -1.
+  //}
+
   // docking approach
   gMyPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
   dockingApproach(vec*sign, vec*sign).

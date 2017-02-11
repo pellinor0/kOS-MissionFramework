@@ -1,27 +1,18 @@
 @lazyglobal off.
 print "  Loading libdev".
-
-global gDebug is 0.
-function deb {
-    parameter str.
-    //  if gDebug=0 set gDebug to Time:Seconds.
-    // local rdvTime is findClosestApproach(Time:Seconds, Time:Seconds+Obt:Period).
-    // local v0 is (VelocityAt(Ship, rdvTime):Orbit- VelocityAt(Target, rdvTime):Orbit):Mag.
-    print "  deb "+str.
-    //print "   warp=" +Warp +" " +WarpMode.
-    print 1/0.
-}
-
-//if(hasnode) remove nextnode.
-
-//print "== refresh mission file ==".
-//DeletePath("1:mission.ks").
-//CopyPath("0:missions/m_rescue.ks", "1:").
-//MovePath("1:m_rescue.ks", "1:mission.ks").
+if (Ship:ElectricCharge<1) { Core:Deactivate. }
+switch to 0.
 
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded
-switch to 0.
+
+//if(hasnode) remove nextnode.
+
+//print "== refresh mission file ==". CopyPath("0:missions/m_intPush.ks", "1:mission.ks").
+//wait 1000.
+//log "set pMissionCounter to pMissionCounter+1." to "1:/persistent.ks".
+
+
 //print "  compiling libbasic".   compile libbasic.
 //print "  compiling libatmo".    compile libatmo.
 //print "  compiling liborbit".   compile liborbit.
@@ -32,23 +23,5 @@ switch to 0.
 //print "  compiling libsetup".   compile libsetup.
 //print "  compiling globals".    compile globals.
 //print "  compiling boot".       compile "boot/boot.ks".
+//print "  copying bootFile".     CopyPath("0:/boot/boot.ksm","1:/boot/").
 // =======================
-
-function dynWarp {
-    parameter errFactor is 1.
-    //print "pErr="+Round(SteeringManager:PitchError, 2) at (38,16).
-    //print "yErr="+Round(SteeringManager:YawError,   2) at (38,17).
-    //print "angV="+Round(Ship:AngularVel:Mag,        2) at (38,18).
-    //print "pI  ="+Round(SteeringManager:PitchPID:ErrorSum, 2) at (38,19).
-    //print "yI  ="+Round(SteeringManager:YawPID:ErrorSum,   2) at (38,20).
-    //print "pC  ="+Round(SteeringManager:PitchPID:ChangeRate, 2) at (38,21).
-    //print "yC  ="+Round(SteeringManager:YawPID:ChangeRate,   2) at (38,22).
-    local err is (Abs(SteeringManager:PitchPID:ChangeRate)
-                + Abs(SteeringManager:YawPID:ChangeRate))/errFactor.
-    //print "err ="+Round(err,3) at (38,23).
-    set WarpMode to "PHYSICS".
-    if (err>0.3) set Warp to 0.
-    else if (err>0.1) set Warp to 1.
-    else if (err>0.03) set Warp to 2.
-    else set Warp to 3.
-}

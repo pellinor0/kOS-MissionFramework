@@ -10,7 +10,12 @@ function writePersistent {
     log "set pMissionCounter to " +pMissionCounter +"." to "1:/persistent.ks".
 }
 
-Function askConfirmation {
+function shutDownCore {
+  Core:DoAction("Close Terminal", true).
+  Core:Deactivate.
+}
+
+function askConfirmation {
   parameter deadline is Time:Seconds+1e9.
   set AG1 to false.
   print "  == press AG1 to continue ==".
@@ -22,7 +27,8 @@ Function askConfirmation {
 }
 
 function setControlPart {
-  local pList is Ship:PartsDubbed(gShipType+"Control").
+  parameter tag is "Control".
+  local pList is Ship:PartsDubbed(gShipType+tag).
   if (pList:Length=1)
     pList[0]:ControlFrom.
   else

@@ -2,16 +2,69 @@
 //print "  Loading libbasic".
 
 
+function drive {
+  parameter tgt. // GeoCoord, Vessel or WayPoint
+  parameter vel is 10.
+  if tgt:HasSuffix("GeoPosition") { set tgt to tgt:GeoPosition. }
+
+  local tt is 0.
+  local vSoll is 0.
+  local dX is V(100,0,0).
+  local angErr is 0.
+  setControlPart("Drive").
+  lock WheelSteering to tgt:Heading.
+  lock WheelThrottle to tt.
+  Brakes Off.
+
+  local tPid is PidLoop(2, 0, 0.2, -1, 1).
+  function update {
+    wait 0.
+    set dX to tgt:Position.
+    set AngErr to Vang(Facing:ForeVEctor, dX).
+    if (angErr<5)
+      set vSoll to Min(2*dX:Mag, vel).
+    else
+      set vSoll to 2.
+
+    local vErr is velocity:Surface:Mag/(vSoll+0.01) -1.
+    set tt to tPid:update(Time:Seconds, vErr).
+
+    print "dX  ="+Round(dX:Mag,2) at (38,0).
+    print "vErr="+Round(vErr,2)   at (38,1).
+    print "angE="+Round(angErr,2) at (38,2).
+    print "tt  ="+Round(tt,2)     at (38,3).
+  }
+
+  until (dX:Mag<20) update().
+  unlock WheelSteering.
+  unlock WheelThrottle.
+  Brakes on.
+}
+
 function warpRails {
     parameter tPar.
+    parameter ask is true.
+
     function countDown {return tPar - Time:Seconds.}
+    print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
     if (countDown() > 4*3600) {
       if countDown()< 6*3600
         print "  warpRails: dt=" +Round(countDown()/3600,2) +" h".
       else
         print "  warpRails: dt=" +Round(countDown()/(6*3600),2) +" day(s)".
-      //print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
+
+      killRotByWarp().
+
+      if (addons:available("KAC")) {
+        print " Current Alarms:".
+        for i in ADDONS:KAC:ALARMS {
+          print "  " +i:NAME + " - " + Round(i:REMAINING/6/3600,2) + "d - " + i:TYPE.
+        }
+        local al is addAlarm("Raw", tPar-1, "wR: "+Ship:Name+"("+gShipType+")", "").
+      }
+
       askConfirmation(tPar).
+
     }
 
     if (countDown()<0) { return. }
@@ -33,6 +86,7 @@ function warpRails {
                 wait 0.
                 set Warp to level.
             }
+            print "warp="+Warp+"    " AT (38,0).
             wait until countdown() < deadline.
         }
     }
@@ -54,13 +108,36 @@ function warpRails {
     //print "   warpRails end".
 }
 
+function dynWarp {
+    parameter errFactor is 1.
+    //print "pErr="+Round(SteeringManager:PitchError, 2) at (38,16).
+    //print "yErr="+Round(SteeringManager:YawError,   2) at (38,17).
+    //print "angV="+Round(Ship:AngularVel:Mag,        2) at (38,18).
+    //print "pI  ="+Round(SteeringManager:PitchPID:ErrorSum, 2) at (38,19).
+    //print "yI  ="+Round(SteeringManager:YawPID:ErrorSum,   2) at (38,20).
+    //print "pC  ="+Round(SteeringManager:PitchPID:ChangeRate, 2) at (38,21).
+    //print "yC  ="+Round(SteeringManager:YawPID:ChangeRate,   2) at (38,22).
+    local err is (Abs(SteeringManager:PitchPID:ChangeRate)
+                + Abs(SteeringManager:YawPID:ChangeRate))/errFactor.
+    //print "err ="+Round(err,3) at (38,23).
+    set WarpMode to "PHYSICS".
+    if (err>0.3) set Warp to 0.
+    else if (err>0.1) set Warp to 1.
+    else if (err>0.03) set Warp to 2.
+    else set Warp to 3.
+}
+
 function setTarget {
   parameter tgt. // can be a vessel, body or string
+  parameter force is true.
+  //print "  setTarget:" +tgt.
+  if (force=false and HasTarget=true) return.
+  if (tgt=Body) return.
 
   function doSetTarget {
     parameter tgt.
     local count is 0.
-    until HasTarget {
+    until HasTarget and (Target=tgt) {
       if (count=1) print "WARNING: setTarget only works when KSP is focused!".
       set Target to tgt.
       wait 0.
@@ -101,7 +178,7 @@ function findRescueTarget {
   //print "  vessel List:".
   for vessel in vList {
     //print "   "+vessel:name.
-    if vessel:Name:Contains("'s") or vessel:Name:Contains("Unit")
+    if (vessel:Name:Contains("'") and vessel:Body=Body)
     {
       print "  rescueTarget found: " +vessel:Name.
       setTarget(vessel).
@@ -109,6 +186,7 @@ function findRescueTarget {
     }
   }
   print "  no rescue target found!".
+  askConfirmation().
 }
 
 function normalizeAngle {
@@ -149,7 +227,7 @@ function killRot {
 }
 
 function killRotByWarp {
-    print " killRotByWarp".
+    //print " killRotByWarp".
     set Warp to 0.
     set WarpMode to "RAILS".
     until Warp=1 {

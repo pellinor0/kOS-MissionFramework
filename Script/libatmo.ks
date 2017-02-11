@@ -328,7 +328,8 @@ function atmoLandingPlane {
 
     //if gDoLog
      // assume we are braking (with what acceleration?)
-    lock flareCondition to (Altitude -gSpacePortHeight < 0.1*VerticalSpeed^2).
+    //lock flareCondition to (Altitude -gSpacePortHeight < 0.1*VerticalSpeed^2).
+    lock flareCondition to (Altitude -gSpacePortHeight < 200).
     //else
     //  lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
 
@@ -403,35 +404,37 @@ function atmoLandingPlane {
     Lights on.
     set Warp to 0.
 
-    if (gDoLog) {
-
-    } else {
-    //if (relLng < -359) print "  Coming in high".
-    // print "   Alt=" +Round(Altitude).
-    // print "   vz =" +Round(VerticalSpeed).
-    // print "   h  =" +Round(Altitude).
-    // print "   h0 =" +Round(gSpacePortHeight).
-
-        //wait until (Altitude -gSpacePortHeight) < Abs(VerticalSpeed)*3.
-        // todo: control vertical speed as a function of height
-    }
-
     print "  Flare: alt=" +Round(Altitude,1)
          +", vVel=" +Round(VerticalSpeed,2).
     // print "   Alt=" +Round(Altitude).
     // print "   vz =" +Round(VerticalSpeed).
     // print "   h  =" +Round(Altitude).
     // print "   h0 =" +Round(gSpacePortHeight).
-    set roll to 0.
-    if (not gDoLog)
-      lock Steering to Heading(gSpacePortHeading, 10-gBuiltinAoa).
-    else
-      set steerDir to SrfPrograde *R(-(20-gBuiltinAoA),0,0).
+
+    //todo: setup PD-controller verticalSpeed=>pitch/aoa
+    //      goal: speed decreases with height
+    //      vTgt = 3+ x*height
+    local vzPID is PidLoop(1, 0.02, 0.05, -10, 20). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    function flare {
+      wait 0.
+      local vzSoll is (Altitude - gSpacePortHeight)*(-0.2) -3.
+      local vzErr is Ship:VerticalSpeed-vzSoll.
+      local aoa is vzPID:Update(Time:Seconds, vzErr).
+      if (not gDoLog)
+        set steerDir to Heading(gSpacePortHeading, aoa-gBuiltinAoa).
+      else
+        set steerDir to SrfPrograde *R(-(20-gBuiltinAoA),0,0).
+
+      print "aoa ="+Round(aoa,   2)+"   " at (38,10).
+      print "vzE ="+Round(vzErr, 2)+"   " at (38,11).
+      print "vTgt="+Round(vzSoll,   2)+"   " at (38,12).
+      print "vz  ="+Round(Ship:VerticalSpeed, 2)+"   " at (38,13).
+    }
+
 
     if gDoLog writeLandingLog().
-
     Brakes off.
-    wait until Status <> "FLYING".
+    until (Status<>"FLYING") flare().
     wait 2.
     Brakes on.
     wait until Airspeed < 0.1.

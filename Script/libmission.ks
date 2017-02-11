@@ -43,6 +43,20 @@ function m_waitForLaunchWindow {
         else
           set launchTime to launchTime+dt.
       }
+
+      print "  Try to match phase of target".
+      // simple version to avoid large transfer times
+      local synPeriod is 1/ (1/Target:Obt:Period - 1/Body:RotationPeriod).
+      local lngCorr is 360* (launchTime-Time:Seconds)/synPeriod.
+      local lngErr is Mod(Target:Longitude -Longitude +lngCorr +360 +180,360)-180. // norm to +-180
+      if (Defined gLaunchAngle) set lngErr to lngErr+gLaunchAngle.
+      local dt is -synPeriod *lngErr/360.
+      if (launchTime+dt < Time:Seconds) { set dt to dt+synPeriod. }
+      set launchTime to launchTime+dt.
+      //print "   lngErr="+lngErr.
+      //print "   synPeriod="+synPeriod.
+      //print "   lngCorr="+lngCorr.
+      //print "   dt="+dt.
     }
     else
     {
@@ -67,17 +81,18 @@ function m_waitForLaunchWindow {
     }
 
     print "Warping to Launch (dt="+Round(launchTime - Time:Seconds) +")".
-    warpRails(launchTime).
+    warpRails(launchTime, false).
 }
 
 function m_waitForTransition {
     parameter type.
 
     if missionStep() {
+        print "Wait for transition".
         if (Obt:Transition <> type) {
             print "  WARNING: next transition != "+type+" !".
             print "           type="+Obt:Transition.
-            interruptMission().
+            askConfirmation().
             return.
         }
         local b is Body.
@@ -169,18 +184,51 @@ function m_landFromLKO {
 
 function m_askConfirmation {
     parameter msg.
-    // confirmation happened if we resumed
-    //   manually and from this step.
-    if (gMissionCounter <> pMissionCounter-1)
-      set gMissionStartManual to 0.
 
     if missionStep() {
-        if(gMissionStartManual)
-            set gMissionStartManual to 0.
-        else {
-            print msg.
-            askConfirmation().
+        print msg.
+        askConfirmation().
+    }
+}
+
+function m_fillTanks {
+    parameter includeLFO is true.
+    if missionStep() {
+        print "Fill Tanks".
+        if (gShipType=Ship:Name) { print "  No host vessel found". return. }
+        local tanklist is Ship:PartsTagged(gShipType+"Tank"). // my tanks
+        local hostList is Ship:PartsTagged(Ship:Name+"Tank"). // host tanks
+        if (tankList:Length=0) { print "  Ship has no tagged tanks". return. }
+        if (hostList:Length=0) { print "  Host has no tagged tanks". return. }
+        local transfers is List().
+
+        function tryTransfer {
+          parameter res.
+          parameter fill is true.
+
+          local tList2 is List().
+          local hList2 is List().
+          for p in tankList { for r in p:Resources { if r:Name=res tList2:Add(p). } }
+          for p in hostList { for r in p:Resources { if r:Name=res hList2:Add(p). } }
+          if (tList2:Length>0 and hList2:Length>0) {
+            print "  Tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
+            if (fill)
+              transfers:Add( TransferAll(res, hList2, tList2) ).
+            else
+              transfers:Add( TransferAll(res, tList2, hList2) ).
+          } else print "  No tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
         }
+
+        tryTransfer("MonoPropellant").  // fill
+        tryTransfer("Supplies").        // fill
+        tryTransfer("Mulch", false).    // empty
+        if includeLFO {
+          tryTransfer("LiquidFuel").
+          tryTransfer("Oxidiser").
+        }
+        for t in transfers { set t:Active to True. }
+        for t in transfers { wait until t:Active=false. }
+        for t in transfers { print "  Transferred " +Round(t:Transferred,2) +" "+t:Resource +" ("+t:Status+")". }
     }
 }
 
@@ -238,11 +286,12 @@ function m_rendezvousDock {
 }
 
 function m_grabWithClaw {
-      if missionStep() {
-          print "Grab with Claw".
-          RunOncePath("0:/librdv").
-          grabWithClaw().
-      }
+    parameter dir is V(0,0,-1).
+    if missionStep() {
+        print "Grab with Claw".
+        RunOncePath("0:/librdv").
+        grabWithClaw(dir).
+    }
 }
 
 function m_hohmannToTarget {
@@ -279,7 +328,7 @@ function m_nodeIncCorr {
 }
 
 function m_vacLand {
-    parameter tgt. // GeoCoordinates
+    parameter tgt is 0. // GeoCoordinates
     if missionStep() {
         print "Landing at Target (Vac)".
         // Assumption: starting in low orbit
@@ -315,14 +364,21 @@ function m_returnFromMoon {
         execNode().
     }
     m_waitForTransition("ESCAPE").
-
-    if missionStep() {
-        print "Correct Inclination".
-        if not nextNodeExists() nodeIncChange(V(0,1,0)).
-        execNode().
-    }
+    m_matchPlane().
 }
 
+function m_matchPlane {
+  if missionStep() {
+      print "Match plane of Target".
+      if not nextNodeExists() {
+        if HasTarget
+          nodeIncChange(getOrbitNormal(Target)).
+        else
+          nodeIncChange(V(0,1,0)).
+      }
+      execNode().
+  }
+}
 function m_capture {
     parameter alt.
     // Assumption: we have just entered the SOI
@@ -348,49 +404,40 @@ function m_capture {
 
 function m_returnFromHighOrbit {
     if missionStep() {
-        //todo: should I reenter or come to a space station?
+        print "  tweak PE".
+        //toDo: make sure PE is above atmo / touching target orbit
+        if not nextNodeExists() nodeTweakPE().
+        execNode().
 
-        //toDo: aerobrake
-        //aeroBrake().
+    }
+    //toDo: aerobrake if vessel can do it
+    if missionStep() {
+        print "Return from high orbit".
+        // rdv with target
+        if HasTarget and (not nextNodeExists()) { nodeFastTransfer2(Time:Seconds+Eta:Periapsis). }
+        //askConfirmation().
+        execNode().
     }
 }
-
 
 // == Mission Infrastructure ==
 function prepareMission {
     parameter name.
 
-    log "" to "1:/mission.ks".
-    DeletePath("1:/mission.ks").
+    if Exists("1:/mission.ks") DeletePath("1:/mission.ks").
     local missionName is "m_"+name+".ks".
     CopyPath("0:/missions/"+missionName, "1:/mission.ks").
-    //rename file missionName to mission.ks.
     set pMissionCounter to 1.
     log "set pMissionCounter to 1." to "1:/persistent.ks".
 }
 
 function resumeMission {
     set gMissionCounter to 0.
-    if (gMissionStartManual)
-      print "Resume Mission (manual)".
-    else
-      print "Resume Mission (Auto)".
 
     RunPath("1:/mission.ks").
-    if (gMissionCounter = 100000) {
-        //print "Mission interrupted!".
-    } else {
-        print "Mission finished!".
-        set gMissionCounter to 0.
-        set pMissionCounter to 0.
-        log "set pMissionCounter to 0." to "1:/persistent.ks".
-        Core:Deactivate.
-    }
-}
-
-function interruptMission {
-    // skip rest of the mission
-    set gMissionCounter to 100000.
+    print "Mission finished!".
+    log "set pMissionCounter to 0." to "1:/persistent.ks".
+    shutDownCore().
 }
 
 function missionStep {
