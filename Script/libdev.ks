@@ -7,8 +7,8 @@ switch to 0.
 // debug hook: this code is called before the other libraries are loaded
 
 //if(hasnode) remove nextnode.
-
-//print "== refresh mission file ==". CopyPath("0:missions/m_intPush.ks", "1:mission.ks").
+//wait 1000.
+//print "== refresh mission file ==". CopyPath("0:missions/m_sunpeek.ks", "1:mission.ks").
 //wait 1000.
 //log "set pMissionCounter to pMissionCounter+1." to "1:/persistent.ks".
 

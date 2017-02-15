@@ -243,28 +243,29 @@ function nodeFastTransfer2 {
 
 function nodeTweakPE {
     parameter tgtPE is 90000.
-    parameter t is Time:Seconds+20.
+    parameter t is Time:Seconds+100.
     print " nodeTweakPE".
     // tweak PE with a radial burn
     // (used when coming from high orbit)
-    add Node(Time:Seconds,0,0,0).
     function meas {
       parameter p.
 
       set NextNode:RadialOut to p.
       wait 0.
-      //print "  tgtPE="+tgtPE.
+      print "  tgtPE="+tgtPE +", PE="+NextNode:Orbit:Periapsis.
       local result is NextNode:Orbit:Periapsis-tgtPE.
-      //print "  meas(" +Round(p,3) +")=" +Round(result,2).
+      print "  meas(" +Round(p,3) +")=" +Round(result,2).
       return result.
     }
 
     local vel is VelocityAt(Ship,t):Orbit.
     local pos is PositionAt(Ship,t)-Body:Position.
     local minRad is Sin(Vang(pos,vel))*vel:Mag.
-    //print "  angle="+Vang(pos,vel).
-    //print "  minRad="+Round(minRad,2).
+    print "  vel="+Round(vel:Mag,1).
+    print "  angle="+Vang(pos,vel).
+    print "  minRad="+Round(minRad,2).
 
+    add Node(t,0,0,0).
     local nodeRad is binarySearch(meas@, -minRad, 1000, 0.01). //toDo: unbounded version of binarySearch
     print "  dvCost="+nodeRad.
     set NextNode:RadialOut to nodeRad.
@@ -450,6 +451,68 @@ function nodeDeorbit {
     local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
     tweakNodeInclination(normal, 0.1).
 }
+
+function nodeDeorbitAngle {
+  parameter tgtPos. // GeoCoord
+  parameter tgtHeight.
+  parameter tgtAngle is 30.
+
+  local tNode is Time:Seconds+100.
+  add Node(tNode,0,0,0).
+  print "  tweak node:prograde => tgtAngle at tgtHeight".
+  function meas1 {
+    parameter p.
+    set NextNode:Prograde to p.
+    wait 0.
+    local t is timeToAltitude2(tgtHeight, tNode, tNode+NextNode:Orbit:Period/2).
+    local angle is Vang(VelocityAt(Ship,t):Orbit,-PositionAt(Ship,t)+Body:Position).
+    local result is (90-angle)-tgtAngle.
+    print "   meas(" +Round(p,3) +")=" +Round(90-angle,2).
+    return result.
+  }
+  set NextNode:Prograde to binarySearch(meas1@, -Velocity:Orbit:Mag, 0, 0.2).
+  if Abs(NextNode:Prograde)>Velocity:Orbit:Mag {
+    print "  WARNING: nodeDeorbitAngle is retrograde!".
+    askConfirmation().
+  }
+
+  local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).
+  local lngErr is 1000.
+  local t2 is 0.
+  local counter is 0.
+  local descendTime is 0.
+  until Abs(lngErr)<0.1 or counter>6 {
+      //print " Iteration".
+      set t2 to timeToAltitude2(tgtHeight,
+                                  Time:Seconds+NextNode:Eta,
+                                  Time:Seconds+NextNode:Eta+NextNode:Orbit:Period/2).
+      set descendTime to t2-NextNode:Eta-Time:Seconds.
+      local lng1 is Body:GeoPositionOf(PositionAt(Ship,t2)):Lng.
+      local lng2 is tgtPos:lng +360*(t2-Time:Seconds)/Body:RotationPeriod.
+      set lngErr to lng1-lng2.
+      if (lngErr < -180) set lngErr to lngErr+360.
+      local dt is -(lngErr/360)*synPeriod.
+      //print "  descendTime=" +Round(descendTime,2).
+      //print "  t2="+Round(t2-Time:Seconds).
+      //print "  lngErr="+Round(lngErr, 2).
+      //print "  lngDelta="+Round(360*(t2-Time:Seconds)/Body:RotationPeriod).
+      //print "  dt=" +Round(dt).
+      set NextNode:Eta to NextNode:Eta +dt.
+      if NextNode:Eta<0
+        set NextNode:Eta to NextNode:Eta+synPeriod.
+      else if NextNode:Eta>synPeriod
+        set NextNode:Eta to NextNode:Eta-synPeriod.
+
+      set counter to counter+1.
+      wait 0.
+  }
+
+  function frame { parameter dt. return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)). }
+  local p2 is frame(NextNode:Eta) * (tgtPos:Position-Body:Position).
+  local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
+  tweakNodeInclination(normal, 0.1).
+}
+
 
 function nodeCircularize {
   parameter t.
@@ -830,8 +893,9 @@ function binarySearch {
   //print " binary search".
 
   local p is p0.
-  local dp is p1-p0.
+  local dp is (p1-p0)/2.
   local sgn is 1.
+  //print "  p0="+Round(p0,3) +", p1="+Round(p1,3).
   //print "  dp="+dp +", dpMin=" +dpMin.
   if (measure(p0)>0) set sgn to -1.
   //print "  sgn="+sgn.

@@ -72,7 +72,7 @@ function suicideBurn {
     until Status = "LANDED" or Status = "SPLASHED" {
         wait 0.
         set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing +hCorr.
-        if (height>0) {
+        if (height>2) {
             set accNeeded to (Velocity:Surface:SqrMagnitude - v0*v0)/(2*height) + g.
             if (height < 1000) {set Warp to 0.}
         }
@@ -99,9 +99,10 @@ function vacAscent {
     if (Vang(Up:Vector, Facing:ForeVector) > 10) {
         print "  WARNING: vacAscent: not facing up!".
         lock Steering to stUp().
-        wait until Vang(Up:Vector, Facing:ForeVector) > 10.
+        wait until Vang(Up:Vector, Facing:ForeVector) < 10.
     }
 
+    checkBalance().
     local lock pp to 90.
     set Warpmode to "PHYSICS".
     set Warp to 1.
@@ -155,7 +156,8 @@ function vacLandAtTgt {
     if (Obt:Periapsis > nodeHeight) {
         // make a node that brings me above the target at the
         //   suicide burn height
-        if not HasNode nodeDeorbit(tgt, nodeHeight, -Body:Radius*0.7).
+        //if not HasNode nodeDeorbit(tgt, nodeHeight, -Body:Radius*0.7).
+        if not HasNode nodeDeorbitAngle(tgt, nodeHeight).
         execNode().
     }
 
@@ -171,15 +173,18 @@ function vacLandAtTgt {
     lock Steering to Lookdirup(steerVec, Facing:UpVector).
     local g is Body:Mu/(Body:Radius* (Body:Radius+0.1)).
     print "  g="+Round(g,3).
+    local vErrPIDx is PidLoop(0.05, 0, 0.03, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    local vErrPIDy is PidLoop(0.05, 0, 0.03, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
 
     function update {
         wait 0.
         set v to Velocity:Surface.
-        set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing.
+        //set height to Altitude - Max(0.01, GeoPosition:TerrainHeight)-clearing.
+        set height to Altitude - tgtHeight -clearing.
 
 
         // predicted landing spot
-        //local sBurnDist is Velocity:Surface:SqrMagnitude/(0.5*acc-g).
+        local sBurnDist is Velocity:Surface:SqrMagnitude/(0.5*acc-g).
         //local timeToImpact is timeToAltitude2(tgtHeight, Time:Seconds, Time:Seconds+Obt:Period/4).
         //local dt is (timeToImpact-Time:Seconds)*2. // assume linear deceleration
         //local predictPos is dt*Velocity:Surface + Body:Mu/(Body:Radius*Body:Radius)*dt*dt*(-Up:Vector).
@@ -200,22 +205,30 @@ function vacLandAtTgt {
         local aimPoint is tgt:Position +Up:Vector*(Altitude-tgtHeight)*0.4.
         set vSollDir to aimPoint:Normalized.
         set vErr to Vxcl(vSollDir, v).
+        local frame is LookdirUp(vSollDir, North:Vector).
+        local tmpX is vErrPIDx:update(Time:Seconds, Vdot(vErr,Frame:UpVector)).
+        local tmpY is vErrPIDy:update(Time:Seconds, Vdot(vErr,Frame:StarVector)).
+        local tmp is -(tmpX*Frame:UpVector +tmpY*Frame:StarVector).
 
         print "vErr=" +Round(vErr:Mag,1)+"  " at (38, 0).
         print "bAcc=" +Round(brakeAcc,    2)  at (38, 1).
 
-        // try to negate vErr/10 per second
-        set corrAcc to Min(brakeAcc, Sqrt(Min(vErr:Mag/10, Max(acc^2-brakeAcc^2,0)))).
-        set steerVec to -v:Normalized*brakeAcc -vErr:Normalized*corrAcc.
+        set corrAcc to Min(height/1000, Min(brakeAcc, Sqrt(Min(tmp:Mag, Max(acc^2-brakeAcc^2,0))))).
+        set steerVec to -v:Normalized*brakeAcc -tmp:Normalized*corrAcc.
         set tt to Max(0,((steerVec:Mag/acc)-0.4)*5 *accFactor
                         *Vdot(steerVec, Facing:Forevector)).
         print "cAcc=" +Round(corrAcc,     2) at (38, 2).
         print "sAcc=" +Round(steerVec:Mag,2) at (38, 3).
         print "tAcc=" +Round(tt/accFactor,2) at (38, 4).
-        print "h   =" +Round(height,      1) at (38, 5).
+        //print "h   =" +Round(height,      1) at (38, 5).
+        print "tmpX=" +Round(tmpX,2)+"    " at (38,6).
+        print "tmpY=" +Round(tmpY,2)+"    " at (38,7).
+        print "tUnP=" +Target:UnPacked at (38,8).
         debugVec(5, "v", Velocity:Surface, -10*Up:Vector).
         debugVec(4, "vErr",vErr, -vErr+Velocity:Surface-10*Up:Vector).
         debugVec(3, "aimPoint", aimPoint-tgt:Position, tgt:Position).
+        debugVec(4, "corr", -tmp:Normalized*corrAcc*10, 20*v:Normalized -10*Up:Vector).
+        debugDirection(Steering).
     }
 
     print " landing burn".
@@ -226,19 +239,24 @@ function vacLandAtTgt {
     //       (still with orbital navigation)
 
     // todo: use suicideBurnCountdown instead of height
-
-    until (height < 10000) update().
+    until (height < 13000) update().
     set WARP to 0.
     set WARPMODE to "PHYSICS".
-    print "  wait for unpacking".
-    wait until Ship:Unpacked. //wait 10.
-    lock Throttle to tt.
+    //print "  wait for unpacking".
+    until (Ship:Unpacked) update().
     print "  ship unpacked".
+    set Warp to 3.
+    until (Vang(Facing:ForeVector, Steering:ForeVector) <3) update().
+    set Warp to 1.
+    until (height < 10000) update().
+    lock Throttle to tt.
     if (HasTarget) {
-      until (Target:UnPacked) update().
-      print "  target unpacked".
-      set tgt to chooseBasePort().
-      set tgtHeight to Max(0.01, tgt:TerrainHeight).
+      until (Target:UnPacked or height<400) update().
+      if (Target:Unpacked) {
+        print "  target unpacked".
+        set tgt to chooseBasePort().
+        set tgtHeight to Max(0.01, tgt:TerrainHeight).
+      } else print "  WARNING: Target still packed!".
     }
 
     until (height < 30) { update(). } //dynWarp(). }
@@ -271,7 +289,7 @@ function chooseBasePort {
       set pos to p:Position +dir*(gShipRadius+20).
       print "  port found".
     } else print "  no ports found!".
-    return Target:Body:GeoPositionOf(pos).
+    return Target:Body:GeoPositionOf(pos) +North:Vector*(gShipRadius+10).
 }
 
 // -> libatmo ?

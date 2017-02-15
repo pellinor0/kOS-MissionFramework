@@ -273,6 +273,7 @@ function m_undock {
         set Warp to 0.
         wait until Ship:Unpacked.
         Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
+        checkBalance().
     }
 }
 
@@ -403,8 +404,17 @@ function m_capture {
 }
 
 function m_returnFromHighOrbit {
+    // todo: find back into plane
+    //if missionStep() {
+    //  print "  find back into plane".
+    //  local plane is V(0,0,1).
+    //  if HasTarget set plane to getOrbitNormal(Target).
+    //}
+
+    // todo: correct inclination
+
     if missionStep() {
-        print "  tweak PE".
+        print "  tune PE".
         //toDo: make sure PE is above atmo / touching target orbit
         if not nextNodeExists() nodeTweakPE().
         execNode().

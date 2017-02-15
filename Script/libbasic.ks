@@ -41,6 +41,33 @@ function drive {
   Brakes on.
 }
 
+function checkBalance {
+  // find CoT
+  local eList is Ship:PartsTagged(gShipType+"Engine").
+  local thrust is V(0,0,0).
+  local thrustSum is 0.
+  local thrustLoc is V(0,0,0).
+  for e in eList {
+    set thrust to thrust +e:AvailableThrust*e:Facing:ForeVector.
+    set thrustSum to thrustSum+e:AvailableThrust.
+    set thrustLoc to thrustLoc +e:AvailableThrust*e:Position.
+  }
+  set thrust to thrust:Normalized.
+  set thrustLoc to thrustLoc/thrustSum.
+  local imBalance is -Vxcl(thrust, thrustLoc).
+  print " checkBalance:".
+  print "  imbalance(CoM-CoT)="+Round(imBalance:Mag,2)+"m".
+
+  if imbalance:Mag>0.1 {
+    print "  #engines="+eList:Length.
+    debugVec(1, "thrust", 10*thrust, thrustLoc).
+    debugVec(2, "-thrust", -10*thrust, thrustLoc).
+    debugVec(3, "imbalance", 10*imbalance:Normalized).
+    askConfirmation().
+    debugVecOff().
+  }
+}
+
 function warpRails {
     parameter tPar.
     parameter ask is true.
