@@ -33,6 +33,7 @@ function atmoAscentRocket {
     if (Stage:SolidFuel > 0) {
       lock Throttle to (Velocity:Surface:Mag<50).
       when (Stage:SolidFuel <= 0.02) then {
+        // problem: can't stage during physWarp (which is done by dynWarp when this is triggered)
         print "  stage".
         stage.
         lock Throttle to 1.
@@ -434,7 +435,9 @@ function atmoLandingPlane {
 
     if gDoLog writeLandingLog().
     Brakes off.
+    Chutes Off.
     until (Status<>"FLYING") flare().
+    Chutes On.
     wait 2.
     Brakes on.
     wait until Airspeed < 0.1.

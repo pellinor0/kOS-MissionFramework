@@ -510,7 +510,7 @@ function nodeDeorbitAngle {
   function frame { parameter dt. return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)). }
   local p2 is frame(NextNode:Eta) * (tgtPos:Position-Body:Position).
   local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
-  tweakNodeInclination(normal, 0.1).
+  tweakNodeInclination(normal, -1).
 }
 
 
@@ -698,13 +698,14 @@ function timeToAltitude2 {
     parameter tgtAlt.
     parameter t0.
     parameter t1.
+    parameter dtMin is 1.
     // Binary search (assuming monotony)
     local dir is -1.
     set tgtAlt to tgtAlt+Body:Radius.
     if (tgtAlt - (PositionAt(Ship,t0)-Body:Position):Mag)>0 set dir to 1.
     local dt is (t1-t0)/2.
     local t is t0.
-    until (dt < 1) {
+    until (dt < dtMin) {
         // print "  dir="+dir.
         // print "  tgtAlt="+tgtAlt.
         if ( (dir * (tgtAlt - (PositionAt(Ship,t+dt) -Body:Position):Mag)) > 0)

@@ -6,9 +6,9 @@ switch to 0.
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded
 
-//if(hasnode) remove nextnode.
+//until (not hasnode) remove nextnode.
 //wait 1000.
-//print "== refresh mission file ==". CopyPath("0:missions/m_sunpeek.ks", "1:mission.ks").
+//print "== refresh mission file ==". CopyPath("0:missions/m_moon.ks", "1:mission.ks").
 //wait 1000.
 //log "set pMissionCounter to pMissionCounter+1." to "1:/persistent.ks".
 
@@ -25,3 +25,16 @@ switch to 0.
 //print "  compiling boot".       compile "boot/boot.ks".
 //print "  copying bootFile".     CopyPath("0:/boot/boot.ksm","1:/boot/").
 // =======================
+
+//run once libmission.
+//setTarget("Ast1").
+//print "Target: Ast1".
+//local o is Target:Orbit.
+//local oo is Target:Orbit:NextPatch.
+//local t0 is Time:Seconds+o:NextPatchEta.
+//local t1 is Time:Seconds+oo:NextPatchEta.
+//print "  Eta:Transition="+Round(o:NextPatchEta/21600) + "d / " +Round(oo:NextPatchEta/21600) +"d".
+//print "  PE="+Round(oo:Periapsis).
+//print "  velPE=" +Round(VelocityAt(Target, (t0+t1)/2):Orbit:Mag).
+//print "  excessVel=" +Round(VelocityAt(Target,t0+100):Orbit:Mag).
+//Core:Deactivate.
