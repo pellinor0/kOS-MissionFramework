@@ -252,9 +252,9 @@ function nodeTweakPE {
 
       set NextNode:RadialOut to p.
       wait 0.
-      print "  tgtPE="+tgtPE +", PE="+NextNode:Orbit:Periapsis.
       local result is NextNode:Orbit:Periapsis-tgtPE.
-      print "  meas(" +Round(p,3) +")=" +Round(result,2).
+      //print "  tgtPE="+tgtPE +", PE="+NextNode:Orbit:Periapsis.
+      //print "  meas(" +Round(p,3) +")=" +Round(result,2).
       return result.
     }
 

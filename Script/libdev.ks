@@ -7,10 +7,11 @@ switch to 0.
 // debug hook: this code is called before the other libraries are loaded
 
 //until (not hasnode) remove nextnode.
-//wait 1000.
-//print "== refresh mission file ==". CopyPath("0:missions/m_moon.ks", "1:mission.ks").
-//wait 1000.
+//if HasNode remove NextNode.
+//print "== refresh mission file ==". CopyPath("0:missions/m_ast.ks", "1:mission.ks").
 //log "set pMissionCounter to pMissionCounter+1." to "1:/persistent.ks".
+//log "set pMissionCounter to 5." to "1:/persistent.ks".
+//wait 1000.
 
 
 //print "  compiling libbasic".   compile libbasic.
@@ -27,14 +28,3 @@ switch to 0.
 // =======================
 
 //run once libmission.
-//setTarget("Ast1").
-//print "Target: Ast1".
-//local o is Target:Orbit.
-//local oo is Target:Orbit:NextPatch.
-//local t0 is Time:Seconds+o:NextPatchEta.
-//local t1 is Time:Seconds+oo:NextPatchEta.
-//print "  Eta:Transition="+Round(o:NextPatchEta/21600) + "d / " +Round(oo:NextPatchEta/21600) +"d".
-//print "  PE="+Round(oo:Periapsis).
-//print "  velPE=" +Round(VelocityAt(Target, (t0+t1)/2):Orbit:Mag).
-//print "  excessVel=" +Round(VelocityAt(Target,t0+100):Orbit:Mag).
-//Core:Deactivate.

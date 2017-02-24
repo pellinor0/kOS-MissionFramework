@@ -136,16 +136,16 @@ function vacLandAtTgt {
     local tgtHeight is Max(0.01, tgt:TerrainHeight)+10. // +10: keep a bit of clearing
     local acc is Ship:AvailableThrust / Mass.
     local g is Body:Mu/(Body:Radius * (Body:Radius +0.1)). // +0.1 = workaround to overflow
-    //local accFactor is 1.
-    //if (acc > 10*g) {  // limit TWR for stability
-    //    set accFactor to 10*g/acc.
-    //    set acc to acc*accFactor.
-    //}
 
     print " vacLandAtTgt".
     print "  tgtHeight="+Round(tgtHeight, 1).
     //print "  tgt=LatLng("+Round(tgt:Lat,3) +", "+Round(tgt:Lng,3)+")".
     print "  g=" +Round(g,2) +", acc=" +Round(acc,2) +", TWR="+Round(acc/g,2).
+    local accFactor is 1.
+    if (acc > 2.5*g) {  // limit TWR for stability
+        set accFactor to 2.5*g/acc.
+        set acc to acc*accFactor.
+    }
 
     local nodeHeight is tgtHeight+3000. //sBurnHeight/4.
     print "  nodeHeight="+Round(nodeHeight, 1).
@@ -164,7 +164,13 @@ function vacLandAtTgt {
     local v is 0.
     local tt is 0.
     local steerVec is -Velocity:Surface.
-    lock Steering to Lookdirup(steerVec, Facing:UpVector).
+
+    if HasTarget {
+      lock Steering to Lookdirup(steerVec, -Target:Position). // assume KAS-Port points to -UpVector
+    } else {
+      lock Steering to Lookdirup(steerVec, Facing:UpVector).
+    }
+
     local g is Body:Mu/(Body:Radius* (Body:Radius+0.1)).
     print "  g="+Round(g,3).
     local vErrPIDx is PidLoop(0.2, 0.01, 0.03, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
@@ -198,7 +204,7 @@ function vacLandAtTgt {
             set accNeeded to (Velocity:Surface:SqrMagnitude - v0*v0)/(2*height) + g.
           else
             set accNeeded to (Velocity:Surface:Mag - v0)*2.
-          set tt to Max(0, (accNeeded/acc)-0.7)*5. // start at 7%, full at 90%
+          set tt to Max(0, (accNeeded*accFactor/acc)-0.7)*5. // start at 70%, full at 90%
         }
         print "tt  =" +Round(tt, 2)  at (38, 1).
 
@@ -209,7 +215,7 @@ function vacLandAtTgt {
         set vErr to -frame * Vxcl(aimPoint:Normalized, v).
         debugVec(4, "vErr",frame*vErr, frame*(-vErr)+Velocity:Surface-10*Up:Vector).
         debugVec(3, "aimPoint", aimPoint-tgt:Position, tgt:Position).
-        //print "vErr=" +Round(vErr:Mag,2) at (38,7).
+        print "vErr=" +Round(vErr:Mag,2) at (38,7).
 
         // PID control => X/Y corr
         local corrX is vErrPIDx:Update(Time:Seconds, vErr:X).
@@ -245,7 +251,10 @@ function vacLandAtTgt {
     print "  ship unpacked".
     set Warp to 3.
     until (Vang(Facing:ForeVector, Steering:ForeVector) <5) update().
-    set Warp to 1.
+    set WarpMode to "Rails". set Warp to 2.
+    until (tt/accFactor>0.02) update().
+    set WarpMode to "Physics". set Warp to 1.
+
     When (HasTarget and Target:Loaded) Then {
       print "  Target loaded: d=" +Target:Position:Mag.
       When (HasTarget and Target:unpacked) Then { print "  Target unpacked: d=" +Target:Position:Mag. }
@@ -253,6 +262,7 @@ function vacLandAtTgt {
 
     lock Throttle to tt.
     until (sbc < 10) update().
+    set Warp to 1.
     if (HasTarget) {
       until (Target:UnPacked or height<400) update().
       if (Target:Unpacked) {
@@ -263,8 +273,10 @@ function vacLandAtTgt {
     }
 
     until (height < 30) { update(). } //dynWarp(). }
+    //suicideBurn().
+    until Status = "LANDED" or Status = "SPLASHED" { update(). }
     unlock Throttle.
-    suicideBurn().
+    set Warp to 0.
 
     local endDv is getDeltaV().
     print "  dvCost  ="+Round(startDv-getDeltaV(), 1).
@@ -348,10 +360,10 @@ function suicideBurnChutes {
 
 function execNode {
     parameter doDynWarp is true.
-    print "  execNode".
-    wait 0.
-    set Warp to 0.
-    lock Throttle to 0. // workaround for bug at kssTest circularize
+    print " execNode".
+    if not HasNode return.
+    wait 0. set Warp to 0.
+    //lock Throttle to 0. // workaround for bug at kssTest circularize
     if (NextNode:DeltaV:Mag<0.15) {
         print "  dV="+NextNode:DeltaV:Mag.
         remove NextNode. wait 0.
@@ -373,6 +385,9 @@ function execNode {
     }
 
     local burntime is NextNode:Deltav:Mag / acc.
+    print "  dV="+Round(NextNode:Deltav:Mag,2).
+    print "  acc="+Round(acc,2).
+    print "  burnTime="+Round(burnTime,2).
 
     // print "  orient ship".
     lock Steering to stNode().
@@ -417,6 +432,7 @@ function execNode {
     if (doDynWarp=false and hasRcsDeltaV(5)) execNodeRcs.
     if HasNode {remove NextNode. wait 0.}
     set Warp to 0.
+    print "  accEnd=" +Round(Ship:AvailableThrust / Mass, 2).
 }
 
 function execNodeRcs {

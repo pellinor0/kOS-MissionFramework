@@ -316,8 +316,9 @@ function dockingApproach {
 }
 
 function grabWithClaw {
-  parameter vec is -Target:Position. // preferred direction
+  parameter vec is (-Target:Facing)*-Target:Facing:ForeVector. // preferred direction
   set vec to vec:Normalized.
+  print "  vec="+vecToString(vec).
 
   if Target:Parts:Length>1 {
     print "  WARNING: Target has more than one part!".
