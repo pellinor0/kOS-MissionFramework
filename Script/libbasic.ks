@@ -44,6 +44,8 @@ function drive {
 function checkBalance {
   // find CoT
   local eList is Ship:PartsTagged(gShipType+"Engine").
+  if (eList:Length=0) {print " checkBalance: no engines found!". return.}
+
   local thrust is V(0,0,0).
   local thrustSum is 0.
   local thrustLoc is V(0,0,0).
@@ -74,7 +76,7 @@ function warpRails {
 
     function countDown {return tPar - Time:Seconds.}
     print "  warpRails: dt=" +Round(tPar- Time:Seconds, 1).
-    if (countDown() > 4*3600) {
+    if (countDown() > 5*3600) {
       if countDown()< 6*3600
         print "  warpRails: dt=" +Round(countDown()/3600,2) +" h".
       else
@@ -82,16 +84,15 @@ function warpRails {
 
       killRotByWarp().
 
+      local alSet is false.
+      local al is 0.
       if (addons:available("KAC")) {
-        print " Current Alarms:".
-        for i in ADDONS:KAC:ALARMS {
-          print "  " +i:NAME + " - " + Round(i:REMAINING/6/3600,2) + "d - " + i:TYPE.
-        }
-        local al is addAlarm("Raw", tPar-1, "wR: "+Ship:Name+"("+gShipType+")", "").
+        set al to addAlarm("Raw", tPar-1, "wR: "+Ship:Name+"("+gShipType+")", "").
+        set alSet to true.
       }
 
       askConfirmation(tPar).
-
+      if (alSet) { deleteAlarm(al:Id). }
     }
 
     if (countDown()<0) { return. }

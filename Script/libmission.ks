@@ -193,6 +193,7 @@ function m_askConfirmation {
 
 function m_fillTanks {
     parameter includeLFO is true.
+    parameter amount is 0.
     if missionStep() {
         print "Fill Tanks".
         if (gShipType=Ship:Name) { print "  No host vessel found". return. }
@@ -205,6 +206,7 @@ function m_fillTanks {
         function tryTransfer {
           parameter res.
           parameter fill is true.
+          parameter amount is 0.
 
           local tList2 is List().
           local hList2 is List().
@@ -212,10 +214,13 @@ function m_fillTanks {
           for p in hostList { for r in p:Resources { if r:Name=res hList2:Add(p). } }
           if (tList2:Length>0 and hList2:Length>0) {
             print "  Tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
-            if (fill)
-              transfers:Add( TransferAll(res, hList2, tList2) ).
-            else
-              transfers:Add( TransferAll(res, tList2, hList2) ).
+            if (amount=0) {
+              if (fill) transfers:Add( TransferAll(res, hList2, tList2) ).
+              else      transfers:Add( TransferAll(res, tList2, hList2) ).
+            } else {
+              if (fill) transfers:Add( Transfer(res, hList2, tList2, amount) ).
+              else      transfers:Add( Transfer(res, tList2, hList2, amount) ).
+            }
           } else print "  No tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
         }
 
@@ -223,8 +228,8 @@ function m_fillTanks {
         tryTransfer("Supplies").        // fill
         tryTransfer("Mulch", false).    // empty
         if includeLFO {
-          tryTransfer("LiquidFuel").
-          tryTransfer("Oxidiser").
+          tryTransfer("LiquidFuel", true, amount).
+          tryTransfer("Oxidiser", true, amount).
         }
         for t in transfers { set t:Active to True. }
         for t in transfers { wait until t:Active=false. }
