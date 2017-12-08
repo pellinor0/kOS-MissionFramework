@@ -434,12 +434,12 @@ function nodeDeorbit {
       local step is 0.
       local bestStep is 0.
       until step > numSteps {
-        local lanErr2 is Mod(lanError -step*angleStep +180,360)-180.
+        local lanErr2 is Mod(lanError -step*angleStep +900,360)-180.
         if (abs(lanErr2) < abs(bestLanErr)) {
           set bestLanErr to lanErr2.
           set bestStep to step.
         }
-        //print "  step" +step +", lanErr=" +Round(lanErr2, 2).
+        //print "  step" +step +", lanErr=" +Round(lanErr2, 2) +", leRaw="+Round(lanError-step*angleStep,2).
         set step to step + 1.
       }
       //print "  bestStep=" +bestStep.
