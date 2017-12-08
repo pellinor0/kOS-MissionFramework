@@ -330,7 +330,7 @@ function atmoLandingPlane {
     //if gDoLog
      // assume we are braking (with what acceleration?)
     //lock flareCondition to (Altitude -gSpacePortHeight < 0.1*VerticalSpeed^2).
-    lock flareCondition to (Altitude -gSpacePortHeight < 200).
+    lock flareCondition to (Altitude -gSpacePortHeight < 100).
     //else
     //  lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
 
@@ -346,6 +346,7 @@ function atmoLandingPlane {
     local rwHeading is getRunwayHeading. // as GeoCoords so it doesn't change over time
 
     clearScreen2().
+
     until flareCondition() {
         wait 0.
         local aoa is getAoa().
@@ -394,10 +395,6 @@ function atmoLandingPlane {
         }
         set steerDir to SrfPrograde *R(0,yaw,roll) *R(-(aoa+aoaCorr-gBuiltinAoA),0,0).
 
-        when (Altitude<200) then {
-            Gear on.
-            Lights on.
-        }
         dynWarp().
         //debugDirection (Steering).
     }
@@ -405,7 +402,7 @@ function atmoLandingPlane {
     Lights on.
     set Warp to 0.
 
-    print "  Flare: alt=" +Round(Altitude,1)
+    print "  Flare: alt=" +Round(Altitude-gSpacePortHeight,1)
          +", vVel=" +Round(VerticalSpeed,2).
     // print "   Alt=" +Round(Altitude).
     // print "   vz =" +Round(VerticalSpeed).
@@ -418,7 +415,8 @@ function atmoLandingPlane {
     local vzPID is PidLoop(1, 0.02, 0.05, -10, 20). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
     function flare {
       wait 0.
-      local vzSoll is (Altitude - gSpacePortHeight)*(-0.2) -3.
+      local hgt is (Altitude - gSpacePortHeight-gGearHeight).
+      local vzSoll is hgt*(-0.3) -3.
       local vzErr is Ship:VerticalSpeed-vzSoll.
       local aoa is vzPID:Update(Time:Seconds, vzErr).
       if (not gDoLog)
@@ -426,9 +424,10 @@ function atmoLandingPlane {
       else
         set steerDir to SrfPrograde *R(-(20-gBuiltinAoA),0,0).
 
-      print "aoa ="+Round(aoa,   2)+"   " at (38,10).
+      //print "aoa ="+Round(aoa,   2)+"   " at (38,10).
+      print "hgt ="+Round(hgt,   1)+"   " at (38,10).
       print "vzE ="+Round(vzErr, 2)+"   " at (38,11).
-      print "vTgt="+Round(vzSoll,   2)+"   " at (38,12).
+      print "vzS ="+Round(vzSoll,   2)+"   " at (38,12).
       print "vz  ="+Round(Ship:VerticalSpeed, 2)+"   " at (38,13).
     }
 
