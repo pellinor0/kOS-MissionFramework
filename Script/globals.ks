@@ -11,7 +11,7 @@ global gLkoAP is 75000.
 //global gSpacePortHeight is 69.                  // stock KSC runway 09
 global gSpacePort is LatLng(8.687, -168.346). // KSC runway in GPP
 global gSpacePortHeading is 90.
-global gSpacePortHeight is 200.
+global gSpacePortHeight is 44.
 
 // == Vessel-specific parameters ==
 // these are set manually
