@@ -363,7 +363,8 @@ function execNode {
     print " execNode".
     if not HasNode return.
     wait 0. set Warp to 0.
-    lock Throttle to 0. // workaround for glitch at kss circularize
+    local tt is 0.
+    lock Throttle to tt. // workaround for glitch at kss circularize
     if (NextNode:DeltaV:Mag<0.15) {
         print "  dV="+NextNode:DeltaV:Mag.
         remove NextNode. wait 0.
@@ -416,13 +417,14 @@ function execNode {
     local origDir is NextNode:Deltav.
     local lock chaseAngle to VectorAngle(origDir, NextNode:Deltav).
 
-    lock Throttle to (NextNode:Deltav:Mag / acc / 2).
     until (chaseAngle > 60) or (NextNode:Deltav:Mag < 0.05) {
         wait 0.
+        set tt to (NextNode:Deltav:Mag / acc / 2).
         if doDynWarp dynWarp().
-        print "tt   ="+Round(Throttle, 2)       AT (38,0).
+        print "tt   ="+Round(tt, 2)       AT (38,0).
         //print "st   ="+Steering AT (38,1).
     }.
+    set tt to 0. wait 0.
 
     if(NextNode:Deltav:Mag > 0.05) {
         print "  WARNING: execNode: error = "+ Round(NextNode:Deltav:Mag, 3).

@@ -27,16 +27,16 @@ function atmoAscentRocket {
     local launchHeading is planeToHeading(tgtPlane).
     print "  launchHeading="+Round(launchHeading,2).
     lock Steering to Heading(launchHeading, ppp).
-    lock Throttle to 1.
+    local tt is 1.
+    lock Throttle to tt.
 
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
     if (Stage:SolidFuel > 0) {
-      lock Throttle to (Velocity:Surface:Mag<50).
       when (Stage:SolidFuel <= 0.02) then {
         // problem: can't stage during physWarp (which is done by dynWarp when this is triggered)
         print "  stage".
         stage.
-        lock Throttle to 1.
+        set tt to 1.
         //if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
         //    stage.
         //}
@@ -48,6 +48,7 @@ function atmoAscentRocket {
 
     local lock apReached to (Apoapsis > tgtAP*0.95).
     until (VerticalSpeed > 60) or apReached {dynWarp().}
+    set tt to 0.
 
     print "  Gravity turn".
     // flightPath (copied from mechJeb)
@@ -75,6 +76,7 @@ function atmoAscentRocket {
     lock vel to Velocity:Orbit.
 
     until apReached {dynWarp().}
+    set tt to 0. wait 0.
     unlock Throttle.
     unlock Steering.
     unlock vel.

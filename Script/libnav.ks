@@ -513,7 +513,6 @@ function nodeDeorbitAngle {
   tweakNodeInclination(normal, -1).
 }
 
-
 function nodeCircularize {
   parameter t.
   local sma is (PositionAt(Ship,t)-Body:Position).
@@ -905,4 +904,19 @@ function binarySearch {
       set dp to dp/2.
   }
   return p.
+}
+
+function checkNextNode {
+  local debugDV is V(NextNode:Prograde,NextNode:RadialOut,NextNode:Normal):Mag.
+  if Abs(debugDV -NextNode:DeltaV:Mag) >0.15
+    AND Abs(1 - debugDV/NextNode:DeltaV:Mag) > 0.01 {
+      print "  WARNING (checkNextNode): inconsistent ManeuverNode!".
+      print "   deltaV    ="+Round(NextNode:DeltaV:Mag, 2).
+      print "   components="+Round(debugDV, 2).
+      print "   Eta       ="+Round(NextNode:Eta,1).
+      //print "   ratio=" +Round(Abs(debugDV/NextNode:DeltaV:Mag));
+      if (debugDV<0.1) {remove NextNode. wait 0. return.}
+      return false.
+  }
+  return true.
 }
