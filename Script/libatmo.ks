@@ -85,6 +85,12 @@ function atmoAscentRocket {
         coastToSpace(tgtAP).
     }
     set Warp to 0.
+
+    local tmp is Ship:PartsDubbed(gShipType+"Fairing").
+    if (tmp:Length>0) {
+      print "  deploy fairing".
+      tmp[0]:getModule("ModuleProceduralFairing"):DoEvent("Deploy").
+    }
 }
 
 function atmoAscentPlane {
@@ -316,23 +322,16 @@ function atmoLandingPlane {
     local aoa is 60.
     local aoaCorr is 0.
     local yaw is 0.
-    //when Altitude < 40000 then {
-    //    lock aoa to (Altitude*0.001 +20).
-    //    when Altitude < 3000 then lock aoa to 10+Altitude*0.0033.
-    //}
+    local aimpoint is V(0,0,0).
+
+    // start flare when low or overshooting aimPoint
+    lock flareCondition to ((Altitude -gSpacePortHeight < 60) or (aimPoint*Velocity:Surface < 0)).
 
     local steerDir is LookdirUp(Prograde:Vector, Up:Vector).
     lock Steering to steerDir.
     Gear off.
     wait until Vang(Facing:ForeVector, steerDir:Vector)<10.
     wait until Vang(Facing:UpVector, Up:Vector)<5.
-
-    //if gDoLog
-     // assume we are braking (with what acceleration?)
-    //lock flareCondition to (Altitude -gSpacePortHeight < 0.1*VerticalSpeed^2).
-    lock flareCondition to (Altitude -gSpacePortHeight < 100).
-    //else
-    //  lock flareCondition to (Altitude < gSpacePortHeight+20 or relLng < -359).
 
     function getRunwayHeading {
       local dLng is Sin(gSpacePortHeading).
@@ -353,16 +352,12 @@ function atmoLandingPlane {
 
         if ((not gDoLog) and lList:Length > 2) {
           local bearErr is 0.
-          local aimpoint is V(0,0,0).
-          //if(relLng<0){
 
             set aimPoint to gSpacePort:Position +(0.2-Max(0, Min(-relLng,10)))*10000*rwHeading:Position:Normalized.
             set bearErr to Body:GeoPositionOf(aimPoint):Bearing.
-            //debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
-          //} else {
-          //  set bearErr to rwHeading:Bearing.
-          //}
-            set roll to rollPID:update(Time:Seconds, bearErr). // set roll to Max(-15, Min(15, -3*bearSoll)).
+            debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
+
+            set roll to rollPID:update(Time:Seconds, bearErr).
 
             set aoaCorr to Max(6-aoa, Min(-0.5*eErr, 90-aoa)).
             set aoaCorr to Min(aoaCorr, aoa).
@@ -416,7 +411,7 @@ function atmoLandingPlane {
     function flare {
       wait 0.
       local hgt is (Altitude - gSpacePortHeight-gGearHeight).
-      local vzSoll is hgt*(-0.3) -3.
+      local vzSoll is Min(hgt*(-0.2) -3, -15).
       local vzErr is Ship:VerticalSpeed-vzSoll.
       local aoa is vzPID:Update(Time:Seconds, vzErr).
       if (not gDoLog)

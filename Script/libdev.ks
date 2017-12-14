@@ -6,13 +6,6 @@ switch to 0.
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded
 
-//until (not hasnode) remove nextnode.
-//if HasNode remove NextNode.
-//print "== refresh mission file ==". CopyPath("0:missions/m_ast.ks", "1:mission.ks").
-//log "set pMissionCounter to pMissionCounter+1." to "1:/persistent.ks".
-//log "set pMissionCounter to 5." to "1:/persistent.ks".
-//wait 1000.
-
 
 //print "  compiling libbasic".   compile libbasic.
 //print "  compiling libatmo".    compile libatmo.
@@ -26,5 +19,3 @@ switch to 0.
 //print "  compiling boot".       compile "boot/boot.ks".
 //print "  copying bootFile".     CopyPath("0:/boot/boot.ksm","1:/boot/").
 // =======================
-
-//run once libmission.

@@ -363,7 +363,7 @@ function execNode {
     print " execNode".
     if not HasNode return.
     wait 0. set Warp to 0.
-    //lock Throttle to 0. // workaround for bug at kssTest circularize
+    lock Throttle to 0. // workaround for glitch at kss circularize
     if (NextNode:DeltaV:Mag<0.15) {
         print "  dV="+NextNode:DeltaV:Mag.
         remove NextNode. wait 0.
