@@ -360,11 +360,13 @@ function suicideBurnChutes {
 
 function execNode {
     parameter doDynWarp is true.
+
+    local tt is 0.
+    lock Throttle to tt.
+
     print " execNode".
     if not HasNode return.
     wait 0. set Warp to 0.
-    local tt is 0.
-    lock Throttle to tt. // workaround for glitch at kss circularize
     if (NextNode:DeltaV:Mag<0.15) {
         print "  dV="+NextNode:DeltaV:Mag.
         remove NextNode. wait 0.
@@ -429,7 +431,7 @@ function execNode {
     if(NextNode:Deltav:Mag > 0.05) {
         print "  WARNING: execNode: error = "+ Round(NextNode:Deltav:Mag, 3).
     }
-    unlock Throttle.
+    //unlock Throttle.
     unlock Steering.
     if (doDynWarp=false and hasRcsDeltaV(5)) execNodeRcs.
     if HasNode {remove NextNode. wait 0.}

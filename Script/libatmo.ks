@@ -31,18 +31,6 @@ function atmoAscentRocket {
     lock Throttle to tt.
 
     if(Status = "PRELAUNCH" or Status="Landed") { stage. }
-    if (Stage:SolidFuel > 0) {
-      when (Stage:SolidFuel <= 0.02) then {
-        // problem: can't stage during physWarp (which is done by dynWarp when this is triggered)
-        print "  stage".
-        stage.
-        set tt to 1.
-        //if (Stage:SolidFuel > 0) when (Stage:SolidFuel <= 0.02) then {
-        //    stage.
-        //}
-      }
-    }
-
     set Warpmode to "PHYSICS".
     set Warp to 3.
 
@@ -57,10 +45,18 @@ function atmoAscentRocket {
     local lock ppp to 90*(1-shape).
 
     function update {
-        print "v   =" +Round(Velocity:Surface:Mag, 2) +"  " at (38, 0).
-        print "sha =" +Round(shape, 2)  +"  " at (38, 1).
-        print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
-        print "alt =" +Round(Altitude, 2)+"  " at (38, 3).
+        //print "v   =" +Round(Velocity:Surface:Mag, 2) +"  " at (38, 0).
+        //print "sha =" +Round(shape, 2)  +"  " at (38, 1).
+        //print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
+        //print "alt =" +Round(Altitude, 2)+"  " at (38, 3).
+        //print "tt  =" +Round(tt, 2)      +"  " at (38, 4).
+        //print "sf  =" +Round(Stage:SolidFuel, 2)      +"  " at (38, 5).
+
+        if (tt=0) if (Stage:SolidFuel <= 0.02) {
+          set tt to 1.
+          until (Warp=0) {set Warp to 0. wait 0. } //print "set Warp to 0".}
+          stage.
+        }
         dynWarp().
     }
 
@@ -68,14 +64,14 @@ function atmoAscentRocket {
 
     print "   hold prograde".
     local lock ppp to velPP.
-    until (Altitude > 30000) or apReached {dynWarp().}
+    until (Altitude > 30000) or apReached {update().}
 
     lock vel to ((Altitude-30000)*Velocity:Orbit
                 +(40000-Altitude)*Velocity:Surface)/10000.
-    until (Altitude > 40000) or apReached {dynWarp().}
+    until (Altitude > 40000) or apReached {update().}
     lock vel to Velocity:Orbit.
 
-    until apReached {dynWarp().}
+    until apReached {update().}
     set tt to 0. wait 0.
     unlock Throttle.
     unlock Steering.
@@ -326,8 +322,8 @@ function atmoLandingPlane {
     local yaw is 0.
     local aimpoint is V(0,0,0).
 
-    // start flare when low or overshooting aimPoint
-    lock flareCondition to ((Altitude -gSpacePortHeight < 60) or (aimPoint*Velocity:Surface < 0)).
+    // start flare when low or overshooting
+    lock flareCondition to ((Altitude -gSpacePortHeight < 60) or (Longitude>gSpacePort:Lng)).
 
     local steerDir is LookdirUp(Prograde:Vector, Up:Vector).
     lock Steering to steerDir.
@@ -378,6 +374,7 @@ function atmoLandingPlane {
             print "eDot="+Round(eDot, 0)+"   " at (38,0).
             print "dE  ="+Round(e-eSoll , 0)+" " at (38,1).
             print "aoaC="+Round(aoaCorr, 3) at (38,2).
+            //print "eSol ="+Round(eSoll,2)     at (38,3).
             print "rLng="+Round(relLng, 3)+"  " at (38,5).
             print "roll="+Round(roll,     2)+"   " at (38,6).
             print "bErr="+Round(bearErr, 2)+"   "  at (38,7).
@@ -451,13 +448,16 @@ function coastToSpace {
     lock Steering to stPrograde().
     when Altitude > Body:Atm:Height*0.995 then set Warp to 0.
 
-    lock Throttle to Max(0, (tgtAP-Apoapsis)/2000).
+    local tt is 0.
+    lock Throttle to tt.
     until Altitude > Body:Atm:Height {
+      set tt to Max(0, (tgtAP-Apoapsis)/2000).
       //print "tt   ="+Round(Throttle, 3)       at (38,0).
       wait 0.
     }
+    set tt to 0.
     unlock Steering.
-    unlock Throttle.
+    //unlock Throttle.  // glitch: this would cause Throttle to jump to 1.
 }
 
 function initLandingLog {

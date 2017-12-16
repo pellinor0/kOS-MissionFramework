@@ -21,3 +21,8 @@ function moduleInfo {
     if m:AllActions:Length>0 print "  "+n+" Actions: " +m:AllActions.
   }
 }
+
+//When (1) Then {
+//  log "t="+Throttle to "0:/log.txt".
+//  preserve.
+//}
