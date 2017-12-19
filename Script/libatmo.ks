@@ -49,13 +49,13 @@ function atmoAscentRocket {
         //print "sha =" +Round(shape, 2)  +"  " at (38, 1).
         //print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
         //print "alt =" +Round(Altitude, 2)+"  " at (38, 3).
-        //print "tt  =" +Round(tt, 2)      +"  " at (38, 4).
-        //print "sf  =" +Round(Stage:SolidFuel, 2)      +"  " at (38, 5).
+        print "tt  =" +Round(tt, 2)      +"  " at (38, 4).
+        print "sf  =" +Round(Stage:SolidFuel, 2)      +"  " at (38, 5).
 
         if (tt=0) if (Stage:SolidFuel <= 0.02) {
           set tt to 1.
-          until (Warp=0) {set Warp to 0. wait 0. } //print "set Warp to 0".}
-          stage.
+          until (Warp=0) {set Warp to 0. wait 0. print "   set Warp to 0".}
+          stage. print "  stage".
         }
         dynWarp().
     }
@@ -323,7 +323,7 @@ function atmoLandingPlane {
     local aimpoint is V(0,0,0).
 
     // start flare when low or overshooting
-    lock flareCondition to ((Altitude -gSpacePortHeight < 60) or (Longitude>gSpacePort:Lng)).
+    lock flareCondition to ((Altitude -gSpacePortHeight < 60) or Mod(gSpacePort:Lng-Longitude+720, 360)>355).
 
     local steerDir is LookdirUp(Prograde:Vector, Up:Vector).
     lock Steering to steerDir.
@@ -336,8 +336,8 @@ function atmoLandingPlane {
       local dLat is Cos(gSpacePortHeading).
       local p1 is gSpacePort:Position.
       local p2 is LatLng( gSpacePort:Lat +dLat, gSpacePort:Lng +dLng ):Position.
-      print "  dLat=" +Round(dLat,2).
-      print "  dLng=" +Round(dLng,2).
+      //print "  dLat=" +Round(dLat,2).
+      //print "  dLng=" +Round(dLng,2).
       return Body:GeoPositionOf(p2-p1+Body:Position).
     }
     local rwHeading is getRunwayHeading. // as GeoCoords so it doesn't change over time
@@ -353,7 +353,7 @@ function atmoLandingPlane {
 
             set aimPoint to gSpacePort:Position +(0.2-Max(0, Min(-relLng,10)))*10000*rwHeading:Position:Normalized.
             set bearErr to Body:GeoPositionOf(aimPoint):Bearing.
-            debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
+            //debugVec(1, "aimPoint", (aimPoint-Body:Position)*2, Body:Position).
 
             set roll to rollPID:update(Time:Seconds, bearErr).
 
@@ -398,6 +398,7 @@ function atmoLandingPlane {
 
     print "  Flare: alt=" +Round(Altitude-gSpacePortHeight,1)
          +", vVel=" +Round(VerticalSpeed,2).
+    print "  lng="+Longitude+", spaceportLng="+gSpacePort:Lng.
     // print "   Alt=" +Round(Altitude).
     // print "   vz =" +Round(VerticalSpeed).
     // print "   h  =" +Round(Altitude).
