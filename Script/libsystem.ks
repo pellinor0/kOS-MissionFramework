@@ -33,8 +33,24 @@ function setControlPart {
     pList[0]:ControlFrom.
   else
   {
-    print "no unique control part found: num="+pList:Length.
-    print "please activate control part manually".
-    askConfirmation().
+    print "WARNING: no unique control part found: num="+pList:Length.
+    //print "please activate control part manually".
+    //askConfirmation().
+    print "  taking closest one to core".
+    findClosest(pList, Core:Part):ControlFrom.
   }
+}
+
+// in a list of parts, find the closest one to a reference part
+function findClosest {
+  parameter pList.
+  parameter pRef.
+
+  local cp is pList[0].
+  local d is 1e12.
+  for p in pList {
+    local d2 is (pRef:Position-p:Position):Mag.
+    if (d2 < d) {set cp to p. set d to d2.}
+  }
+  return cp.
 }
