@@ -126,7 +126,7 @@ function rdv {
     local vErrPIDx is PidLoop(0.2, 0, 0.05, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
     local vErrPIDy is PidLoop(0.2, 0, 0.05, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
 
-    function update {
+    local function update {
         wait 0.
         local targetPos is Target:Position.
         if (loadedVersion) set tOffset to Target:Facing*targetOffset.
@@ -261,7 +261,7 @@ function dockingApproach {
     RCS on.
     clearScreen2().
 
-    function update {
+    local function update {
         wait 0.
         if (not HasTarget) return.
         local tgtFrame is Target:Facing.

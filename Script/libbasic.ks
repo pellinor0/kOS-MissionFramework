@@ -33,7 +33,6 @@ function transferResource {
     }
 }
 
-
 function drive {
   parameter tgt. // GeoCoord, Vessel or WayPoint
   parameter vel is 10.
@@ -309,6 +308,7 @@ function vecToString {
 
 function getDeltaV {
     // assumptions: only one ISP present
+    local tmp is List().
     list engines in tmp.
     local isp is tmp[0]:VacuumIsp.
     local fuel is (Ship:LiquidFuel + Ship:Oxidizer)*0.005.

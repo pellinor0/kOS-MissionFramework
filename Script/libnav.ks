@@ -216,7 +216,7 @@ function nodeFastTransfer2 {
       set t to dt+Time:Seconds.
     }
 
-    function posToLng {
+    local function posToLng {
       parameter pos.
       return Body:GeoPositionOf(pos):Lng.
     }
@@ -247,7 +247,7 @@ function nodeTweakPE {
     print " nodeTweakPE".
     // tweak PE with a radial burn
     // (used when coming from high orbit)
-    function meas {
+    local function meas {
       parameter p.
 
       set NextNode:RadialOut to p.
@@ -416,7 +416,7 @@ function nodeDeorbit {
         wait 0.
     }
 
-    function frame {
+    local function frame {
       parameter dt.
       return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)).
     }
@@ -460,7 +460,7 @@ function nodeDeorbitAngle {
   local tNode is Time:Seconds+100.
   add Node(tNode,0,0,0).
   print "  tweak node:prograde => tgtAngle at tgtHeight".
-  function meas1 {
+  local function meas1 {
     parameter p.
     set NextNode:Prograde to p.
     wait 0.
@@ -507,7 +507,7 @@ function nodeDeorbitAngle {
       wait 0.
   }
 
-  function frame { parameter dt. return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)). }
+  local function frame { parameter dt. return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)). }
   local p2 is frame(NextNode:Eta) * (tgtPos:Position-Body:Position).
   local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
   tweakNodeInclination(normal, -1).
@@ -721,7 +721,7 @@ function timeToDist {
     parameter t1.
     // Binary search (assuming monotony)
     local dir is -1.
-    function d {parameter t. return dist-(PositionAt(Ship,t)-PositionAt(Target,t)):Mag.}
+    local function d {parameter t. return dist-(PositionAt(Ship,t)-PositionAt(Target,t)):Mag.}
     if (d(t0)>0) set dir to 1.
     local dt is (t1-t0)/2.
     local t is t0.

@@ -203,7 +203,7 @@ function m_fillTanks {
         if (hostList:Length=0) { print "  Host has no tagged tanks". return. }
         local transfers is List().
 
-        function tryTransfer {
+        local function tryTransfer {
           parameter res.
           parameter fill is true.
           parameter amount is 0.

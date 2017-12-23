@@ -146,16 +146,31 @@ function vacLandAtTgt {
         set accFactor to 2.5*g/acc.
         set acc to acc*accFactor.
     }
-
-    local nodeHeight is tgtHeight+3000. //sBurnHeight/4.
-    print "  nodeHeight="+Round(nodeHeight, 1).
-    if (Obt:Periapsis > nodeHeight) {
-        // make a node that brings me above the target at the
-        //   suicide burn height
-        if not HasNode nodeDeorbitAngle(tgt, nodeHeight).
+    if (Exists("0:/logs/land"+Body:Name+".json")) {
+      local params is ReadJson("0:/logs/land"+Body:Name+".json").
+      local burnAlt is params["h"][(params["h"]:Length-1)].
+      if (Periapsis > burnAlt) {   // else we already did that burn
+        if (not HasNode) {
+          local PA is Mod(tgt:Lng-Longitude+360, 360)-Params["PA"].
+          local synPeriod is 1/ (1/Obt:Period - 1/Body:RotationPeriod).
+          local dt is synPeriod*(PA/360).
+          if (dt<30) {set dt to dt+synPeriod.}
+          print "  PA="+Round(PA,2).
+          print "  dt="+Round(dt,2).
+          nodeUncircularize(params["PE"], Time:Seconds+dt).
+        }
         execNode().
+      }
+    } else {
+      local nodeHeight is tgtHeight+3000. //sBurnHeight/4.
+      print "  nodeHeight="+Round(nodeHeight, 1).
+      if (Obt:Periapsis > nodeHeight) {
+          // make a node that brings me above the target at the
+          //   suicide burn height
+          if not HasNode nodeDeorbitAngle(tgt, nodeHeight).
+          execNode().
+      }
     }
-
     local height is 1e6.
     local brakeAcc is 0.
     local corrAcc is 0.
@@ -181,7 +196,7 @@ function vacLandAtTgt {
     local hCorr is -0.5*v0*v0/(acc-g) -10. // correction for touchdown speed and gearHeight
     local tImpact is Time:Seconds+1e12.
 
-    function update {
+    local function update {
         wait 0.
         set v to Velocity:Surface.
         set height to Altitude - tgtHeight.
@@ -318,7 +333,7 @@ function hop {
   local p is Ship:Position.
   local d0 is Target:Position:Mag.
   print "  tgtHeight="+Target:Altitude.
-  function update {
+  local function update {
     local tImpact is timeToAltitude2(Target:Altitude, Time:Seconds+Eta:Apoapsis, Time:Seconds+Eta:Apoapsis+Obt:Period/2, 0.2).
     set p to PositionAt(Ship, tImpact).
     print "tti =" +Round(tImpact-Time:Seconds,2) at (38,13).
@@ -447,7 +462,7 @@ function execNodeRcs {
     warpRails(Time:Seconds +NextNode:Eta -2).
     RCS on.
 
-    function update {
+    local function update {
         wait 0.
         set dV to NextNode:Deltav.
         //print "dV  ="+Round(dV:Mag,3)  at (38,0).

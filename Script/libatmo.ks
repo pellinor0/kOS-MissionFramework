@@ -44,7 +44,7 @@ function atmoAscentRocket {
     local lock shape to ((Altitude-startAlt) / (Body:Atm:Height-startAlt)) ^gLaunchParam.
     local lock ppp to 90*(1-shape).
 
-    function update {
+    local function update {
         //print "v   =" +Round(Velocity:Surface:Mag, 2) +"  " at (38, 0).
         //print "sha =" +Round(shape, 2)  +"  " at (38, 1).
         //print "ppp =" +Round(ppp, 2)    +"  " at (38, 2).
@@ -128,7 +128,7 @@ function atmoAscentPlane {
     local vTgt is 0.
     local aoaTgt is 0.
     local ppMJ is 0.
-    function update {
+    local function update {
         wait 0.
         set v to Velocity:Surface.
         set vTgt to 300+Altitude/30.
@@ -307,7 +307,7 @@ function atmoLandingPlane {
     local proH is List(70000,40000,0).  // height
     local proA is List(   60,   40,10). // AoA
     local j is 1.
-    function getAoa {
+    local function getAoa {
       if (Altitude < proH[j]) {
         set j to j+1.
         print "i   ="+j +",alt="+Round(Altitude/1000)+"k" at (38,14).
@@ -331,7 +331,7 @@ function atmoLandingPlane {
     wait until Vang(Facing:ForeVector, steerDir:Vector)<10.
     wait until Vang(Facing:UpVector, Up:Vector)<5.
 
-    function getRunwayHeading {
+    local function getRunwayHeading {
       local dLng is Sin(gSpacePortHeading).
       local dLat is Cos(gSpacePortHeading).
       local p1 is gSpacePort:Position.
@@ -408,7 +408,7 @@ function atmoLandingPlane {
     //      goal: speed decreases with height
     //      vTgt = 3+ x*height
     local vzPID is PidLoop(1, 0.02, 0.05, -10, 20). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
-    function flare {
+    local function flare {
       wait 0.
       local hgt is (Altitude - gSpacePortHeight-gGearHeight).
       local vzSoll is Min(hgt*(-0.2) -3, -15).
