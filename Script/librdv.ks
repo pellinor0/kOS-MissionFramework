@@ -152,7 +152,7 @@ function rdv {
         } else {
             set vErr to Vxcl(dX, dV).
         }
-        debugDirection(Steering).
+        //debugDirection(Steering).
 
         // try to negate vErr per second
         // limit angle to retrograde when closing in

@@ -2,6 +2,38 @@
 //print "  Loading libbasic".
 
 
+function transferResource {
+    parameter res.
+    parameter fill is true.
+    parameter amount is 0.
+
+    local tanklist is Ship:PartsTagged(gShipType+"Tank"). // my tanks
+    local hostList is Ship:PartsTagged(Ship:Name+"Tank"). // host tanks
+    if (tankList:Length=0) { print "  Ship has no tagged tanks". return. }
+    if (hostList:Length=0) { print "  Host has no tagged tanks". return. }
+    local t is 0.
+    local tList2 is List().
+    local hList2 is List().
+    for p in tankList { for r in p:Resources { if r:Name=res tList2:Add(p). } }
+    for p in hostList { for r in p:Resources { if r:Name=res hList2:Add(p). } }
+    if (tList2:Length>0 and hList2:Length>0) {
+      print "  Tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
+      if (amount=0) {
+        if (fill) set t to TransferAll(res, hList2, tList2).
+        else      set t to TransferAll(res, tList2, hList2).
+      } else {
+        if (fill) set t to Transfer(res, hList2, tList2, amount).
+        else      set t to Transfer(res, tList2, hList2, amount).
+      }
+    } else print "  No tanks found: "+res +" (" +hList2:Length +"/"+tList2:Length +")".
+    if t:HasSuffix("Active") {
+      set t:Active to True.
+      wait until t:Active=false.
+      print "  Transferred " +Round(t:Transferred,2) +" "+t:Resource +" ("+t:Status+")".
+    }
+}
+
+
 function drive {
   parameter tgt. // GeoCoord, Vessel or WayPoint
   parameter vel is 10.
