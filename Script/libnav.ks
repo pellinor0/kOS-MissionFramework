@@ -868,7 +868,7 @@ function setNextNodeDV {
 }
 
 function getOrbitNormal {
-    parameter tgt.
+    parameter tgt is Ship.
     parameter t is 0.
     if (t=0) {
       //debugVec(2, "vel", tgt:Velocity:Orbit:Normalized*1e6, tgt:Position).

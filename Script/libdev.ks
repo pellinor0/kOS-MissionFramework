@@ -6,7 +6,6 @@ switch to 0.
 // ====  AutoStart =======
 // debug hook: this code is called before the other libraries are loaded
 
-
 //print "  compiling libbasic".   compile libbasic.
 //print "  compiling libatmo".    compile libatmo.
 //print "  compiling liborbit".   compile liborbit.
@@ -19,3 +18,6 @@ switch to 0.
 //print "  compiling boot".       compile "boot/boot.ks".
 //print "  copying bootFile".     CopyPath("0:/boot/boot.ksm","1:/boot/").
 // =======================
+
+//print "  copying mission file".     CopyPath("0:/missions/m_comSat.ks","1:/mission.ks").
+//until (not hasnode) {remove nextnode. wait 0.}

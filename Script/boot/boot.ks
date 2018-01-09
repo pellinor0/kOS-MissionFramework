@@ -1,7 +1,6 @@
-set Ship:Control:PilotMainThrottle to 0.
 Core:DoEvent("open terminal").
 clearscreen.
-set Terminal:Height to 80.
+set Terminal:Height to 68.
 set Terminal:Width to 55.
 switch to 0.
 print "Boot".

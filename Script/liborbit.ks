@@ -112,7 +112,7 @@ function vacAscent {
     lock Throttle to 1.
     local lock apReached to (Apoapsis > tgtAP*0.99).
 
-    wait until (VerticalSpeed > 60) or apReached.
+    wait until (VerticalSpeed > 5) or apReached.
     print "  Gravity turn".
     local startAlt is Altitude.
     local lock shape to ((Altitude-startAlt) / (tgtAP-startAlt)) ^gLaunchParam.
@@ -131,6 +131,10 @@ function vacLandAtTgt {
     parameter tgt is 0. // GeoCoordinates (else use Target)
     if (Status = "LANDED" or Status="SPLASHED") return.
     if (not tgt:HasSuffix("LAT")) set tgt to Body:GeoPositionOf(Target:Position).
+    local ld is KUniverse:DefaultLoadDistance:Landed.
+    print "  loadDist Landed:" +ld:Load +", "+ld:Unload+", "+ld:Unpack+", "+ld:pack.
+    set ld:Pack to 2200.
+    set ld:Unpack to 2150.
 
     local startDv is getDeltaV().
     local tgtHeight is Max(0.01, tgt:TerrainHeight)+10. // +10: keep a bit of clearing
@@ -158,6 +162,11 @@ function vacLandAtTgt {
           print "  PA="+Round(PA,2).
           print "  dt="+Round(dt,2).
           nodeUncircularize(params["PE"], Time:Seconds+dt).
+          local function frame { parameter dt. return -AngleAxis(360* dt/Body:RotationPeriod, V(0,1,0)). }
+          local p2 is frame(NextNode:Eta) * (tgt:Position-Body:Position).
+          local normal is Vcrs(p2, PositionAt(Ship,Time:Seconds+NextNode:Eta)-Body:Position).
+          print "  incErr="+Round(Vang(normal, getOrbitNormal()),2).
+          tweakNodeInclination(normal, -1).
         }
         execNode().
       }
@@ -205,7 +214,7 @@ function vacLandAtTgt {
         // suicide burn countdown (borrowed from MJ)
         set tImpact to timeToAltitude2(tgtHeight, Time:Seconds, Time:Seconds+Eta:Periapsis, 0.2).
         local sinP is Sin( Max(0, 90-Vang(-Velocity:Surface, Up:Vector)) ).
-        if (sinp<0.9) {
+        if (sinp<0.95) {
           local effDecel is 0.5*(-2*g*sinP +Sqrt( (2*g*sinP)^2 +4*(acc*acc*0.9 -g*g))). //"*0.9"= keep small acc reserve
           local decelTime is Velocity:Surface:Mag/effDecel.
           set sbc to tImpact-Time:Seconds -decelTime/2.
@@ -252,6 +261,7 @@ function vacLandAtTgt {
         debugVec(5, "v", Velocity:Surface, -10*Up:Vector).
         print "dt  ="+Round( tImpact -Time:Seconds -2*sbc ) +"  " at (38,20).
         print "tImp="+Round( tImpact -Time:Seconds )        +"  " at (38,21).
+        print "tgtP="+(not Target:UnPacked)+"  " at (38,22).
         //debugDirection(Steering).
     }
 
@@ -287,7 +297,7 @@ function vacLandAtTgt {
       } else print "  WARNING: Target still packed!".
     }
 
-    until (height < 30) { update(). } //dynWarp(). }
+    //until (height < 30) { update(). } //dynWarp(). }
     //suicideBurn().
     until Status = "LANDED" or Status = "SPLASHED" { update(). }
     unlock Throttle.

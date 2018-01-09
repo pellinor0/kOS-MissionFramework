@@ -29,3 +29,6 @@ global gLaunchDuration is 0.
 global gLaunchAngle is 0.
 global gLandingPA is 0.
 global gGearHeight is 0. // not used yet
+
+// new structure: Lexicon where only the used values are defined. 
+global params is Lexicon().

@@ -88,7 +88,7 @@ function m_waitForTransition {
     parameter type.
 
     if missionStep() {
-        print "Wait for transition".
+        print "Wait for transition ("+type+")".
         if (Obt:Transition <> type) {
             print "  WARNING: next transition != "+type+" !".
             print "           type="+Obt:Transition.
@@ -229,7 +229,7 @@ function m_fillTanks {
         tryTransfer("Mulch", false).    // empty
         if includeLFO {
           tryTransfer("LiquidFuel", true, amount).
-          tryTransfer("Oxidiser", true, amount).
+          tryTransfer("Oxidiser", true, amount*(11/9)).
         }
         for t in transfers { set t:Active to True. }
         for t in transfers { wait until t:Active=false. }

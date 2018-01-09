@@ -408,10 +408,12 @@ function atmoLandingPlane {
     //      goal: speed decreases with height
     //      vTgt = 3+ x*height
     local vzPID is PidLoop(1, 0.02, 0.05, -10, 20). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    local hgt is 1000.
     local function flare {
       wait 0.
-      local hgt is (Altitude - gSpacePortHeight-gGearHeight).
-      local vzSoll is Min(hgt*(-0.2) -3, -15).
+      set hgt to (Altitude - gSpacePortHeight-gGearHeight).
+      //local vzSoll is Min(hgt*(-0.2) -3, -15).
+      local vzSoll is Max(hgt*(-0.1) -3, -15).
       local vzErr is Ship:VerticalSpeed-vzSoll.
       local aoa is vzPID:Update(Time:Seconds, vzErr).
       if (not gDoLog)
@@ -423,20 +425,35 @@ function atmoLandingPlane {
       print "hgt ="+Round(hgt,   1)+"   " at (38,10).
       print "vzE ="+Round(vzErr, 2)+"   " at (38,11).
       print "vzS ="+Round(vzSoll,   2)+"   " at (38,12).
-      print "vz  ="+Round(Ship:VerticalSpeed, 2)+"   " at (38,13).
+      print "vz  ="+Round(VerticalSpeed, 2)+"   " at (38,13).
     }
 
 
     if gDoLog writeLandingLog().
     Brakes off.
     Chutes Off.
-    until (Status<>"FLYING") flare().
+    until (hgt<10) flare().
+    set steerDir to Heading(gSpacePortHeading, 0).
+    until (Status<>"FLYING") {wait 0.}
+    print "  touchdown: v="+Round(Velocity:Surface:Mag,2)+", vz="+Round(VerticalSpeed,2)+", hgt="+Round(Altitude-gSpacePortHeight-gGearHeight,2).
     Chutes On.
     wait 2.
     Brakes on.
-    wait until Airspeed < 0.1.
-    Lights off.
     unlock Steering.
+
+    //lock WheelSteering to gSpacePortHeading.
+    local wheelPID is PidLoop(0.2, 0.015, 0.0, -1, 1). // KP, KI, KD, MINOUTPUT, MAXOUTPUT
+    local function rollOut {
+      //local wheelErr is 90-Vang(Velocity:Surface, North:Vector).
+      local wheelErr is 90-Vang(Facing:ForeVector, North:Vector).
+      set Ship:Control:WheelSteer to wheelPID:Update(Time:Seconds, wheelErr).
+      print "wErr="+Round(wheelErr, 2)+"   " at (38,16).
+      print "whSt="+Round(Ship:Control:WheelSteer, 2)+"   " at (38,17).
+    }
+
+    until (Airspeed < 0.1) rollOut().
+    set Ship:Control:Neutralize to true.
+    Lights off.
     set SteeringManager:PitchTorqueFactor to 1.
 }
 

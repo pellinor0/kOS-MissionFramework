@@ -33,6 +33,19 @@ function transferResource {
     }
 }
 
+function fillTanksToDeltaV {
+  parameter dV.
+  print " fillTanksToDeltaV: dV="+Round(dV,2).
+  local m is getElementMass().
+  local isp is Ship:PartsDubbed(gShipType+"Engine")[0]:Isp.
+  if (isp=0) print " ERROR: ISP=0!".
+  local wd is Constant:E^( dV/(isp*9.81) ). // wet/dry ratio
+  local mFuel is m*(wd-1).
+  if (params["fuel"]="LF") {
+    transferResource("LiquidFuel", true, mFuel/0.005). // density hardcoded (LF=0.005, Ox=0.005, Rock=0.0025)
+  } else print " ERROR: this fuel is not implemented yet!".
+}
+
 function drive {
   parameter tgt. // GeoCoord, Vessel or WayPoint
   parameter vel is 10.
@@ -308,12 +321,11 @@ function vecToString {
 
 function getDeltaV {
     // assumptions: only one ISP present
-    local tmp is List().
-    list engines in tmp.
+    local tmp is List(). list engines in tmp.
     local isp is tmp[0]:VacuumIsp.
     local fuel is (Ship:LiquidFuel + Ship:Oxidizer)*0.005.
     local m is Ship:Mass.
-    return isp * ln(m/(m-fuel))*9.81.
+    return isp * Ln(m/(m-fuel))*9.81.
 }
 function getRcsDeltaV {
     local fuel is Ship:MonoPropellant*0.004.
@@ -337,7 +349,7 @@ function hasPort {
     } else return hasClaw().
 }
 function hasClaw {
-    set tmp to Ship:PartsDubbed(gShipType+"Claw").
+    local tmp is Ship:PartsDubbed(gShipType+"Claw").
     if tmp:Length > 0 {
         set gMyPort to tmp[0].
         return true.
@@ -350,6 +362,19 @@ function hasLink {
       set gMyPort to tmp[0].
       return true.
   } else return false.
+}
+
+local function getElement {
+  for e in Ship:Elements {
+    if (e:Parts:Contains(Core:Part)) {return e.}
+  }
+  print " ERROR: Element not found!".
+}
+function getElementMass {
+  // assumption: no docked payload! ("attached" docking ports are ok)
+  local m is 0.
+  for p in getElement():Parts { set m to m+p:Mass. }
+  return m.
 }
 
 global xAxis is VecDraw( V(0,0,0), V(1,0,0), RGB(1.0,0.5,0.5), "X axis", 1, false ).
