@@ -1,11 +1,15 @@
 set gDoLog to 1.
-set gLandingPA to -40.
+set gLandingPA to -200.
 set gSpacePort to LatLng(0, 200). // Gael Ocean
 set gSpacePortHeight to 0.
 { // separate context so we can have local variables
 local logFile is "0:/logs/log_"+gShipType +".ks".
 
 if (Status = "PRELAUNCH") askConfirmation().
+if (Ship:AvailableThrust<0.1) stage.
+if Ship:PartsDubbed(gShipType+"Tank")[0]:HasModule("ModuleReactionWheel"){
+  Ship:PartsDubbed(gShipType+"Tank")[0]:GetModule("ModuleReactionWheel"):SetField("wheel authority", 25).
+}
 
 if missionStep() {
     stage.

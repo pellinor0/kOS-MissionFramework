@@ -1,8 +1,8 @@
-if Body<>Body("Minmus") set Target to Body("Minmus").
+if (Body<>Body("Iota") and not HasTarget) setTarget(Body("Iota")).
 
 m_ascentLKO().
 
-m_hohmannToTarget().
+m_hohmannToTarget(0.1).
 m_nodeIncCorr().
 m_waitForTransition("ENCOUNTER").
 m_capture(20000).

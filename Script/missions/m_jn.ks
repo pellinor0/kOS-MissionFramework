@@ -1,4 +1,12 @@
+if missionStep() {
+  fillTanksToDeltaV(2000).
+}
+m_undock().
 if (Body<>Body("Jannah") and not HasTarget) setTarget(Body("Jannah")).
+print "  body="+Body.
+print "  hasTarget="+HasTarget.
+if hastarget print "  target="+target.
+
 
 m_hohmannToTarget(0.1).
 m_nodeIncCorr().
@@ -12,6 +20,7 @@ m_askConfirmation("next step is return to KSS").
 
 // launch to useful orbit
 m_vacLaunch(20000).
+setTarget("KSS").
 
 // return burn + inc change
 m_returnFromMoon().
