@@ -130,7 +130,9 @@ function vacAscent {
 function vacLandAtTgt {
     parameter tgt is 0. // GeoCoordinates (else use Target)
     if (Status = "LANDED" or Status="SPLASHED") return.
-    if (not tgt:HasSuffix("LAT")) set tgt to Body:GeoPositionOf(Target:Position).
+    if (not tgt:HasSuffix("LAT")) set tgt to Body:GeoPositionOf(Target:Position -Target:North:StarVector*10).
+    local ld is KUniverse:DefaultLoadDistance:SubOrbital.
+    print "  loadDist SubOrbital:" +ld:Load +", "+ld:Unload+", "+ld:Unpack+", "+ld:pack.
     local ld is KUniverse:DefaultLoadDistance:Landed.
     print "  loadDist Landed:" +ld:Load +", "+ld:Unload+", "+ld:Unpack+", "+ld:pack.
     set ld:Pack to 2200.
@@ -150,6 +152,8 @@ function vacLandAtTgt {
         set accFactor to 2.5*g/acc.
         set acc to acc*accFactor.
     }
+
+    local decelHeight is 0.
     if (Exists("0:/logs/land"+Body:Name+".json")) {
       local params is ReadJson("0:/logs/land"+Body:Name+".json").
       local burnAlt is params["h"][(params["h"]:Length-1)].
@@ -205,32 +209,35 @@ function vacLandAtTgt {
     local hCorr is -0.5*v0*v0/(acc-g) -10. // correction for touchdown speed and gearHeight
     local tImpact is Time:Seconds+1e12.
 
+    local function ttDeorbit {
+      // == Suicide burn countdown => throttle ==
+      // suicide burn countdown (borrowed from MJ)
+      set tImpact to timeToAltitude2(tgtHeight, Time:Seconds, Time:Seconds+Eta:Periapsis, 0.2).
+      local sinP is Sin( Max(0, 90-Vang(-Velocity:Surface, Up:Vector)) ).
+      local effDecel is 0.5*(-2*g*sinP +Sqrt( (2*g*sinP)^2 +4*(acc*acc*0.9 -g*g))). //"*0.9"= keep small acc reserve
+      local decelTime is Velocity:Surface:Mag/effDecel.
+      set sbc to tImpact-Time:Seconds -decelTime/2.
+      set tt to 1/Max(sbc/2,1).
+      print "SBC =" +Round(sbc,      2) +"  " at (38, 0).
+      print "dt  ="+Round( tImpact -Time:Seconds -2*sbc ) +"  " at (38,1).
+      print "tImp="+Round( tImpact -Time:Seconds )        +"  " at (38,2).
+    }
+    local function ttFinal {
+      // final approach / touchdown
+      set height to Altitude - Max(0.01, GeoPosition:TerrainHeight) +hCorr.
+      local accNeeded is 0.
+      set accNeeded to (Velocity:Surface:SqrMagnitude - v0*v0)/(Max(2*height,1)) + g.
+
+      local corrAcc is Max(corrX+corrY, 0.5)*g * accFactor/acc.
+      set tt to Max(corrAcc, ((accNeeded*accFactor/acc)-0.5)*5). // start at 50%, full at 70%
+    }
+
+    local corrX is 0.
+    local corrY is 0.
     local function update {
         wait 0.
         set v to Velocity:Surface.
         set height to Altitude - tgtHeight.
-
-        // == Suicide burn countdown => throttle ==
-        // suicide burn countdown (borrowed from MJ)
-        set tImpact to timeToAltitude2(tgtHeight, Time:Seconds, Time:Seconds+Eta:Periapsis, 0.2).
-        local sinP is Sin( Max(0, 90-Vang(-Velocity:Surface, Up:Vector)) ).
-        if (sinp<0.95) {
-          local effDecel is 0.5*(-2*g*sinP +Sqrt( (2*g*sinP)^2 +4*(acc*acc*0.9 -g*g))). //"*0.9"= keep small acc reserve
-          local decelTime is Velocity:Surface:Mag/effDecel.
-          set sbc to tImpact-Time:Seconds -decelTime/2.
-          set tt to 1/Max(sbc/2,1).
-          print "SBC =" +Round(sbc,      2) +"  " at (38, 0).
-        } else {
-          // final approach / touchdown
-          set height to Altitude - Max(0.01, GeoPosition:TerrainHeight) +hCorr.
-          local accNeeded is 0.
-          if (height>2)
-            set accNeeded to (Velocity:Surface:SqrMagnitude - v0*v0)/(2*height) + g.
-          else
-            set accNeeded to (Velocity:Surface:Mag - v0)*2.
-          set tt to Max(0, (accNeeded*accFactor/acc)-0.7)*5. // start at 70%, full at 90%
-        }
-        print "tt  =" +Round(tt, 2)  at (38, 1).
 
         // == Navigation => X/Y error ==
         // aim at a point 60% of current height over target
@@ -242,8 +249,8 @@ function vacLandAtTgt {
         print "vErr=" +Round(vErr:Mag,2) at (38,7).
 
         // PID control => X/Y corr
-        local corrX is vErrPIDx:Update(Time:Seconds, vErr:X).
-        local corrY is vErrPIDy:Update(Time:Seconds, vErr:Y).
+        set corrX to vErrPIDx:Update(Time:Seconds, vErr:X).
+        set corrY to vErrPIDy:Update(Time:Seconds, vErr:Y).
         print "corX=" +Round(corrX, 2)+"    " at (38,8).
         print "corY=" +Round(corrY, 2)+"    " at (38,9).
 
@@ -257,19 +264,25 @@ function vacLandAtTgt {
         //if (sinp<0.5 and sbc>10) // early: augment corrX with throttle (if we have room for cutting throttle)
         //  set tt to tt-0.1*corrY.
 
-        set steerVec to steerVec .
+        // == Throttle ==
+
+        if (Altitude-geoPosition:TerrainHeight > 500) {
+          ttDeorbit(). // suicide burn countdown (borrowed from MJ)
+        } else {
+          ttFinal().
+        }
+        print "tt  =" +Round(tt, 2)  at (38, 1).
+
         debugVec(5, "v", Velocity:Surface, -10*Up:Vector).
-        print "dt  ="+Round( tImpact -Time:Seconds -2*sbc ) +"  " at (38,20).
-        print "tImp="+Round( tImpact -Time:Seconds )        +"  " at (38,21).
         print "tgtP="+(not Target:UnPacked)+"  " at (38,22).
         //debugDirection(Steering).
+        debugDirection(North).
     }
 
     print " landing burn".
     set WarpMode to "RAILS".
     set Warp to 3. // 50x
-    //until (sbc < 50) update().
-    until (Time:Seconds > tImpact-2*sbc) update().
+    until (sbc < 30) update().
 
     set WARP to 0. wait 0. set WARPMODE to "PHYSICS". wait 0.
     until (Ship:Unpacked) update().
@@ -286,19 +299,21 @@ function vacLandAtTgt {
     }
 
     lock Throttle to tt.
-    until (sbc < 10) update().
-    set Warp to 1.
     if (HasTarget) {
-      until (Target:UnPacked or height<400) update().
+      until (Target:Unpacked or height<500) update().
       if (Target:Unpacked) {
         print "  target unpacked".
-        set tgt to chooseBasePort().
-        set tgtHeight to Max(0.01, tgt:TerrainHeight).
-      } else print "  WARNING: Target still packed!".
+        //local myLink is Ship:PartsTagged(gShipType+"Link")[0].
+      } else print "  WARNING: Target still packed! dist="+Target:Position:Mag.
+      set tgt to chooseBasePort().
+      set tgtHeight to Max(0.01, tgt:TerrainHeight).
     }
 
-    //until (height < 30) { update(). } //dynWarp(). }
-    //suicideBurn().
+
+    until (Altitude-tgtHeight<1000) { update(). }
+    hop(tgt).
+
+
     until Status = "LANDED" or Status = "SPLASHED" { update(). }
     unlock Throttle.
     set Warp to 0.
@@ -318,48 +333,23 @@ function vacLandAtTgt {
 function chooseBasePort {
     local portList is Target:PartsTagged(Target:Name+"Port").
     local pos is Target:Position.
+    global gLinkDir is 0.
 
     if (portList:Length>0) {
-      local dir is 0.
       local p is portList[0].
       if p:HasSuffix("PortFacing")
-        set dir to p:PortFacing:ForeVector.
+        set gLinkDir to p:PortFacing:ForeVector.
       else
-        set dir to p:Facing:ForeVector.
+        set gLinkDir to p:Facing:ForeVector.
 
-      set dir to Vxcl(Target:Position-Target:Body:Position, dir):Normalized.
-      set pos to p:Position +dir*(gShipRadius+20).
+      set gLinkDir to Vxcl(Target:Position-Target:Body:Position, gLinkDir):Normalized.
+      set pos to p:Position +gLinkDir*(gShipRadius+5).
       print "  port found".
-    } else print "  no ports found!".
-    return Target:Body:GeoPositionOf(pos):Position +North:Vector*(gShipRadius+10).
-}
-
-function hop {
-  // suborbital hop to Target (assume no atmosphere)
-  print " hop".
-
-  lock Steering to Heading(Target:Heading, 45).
-  lock Throttle to 1.
-  local p is Ship:Position.
-  local d0 is Target:Position:Mag.
-  print "  tgtHeight="+Target:Altitude.
-  local function update {
-    local tImpact is timeToAltitude2(Target:Altitude, Time:Seconds+Eta:Apoapsis, Time:Seconds+Eta:Apoapsis+Obt:Period/2, 0.2).
-    set p to PositionAt(Ship, tImpact).
-    print "tti =" +Round(tImpact-Time:Seconds,2) at (38,13).
-    print "p   =" +Round(p:Mag,2) at (38,14).
-    print "ap  =" +Round(Apoapsis) at (38,15).
-  }
-  set WarpMode to "PHYSICS". set Warp to 1.
-  until (Apoapsis > Target:Altitude+10) update().
-  until (p:Mag > (Target:Position:Mag +Velocity:Surface:Mag/2) ) update().
-  unlock Throttle.
-  lock Steering to stSrfRetro.
-  set WARP to 3.
-  wait Eta:Apoapsis.
-  set Warp to 0.
-  unlock Steering.
-  vacLandAtTgt().
+    } else {
+      set pos to pos-North:StarVector*(gShipRadius+5). // West
+      print "  no ports found!".
+    }
+    return Target:Body:GeoPositionOf(pos).
 }
 
 // -> libatmo ?

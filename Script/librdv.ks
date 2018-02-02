@@ -399,8 +399,6 @@ function cancelRelativeVelRCS {
 function prepareDocking {
   if (not hasPort()) {
     print "  Docking not possible: no port found".
-  } else if (not hasRcs()) {
-    print "  Docking not possible: no RCS found".
   } else if (getRcsDeltaV()<2) {
     print "  Docking not possible: rcsDeltaV=" +Round(getRcsDeltaV(),2) +" (not enough)".
   } else if (not chooseDockingPort()) {

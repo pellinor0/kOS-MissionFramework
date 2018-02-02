@@ -229,7 +229,7 @@ function m_fillTanks {
         tryTransfer("Mulch", false).    // empty
         if includeLFO {
           tryTransfer("LiquidFuel", true, amount).
-          tryTransfer("Oxidiser", true, amount*(11/9)).
+          tryTransfer("Oxidizer", true, amount*(11/9)).
         }
         for t in transfers { set t:Active to True. }
         for t in transfers { wait until t:Active=false. }
@@ -253,13 +253,14 @@ function m_undock {
           wait until gMyPort:State<>"PreAttached".
           KUniverse:ForceSetActiveVessel(Ship).
         } else {
-          Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
+          setControlPart().
           print "  Port was not docked (" +gMyPort:State +")".
           return.
         }
         wait 0.
         gMyPort:ControlFrom.
         Core:DoEvent("open terminal").
+        set Ship:Name to gShipType.
         wait 0.
 
         //debugDirection(Facing).
@@ -277,7 +278,7 @@ function m_undock {
         wait 2.5*gShipRadius.
         set Warp to 0.
         wait until Ship:Unpacked.
-        Ship:PartsDubbed(gShipType+"Control")[0]:ControlFrom.
+        setControlPart().
         checkBalance().
     }
 }
@@ -452,6 +453,7 @@ function resumeMission {
     RunPath("1:/mission.ks").
     print "Mission finished!".
     log "set pMissionCounter to 0." to "1:/persistent.ks".
+    debugVecOff(). debugDirectionOff().
     shutDownCore().
 }
 

@@ -564,19 +564,22 @@ function tweakNodeInclination {
 function refineRdvBruteForce {
     parameter t.
     parameter dVWeight is 100.
+    parameter dtStep is 0.
+    parameter d is 2.  // start value for stepsize
 
     wait 0.
     local myNode is NextNode.
-    local lock pRel to (PositionAt(Ship, t) - PositionAt(Target, t)):Mag.
-    local lock vRel to (VelocityAt(Ship, t):Orbit - VelocityAt(Target, t):Orbit):Mag.
+    local dt is 0.
+    local lock pRel to (PositionAt(Ship, t+dt) - PositionAt(Target, t+dt)):Mag.
+    local lock vRel to (VelocityAt(Ship, t+dt):Orbit - VelocityAt(Target, t+dt):Orbit):Mag.
     local vr0 is vRel.
     local lock dVCost to Max(0,vRel-vr0) + NextNode:DeltaV:Mag.
     local lock measure to pRel +dVCost *dVWeight.
     local measureStart is measure.
     local oldDV is V(NextNode:RadialOut, NextNode:Normal, NextNode:Prograde).
 
-    local d is 2.
     local dMin is 0.125.
+    local dMax is 2.
     local better is 0.
     local best is measure.
     local dvStart is NextNode:DeltaV.
@@ -660,17 +663,49 @@ function refineRdvBruteForce {
             }
         }
 
+        // shift rdv time
+        if (dtStep>0){
+          set dt to (dt + dtStep*d).
+          wait 0.
+          if (measure < best) {
+              set best to measure.
+              set better to 1.
+          } else {
+              set dt to (dt - 2*dtStep*d).
+              wait 0.
+              if (measure < best) {
+                  set best to measure.
+                  set better to 1.
+              } else {
+                  set dt to (dt + dtStep*d).
+                  wait 0.
+              }
+          }
+        }
         //print "  best="+Round(best,2) +", dV=" +Round(mynode:DeltaV:Mag,2) +", d="+Round(d, 1).
         //print "  best="+Round(best,2) +", pRel=" +Round(pRel) +", vRel="+Round(vRel,1).
-        set d to d * 0.9.
-        if(better = 0) set best to measure.
+        if(better = 0) {
+          set best to measure.
+          set d to d * 0.8.
+        } else {
+          set d to d*0.95.
+          //set d to Min(dMax, 1.05*d).
+        }
+        print "b   =" +Round(best, 2) +"  " at (38, 0).
+        print "d   =" +Round(d, 2) +"  " at (38, 1).
+        print "vel =" +Round(vRel, 1) +"  " at (38, 2).
+        print "dist=" +Round(pRel) +"  " at (38, 3).
+        print "dt  =" +Round(dt/(3600*6),2) +"   " at (38,4).
     }
 
     if (measure>measureStart) setNextNodeDv(oldDv).
     print "  End:   dist=" + Round(pRel) +", vRel=" +Round(vRel,2).
     print "  dvCost=" +Round(NextNode:DeltaV:Mag -dvStart:Mag, 2)
          +", dvChange=" +Round((NextNode:DeltaV -dvStart):Mag, 2)
-         +", dt=" +Round(NextNode:Eta+Time:Seconds -tStart,2).
+         +", dt=" +Round(NextNode:Eta+Time:Seconds -tStart,2)
+         +", dt2="+Round(dt,2).
+
+    return dt.
 }
 
 // == times ==
@@ -737,10 +772,10 @@ function findClosestApproach {
     parameter t1.
     // Assume Target is set.
     // Assume circular orbits
-    // print "findClosestApproach".
+    //print "findClosestApproach".
 
     local p1 is 0.
-    if Obt:Transition="Escape" {
+    if (Obt:Transition="Escape") or (HasNode and NextNode:Obt:Transition="Escape") {
       set p1 to Body:Obt:Period.
     } else {
       set p1 to Obt:Period.
@@ -750,7 +785,7 @@ function findClosestApproach {
 
     // print "  First Step: brute force search".
     local steps is Ceiling( (t1-t0)/linearThreshold ).
-    // print "  steps=" +steps.
+    //print "  steps=" +steps.
     // print "  stepsize=" +Round(linearThreshold).
     local period is p1.
     local i is 0.
@@ -791,7 +826,7 @@ function findClosestApproach {
             set finished to 1.
         }
         //print "  Linear Approximation".
-        //print "    vRel=" +Round(vRel:Mag, 2). //+vecToString(vRel).
+        //print "vRel=" +Round(vRel:Mag, 2) at (38,0). //+vecToString(vRel).
         //print "    dist=" +Round(dist:Mag, 2). //+vecToString(dist).
         //print "    dPar="+Round(dPar, 2).
         //print "    dt  ="+Round(dt, 2).

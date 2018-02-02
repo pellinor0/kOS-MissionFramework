@@ -334,12 +334,13 @@ function getRcsDeltaV {
     //print "  getRcsDv: "+Round(isp * ln(m/(m-fuel))*9.81, 2).
     return isp * ln(m/(m-fuel))*9.81.
 }
-function hasRCS {
-    return Ship:PartsDubbed(gShipType+"RCS"):Length>0.
-}
+//function hasRCS {
+//    return (Ship:PartsDubbed(gShipType+"RCS"):Length>0
+//            OR params:HasKey("rcsPower")).
+//}
 function hasRcsDeltaV {
     parameter req is 5.
-    return (hasRcs() and getRcsDeltaV()>req).
+    return (getRcsDeltaV()>req).
 }
 function hasPort {
     local tmp is Ship:PartsDubbed(gShipType+"Port").
@@ -364,7 +365,7 @@ function hasLink {
   } else return false.
 }
 
-local function getElement {
+function getElement {
   for e in Ship:Elements {
     if (e:Parts:Contains(Core:Part)) {return e.}
   }

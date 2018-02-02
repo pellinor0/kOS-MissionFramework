@@ -27,17 +27,20 @@ function askConfirmation {
 }
 
 function setControlPart {
-  parameter tag is "Control".
-  local pList is Ship:PartsDubbed(gShipType+tag).
-  if (pList:Length=1)
-    pList[0]:ControlFrom.
-  else
-  {
-    print "WARNING: no unique control part found: num="+pList:Length.
-    //print "please activate control part manually".
-    //askConfirmation().
-    print "  taking closest one to core".
-    findClosest(pList, Core:Part):ControlFrom.
+  if Core:Part:HasModule("ModuleCommand"){
+    Core:Part:ControlFrom.
+  } else {
+    local pList is Ship:PartsDubbed(gShipType+"Control").
+    if (pList:Length=1)
+      pList[0]:ControlFrom.
+    else
+    {
+      print "WARNING: no unique control part found: num="+pList:Length.
+      //print "please activate control part manually".
+      //askConfirmation().
+      print "  taking closest one to core".
+      findClosest(pList, Core:Part):ControlFrom.
+    }
   }
 }
 
